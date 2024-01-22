@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\TestWebApplication1\\TestWebApplication1.csproj",
-      "projectName": "TestWebApplication1",
-      "projectPath": "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\TestWebApplication1\\TestWebApplication1.csproj",
+      "projectUniqueName": "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\HW1\\HW1.csproj",
+      "projectName": "HW1",
+      "projectPath": "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\HW1\\HW1.csproj",
       "packagesPath": "C:\\Users\\bruno\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\TestWebApplication1\\obj\\",
+      "outputPath": "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\HW1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\bruno\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -57,9 +57,6 @@
         "assetTargetFallback": true,
         "warn": true,
         "frameworkReferences": {
-          "Microsoft.AspNetCore.App": {
-            "privateAssets": "none"
-          },
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
