@@ -44,7 +44,7 @@ public class BST
                 DisplayInOrderHelper(root.leftNode);
             }
             //Print out the contents of the root
-            root.printNode();
+            root.PrintNode();
             
             if (root.rightNode != null)// Check right side
             { //Stuff exists, call the display helper, then exit
@@ -52,7 +52,6 @@ public class BST
             } 
         }
     }
-
     private void DisplayInOrderHelper(Node branch)
     {
         if (branch == null)
@@ -66,7 +65,7 @@ public class BST
                 DisplayInOrderHelper(branch.leftNode);
             }
             //Print out the contents of the root
-            branch.printNode();
+            branch.PrintNode();
             
             if (branch.rightNode != null)// Check right side
             { //Stuff exists, call the display helper, then exit
@@ -97,18 +96,17 @@ public class BST
     // Level-related functions
     public int GetLevels()
     {
-        return getLevelsHelper(root, 1);
+        return GetLevelsHelper(root, 1); //Calls for help
     }
-
-    private int getLevelsHelper(Node branch, int level)
+    private int GetLevelsHelper(Node branch, int level)
     {
         if (branch == null)
         { // Negative value for later max comparison
             return -1;
         }
 
-        int leftLevels = getLevelsHelper(branch.leftNode, level); //Store max height of left side
-        int rightLevels = getLevelsHelper(branch.rightNode, level); //Store max height of right side;
+        int leftLevels = GetLevelsHelper(branch.leftNode, level); //Store max height of left side
+        int rightLevels = GetLevelsHelper(branch.rightNode, level); //Store max height of right side;
 
         return Math.Max(leftLevels, rightLevels) + 1; //Returns highest height of tree and returns it
     }

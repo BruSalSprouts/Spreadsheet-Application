@@ -11,7 +11,7 @@ public class Node
         rightNode = null;
     }
 
-    public void printNode()
+    public void PrintNode()
     {
         Console.Write(content + " ");
     }
