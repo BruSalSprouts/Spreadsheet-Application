@@ -1,0 +1,15 @@
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\obj\Debug\net7.0\HW1.csproj.AssemblyReference.cache
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\obj\Debug\net7.0\HW1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\obj\Debug\net7.0\HW1.AssemblyInfoInputs.cache
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\obj\Debug\net7.0\HW1.AssemblyInfo.cs
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\obj\Debug\net7.0\HW1.csproj.CoreCompileInputs.cache
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\bin\Debug\net7.0\HW1.exe
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\bin\Debug\net7.0\HW1.deps.json
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\bin\Debug\net7.0\HW1.runtimeconfig.json
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\bin\Debug\net7.0\HW1.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\bin\Debug\net7.0\HW1.pdb
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\obj\Debug\net7.0\HW1.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\obj\Debug\net7.0\refint\HW1.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\obj\Debug\net7.0\HW1.pdb
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\obj\Debug\net7.0\HW1.genruntimeconfig.cache
+C:\Users\bruno\RiderProjects\cpts321-hws\HW1\obj\Debug\net7.0\ref\HW1.dll
