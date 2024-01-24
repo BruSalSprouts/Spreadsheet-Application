@@ -6,7 +6,6 @@ class Program : BST
 {
     public static void Main()
     {
-        Console.WriteLine("Hello World!");
         string line = GetIntList();
         int len = line.Length;
         string[] numbersString = line.Split(' '); //Split string into string arrays, which will go into BST
@@ -27,15 +26,23 @@ class Program : BST
                 Console.WriteLine($"Failed to convert '{var}' to an integer. Value is too large or too small.");
             }
         }
-        numbers.DisplayInOrder();
-		
+        numbers.DisplayInOrder(); // Task 3
+        //Task 4 tasks below
+        int numNodes = numbers.NumItems();
+        Console.WriteLine("\nThe total number of items is " + numNodes);
+        int levelCount = numbers.GetLevels();
+        Console.WriteLine("The total number of levels is " + levelCount);
     }
     /* Prompts user to type in a bunch of integer numbers with spaces in between, and returns the line typed in as a string */
-    public static string GetIntList()
+    private static string GetIntList()
     {
         Console.WriteLine("Write a list of integer numbers");
         string line = Console.ReadLine();
         Console.WriteLine("You wrote " + line);
+        if (string.IsNullOrEmpty(line))
+        {
+            return string.Empty;
+        }
         return line;
     }
 

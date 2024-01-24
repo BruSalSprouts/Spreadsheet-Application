@@ -7,7 +7,7 @@ public class BST
     public BST(){ //Default constructor
         root = null;
     }
-    
+    // Insert Functions
     public void Insert(int value) //Insert item to the BST
     {
         root = InsertHelp(root, value);
@@ -30,7 +30,7 @@ public class BST
         }
         return branch;
     }
-
+    // Display Functions
     public void DisplayInOrder()
     {
         if (root == null)
@@ -73,5 +73,43 @@ public class BST
                 DisplayInOrderHelper(branch.rightNode);
             } 
         }
+    }
+    // Counting Functions
+    public int NumItems()
+    {
+        if (root == null)
+        { //No items at all
+            return 0;
+        }
+        return NumItemsHelper(root);
+    }
+
+    private int NumItemsHelper(Node branch)
+    { //Recursive function that returns the number of nodes in a branch
+        if (branch == null)
+        { //If the branch is empty, return such
+            return 0;
+        }
+        int left = NumItemsHelper(branch.leftNode); // Gets number of nodes from left part of branch
+        int right = NumItemsHelper(branch.rightNode); // Gets number of nodes from right part of branch
+        return 1 + left + right; //Always returns number of nodes returned + 1, ensuring there's something in here
+    }
+    // Level-related functions
+    public int GetLevels()
+    {
+        return getLevelsHelper(root, 1);
+    }
+
+    private int getLevelsHelper(Node branch, int level)
+    {
+        if (branch == null)
+        { // Negative value for later max comparison
+            return -1;
+        }
+
+        int leftLevels = getLevelsHelper(branch.leftNode, level); //Store max height of left side
+        int rightLevels = getLevelsHelper(branch.rightNode, level); //Store max height of right side;
+
+        return Math.Max(leftLevels, rightLevels) + 1; //Returns highest height of tree and returns it
     }
 }
