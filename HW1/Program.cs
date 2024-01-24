@@ -12,12 +12,11 @@ class Program : BST
         string[] numbersString = line.Split(' '); //Split string into string arrays, which will go into BST
         BST numbers = new BST();
         int temp = 0;
-        foreach (string var in numbersString){
+        foreach (string var in numbersString){ //The parsing itself 
             try
             {
                 temp = int.Parse(var);
                 numbers.Insert(temp);
-                Console.WriteLine("The new integer is " + temp);
             }
             catch (FormatException)
             {
@@ -28,7 +27,7 @@ class Program : BST
                 Console.WriteLine($"Failed to convert '{var}' to an integer. Value is too large or too small.");
             }
         }
-        
+        numbers.DisplayInOrder();
 		
     }
     /* Prompts user to type in a bunch of integer numbers with spaces in between, and returns the line typed in as a string */
