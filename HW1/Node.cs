@@ -10,4 +10,9 @@ public class Node
         leftNode = null;
         rightNode = null;
     }
+
+    public void printNode()
+    {
+        Console.Write(content + " ");
+    }
 }
