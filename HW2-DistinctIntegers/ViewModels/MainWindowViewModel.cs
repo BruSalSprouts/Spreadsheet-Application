@@ -24,7 +24,8 @@ public class MainWindowViewModel : ViewModelBase
         responseString.AppendLine("Method 1: Hash Set method: " + HashMethod(numbers) + " unique numbers");
         responseString.AppendLine(
             "The time complexity is O(N), as it iterates through every item in the list once, \n" +
-            "meaning it'll search through N items, given N is the amount of items in the list");
+            "meaning it'll search through N items, given that N is the amount of items in the list, \n" +
+            "which leads to O(N) time complexity");
         
         
         //Converting the StringBuild response to a string and returning that
