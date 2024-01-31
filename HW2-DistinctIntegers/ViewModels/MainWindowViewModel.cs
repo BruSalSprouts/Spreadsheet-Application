@@ -43,19 +43,13 @@ public class MainWindowViewModel : ViewModelBase
         return hashNums.Count;
     }
 
-    public static int oOneMethod(List<int> numbers)
-    {
-        int total = 0;
-        return total;
-    }
-
-    public static int sortingMethod(List<int> numbers)
+    public static int OOneMethod(List<int> numbers)
     {
         int numListSize = numbers.Count;
         int uniqueItems = numListSize;
         for (int i = 0; i < numListSize; i++)
         {
-            for (int k = i; k < numListSize; k++)
+            for (int k = i + 1; k < numListSize; k++)
             {
                 if (numbers[i] == numbers[k])
                 {
@@ -65,6 +59,13 @@ public class MainWindowViewModel : ViewModelBase
             }
         }
         return uniqueItems;
+    }
+
+    public static int SortingMethod(List<int> numbers)
+    {
+        
+        int total = 0;
+        return total;
     }
     
     public string Greeting { get; set; }
