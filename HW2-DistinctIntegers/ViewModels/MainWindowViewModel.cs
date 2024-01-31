@@ -10,13 +10,17 @@ public class MainWindowViewModel : ViewModelBase
     {
         Greeting = RunDistinctIntegers();
     }
-
+    /// <summary>
+    /// The main dialogue of the application. It also creates an int list of numbers from 0 - 20K with a size of 10K 
+    /// This is where the dialogue string is gathered and put together via a StringBlock
+    /// </summary>
+    /// <returns>The dialogue in the form of a singular string, just a big one at that</returns>
     private string RunDistinctIntegers()
     {
         var rand = new Random();
         List<int> numbers = new List<int>();
         StringBuilder responseString = new StringBuilder("");
-        for (int i = 0; i < 10000; i++)
+        for (int i = 0; i < 10000; i++) //Makes the list that's has a size of 10K ints
         {
             numbers.Add(rand.Next(0, 20000));
         }
@@ -31,7 +35,11 @@ public class MainWindowViewModel : ViewModelBase
         return responseString.ToString();
         // return "Hello World";
     }
-
+    /// <summary>
+    /// Takes in an int list, adds all elements to a Hash Set, and returns the size of the Hash set
+    /// </summary>
+    /// <param name="numbers"></param>
+    /// <returns>int</returns>
     public static int HashMethod(List<int> numbers)
     {
         HashSet<int> hashNums = new HashSet<int>();
@@ -41,7 +49,11 @@ public class MainWindowViewModel : ViewModelBase
         }
         return hashNums.Count; //Return size of hash map,
     }
-
+    /// <summary>
+    /// Takes in an int list and iterates through the list for each element to see if there are any duplicates
+    /// </summary>
+    /// <param name="numbers"></param>
+    /// <returns>int</returns>
     public static int OOneMethod(List<int> numbers)
     {
         int numListSize = numbers.Count;
@@ -59,7 +71,12 @@ public class MainWindowViewModel : ViewModelBase
         }
         return uniqueItems;
     }
-
+    /// <summary>
+    /// Takes in an int list, sorts it, and iterates through it looking for duplicates while adding to a total for each jump.
+    /// If any duplicates are found, the iteration increases by 1 until the comparison is no longer true.
+    /// </summary>
+    /// <param name="numbers"></param>
+    /// <returns>int</returns>
     public static int SortingMethod(List<int> numbers)
     {
         numbers.Sort(); // Sorting list
