@@ -66,7 +66,7 @@ public class Tests
         //Hash method Tests
         List<int> testList = new List<int>(); // Has only 1 element
         testList.Add(21);
-        Assert.That(MainWindowViewModel.oOneMethod(testList), Is.EqualTo(1));
+        Assert.That(MainWindowViewModel.OOneMethod(testList), Is.EqualTo(1));
     }
     [Test]
     public void TestOMet2()
@@ -76,7 +76,7 @@ public class Tests
         {
             testList.Add(i + 1);
         }
-        Assert.That(MainWindowViewModel.oOneMethod(testList), Is.EqualTo(5));
+        Assert.That(MainWindowViewModel.OOneMethod(testList), Is.EqualTo(5));
     }
     [Test]
     public void TestOMet3()
@@ -86,7 +86,7 @@ public class Tests
         {
             testList.Add(i);
         }
-        Assert.That(MainWindowViewModel.oOneMethod(testList), Is.EqualTo(100));
+        Assert.That(MainWindowViewModel.OOneMethod(testList), Is.EqualTo(100));
     }
     [Test]
     public void TestOMet4()
@@ -96,7 +96,7 @@ public class Tests
         {
             testList.Add(2);
         }
-        Assert.That(MainWindowViewModel.oOneMethod(testList), Is.EqualTo(1));
+        Assert.That(MainWindowViewModel.OOneMethod(testList), Is.EqualTo(1));
     }
     [Test]
     public void TestOMet5()
@@ -107,7 +107,7 @@ public class Tests
             testList.Add(i);
         }
         testList.Add(5);
-        Assert.That(MainWindowViewModel.oOneMethod(testList), Is.EqualTo(9));
+        Assert.That(MainWindowViewModel.OOneMethod(testList), Is.EqualTo(9));
     }
     [Test]
     public void TestSort1()
@@ -115,7 +115,7 @@ public class Tests
         //Hash method Tests
         List<int> testList = new List<int>(); // Has only 1 element
         testList.Add(21);
-        Assert.That(MainWindowViewModel.sortingMethod(testList), Is.EqualTo(1));
+        Assert.That(MainWindowViewModel.SortingMethod(testList), Is.EqualTo(1));
     }
     [Test]
     public void TestSort2()
@@ -125,7 +125,7 @@ public class Tests
         {
             testList.Add(i + 1);
         }
-        Assert.That(MainWindowViewModel.sortingMethod(testList), Is.EqualTo(5));
+        Assert.That(MainWindowViewModel.SortingMethod(testList), Is.EqualTo(5));
     }
     [Test]
     public void TestSort3()
@@ -135,7 +135,7 @@ public class Tests
         {
             testList.Add(i);
         }
-        Assert.That(MainWindowViewModel.sortingMethod(testList), Is.EqualTo(100));
+        Assert.That(MainWindowViewModel.SortingMethod(testList), Is.EqualTo(100));
     }
     [Test]
     public void TestSort4()
@@ -145,7 +145,7 @@ public class Tests
         {
             testList.Add(2);
         }
-        Assert.That(MainWindowViewModel.sortingMethod(testList), Is.EqualTo(1));
+        Assert.That(MainWindowViewModel.SortingMethod(testList), Is.EqualTo(1));
     }
     [Test]
     public void TestSort5()
@@ -156,6 +156,6 @@ public class Tests
             testList.Add(i);
         }
         testList.Add(5);
-        Assert.That(MainWindowViewModel.sortingMethod(testList), Is.EqualTo(9));
+        Assert.That(MainWindowViewModel.SortingMethod(testList), Is.EqualTo(9));
     }
 }

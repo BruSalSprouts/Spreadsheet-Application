@@ -26,7 +26,7 @@ public class MainWindowViewModel : ViewModelBase
             "The time complexity is O(N), as it iterates through every item in the list once, \n" +
             "meaning it'll search through N items, given that N is the amount of items in the list, \n" +
             "which leads to O(N) time complexity");
-        
+        responseString.AppendLine("Method 2: O(1) Storage method: " + OOneMethod(numbers) + " unique numbers");
         
         //Converting the StringBuild response to a string and returning that
         return responseString.ToString();
@@ -63,7 +63,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public static int SortingMethod(List<int> numbers)
     {
-        
+        numbers.Sort();
         int total = 0;
         return total;
     }

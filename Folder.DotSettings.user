@@ -18,5 +18,5 @@
   &lt;ProjectFile&gt;BAED97DA-28D4-E64A-FEA8-02DDD57FD413/f:UnitTest1.cs&lt;/ProjectFile&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=edce7779_002D4ff4_002D48c4_002D82dd_002De7c26bee5708/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from UnitTest1.cs #5" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;ProjectFile&gt;BAED97DA-28D4-E64A-FEA8-02DDD57FD413/f:UnitTest1.cs&lt;/ProjectFile&gt;&#xD;
+  &lt;ProjectFile&gt;BAED97DA-28D4-E64A-FEA8-02DDD57FD413/f:UnitTests.cs&lt;/ProjectFile&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
