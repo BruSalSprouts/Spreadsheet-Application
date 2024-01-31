@@ -51,8 +51,20 @@ public class MainWindowViewModel : ViewModelBase
 
     public static int sortingMethod(List<int> numbers)
     {
-        int total = 0;
-        return total;
+        int numListSize = numbers.Count;
+        int uniqueItems = numListSize;
+        for (int i = 0; i < numListSize; i++)
+        {
+            for (int k = i; k < numListSize; k++)
+            {
+                if (numbers[i] == numbers[k])
+                {
+                    uniqueItems--;
+                    break;
+                }
+            }
+        }
+        return uniqueItems;
     }
     
     public string Greeting { get; set; }
