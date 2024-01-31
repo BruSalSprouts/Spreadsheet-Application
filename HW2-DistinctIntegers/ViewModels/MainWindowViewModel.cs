@@ -21,18 +21,25 @@ public class MainWindowViewModel : ViewModelBase
         {
             numbers.Add(rand.Next(0, 20000));
         }
-        int numListSize = numbers.Count;
+        responseString.AppendLine("Method 1: Hash Set method: " + HashMethod(numbers) + " unique numbers");
+        responseString.AppendLine(
+            "The time complexity is O(N), as it iterates through every item in the list once, \n" +
+            "meaning it'll search through N items, given N is the amount of items in the list");
         
         
         //Converting the StringBuild response to a string and returning that
-        // return responseString.ToString();
-        return "Hello World";
+        return responseString.ToString();
+        // return "Hello World";
     }
 
-    public static int hashMethod(List<int> numbers)
+    public static int HashMethod(List<int> numbers)
     {
-        int total = 0;
-        return total;
+        HashSet<int> hashNums = new HashSet<int>();
+        for (int i = 0; i < numbers.Count; i++)
+        {
+            hashNums.Add(numbers[i]);
+        }
+        return hashNums.Count;
     }
 
     public static int oOneMethod(List<int> numbers)

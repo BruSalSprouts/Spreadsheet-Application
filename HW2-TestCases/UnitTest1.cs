@@ -17,7 +17,7 @@ public class Tests
         //Hash method Tests
         List<int> testList = new List<int>(); // Has only 1 element
         testList.Add(21);
-        Assert.That(MainWindowViewModel.hashMethod(testList), Is.EqualTo(1));
+        Assert.That(MainWindowViewModel.HashMethod(testList), Is.EqualTo(1));
     }
     [Test]
     public void TestHashMap2()
@@ -27,7 +27,7 @@ public class Tests
         {
             testList.Add(i + 1);
         }
-        Assert.That(MainWindowViewModel.hashMethod(testList), Is.EqualTo(5));
+        Assert.That(MainWindowViewModel.HashMethod(testList), Is.EqualTo(5));
     }
     [Test]
     public void TestHashMap3()
@@ -37,7 +37,7 @@ public class Tests
         {
             testList.Add(i);
         }
-        Assert.That(MainWindowViewModel.hashMethod(testList), Is.EqualTo(100));
+        Assert.That(MainWindowViewModel.HashMethod(testList), Is.EqualTo(100));
     }
     [Test]
     public void TestHashMap4()
@@ -47,7 +47,7 @@ public class Tests
         {
             testList.Add(2);
         }
-        Assert.That(MainWindowViewModel.hashMethod(testList), Is.EqualTo(1));
+        Assert.That(MainWindowViewModel.HashMethod(testList), Is.EqualTo(1));
     }
     [Test]
     public void TestHashMap5()
@@ -58,7 +58,7 @@ public class Tests
             testList.Add(i);
         }
         testList.Add(5);
-        Assert.That(MainWindowViewModel.hashMethod(testList), Is.EqualTo(9));
+        Assert.That(MainWindowViewModel.HashMethod(testList), Is.EqualTo(9));
     }
     [Test]
     public void TestOMet1()
