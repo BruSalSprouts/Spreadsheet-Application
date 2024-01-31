@@ -31,17 +31,20 @@ public class MainWindowViewModel : ViewModelBase
 
     public static int hashMethod(List<int> numbers)
     {
-        return 0;
+        int total = 0;
+        return total;
     }
 
     public static int oOneMethod(List<int> numbers)
     {
-        return 0;
+        int total = 0;
+        return total;
     }
 
     public static int sortingMethod(List<int> numbers)
     {
-        return 0;
+        int total = 0;
+        return total;
     }
     
     public string Greeting { get; set; }
