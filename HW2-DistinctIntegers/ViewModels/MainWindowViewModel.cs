@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace HW2_DistinctIntegers.ViewModels;
@@ -64,7 +63,16 @@ public class MainWindowViewModel : ViewModelBase
     public static int SortingMethod(List<int> numbers)
     {
         numbers.Sort();
+        int numSize = numbers.Count;
         int total = 0;
+        for (int i = 0; i < numSize; i++)
+        {
+            while (i < numSize - 1 && numbers[i] == numbers[i + 1])
+            {
+                i++;
+            }
+            total++;
+        }
         return total;
     }
     
