@@ -52,13 +52,36 @@ public class Tests
     [Test]
     public void TestHashMap5()
     {
-        List<int> testList = new List<int>(); // Has 10 elements (1 - 9), and 2 duplicates
+        List<int> testList = new List<int>(); // Has 10 elements (1 - 9), and 2 duplicates (2 5s)
         for (int i = 1; i <= 9; i++)
         {
             testList.Add(i);
         }
         testList.Add(5);
         Assert.That(MainWindowViewModel.HashMethod(testList), Is.EqualTo(9));
+    }
+    [Test]
+    public void TestHashMap6()
+    {
+        List<int> testList = new List<int>(); // Has 300 elements (they are all 1 - 100)
+        for (int i = 1; i <= 100; i++)
+        {
+            testList.Add(i);
+            testList.Add(i);
+            testList.Add(i);
+        }
+        testList.Reverse(); //Shouldn't cause any impacts
+        Assert.That(MainWindowViewModel.HashMethod(testList), Is.EqualTo(100));
+    }
+    [Test]
+    public void TestHashMap7()
+    {
+        List<int> testList = new List<int>(); // Including negative elements 
+        for (int i = -10; i < 0; i++)
+        {
+            testList.Add(i);
+        }
+        Assert.That(MainWindowViewModel.HashMethod(testList), Is.EqualTo(10));
     }
     [Test]
     public void TestOMet1()
@@ -110,6 +133,29 @@ public class Tests
         Assert.That(MainWindowViewModel.OOneMethod(testList), Is.EqualTo(9));
     }
     [Test]
+    public void TestOMet6()
+    {
+        List<int> testList = new List<int>(); // Has 300 elements (they are all 1 - 100)
+        for (int i = 1; i <= 100; i++)
+        {
+            testList.Add(i);
+            testList.Add(i);
+            testList.Add(i);
+        }
+        testList.Reverse(); //Shouldn't cause any impacts
+        Assert.That(MainWindowViewModel.OOneMethod(testList), Is.EqualTo(100));
+    }
+    [Test]
+    public void TestOMet7()
+    {
+        List<int> testList = new List<int>(); // Including negative elements 
+        for (int i = -10; i < 0; i++)
+        {
+            testList.Add(i);
+        }
+        Assert.That(MainWindowViewModel.OOneMethod(testList), Is.EqualTo(10));
+    }
+    [Test]
     public void TestSort1()
     {
         //Hash method Tests
@@ -157,5 +203,28 @@ public class Tests
         }
         testList.Add(5);
         Assert.That(MainWindowViewModel.SortingMethod(testList), Is.EqualTo(9));
+    }
+    [Test]
+    public void TestSort6()
+    {
+        List<int> testList = new List<int>(); // Has 300 elements (they are all 1 - 100)
+        for (int i = 1; i <= 100; i++)
+        {
+            testList.Add(i);
+            testList.Add(i);
+            testList.Add(i);
+        }
+        testList.Reverse(); //Shouldn't cause any impacts
+        Assert.That(MainWindowViewModel.SortingMethod(testList), Is.EqualTo(100));
+    }
+    [Test]
+    public void TestSort7()
+    {
+        List<int> testList = new List<int>(); // Including negative elements 
+        for (int i = -10; i < 0; i++)
+        {
+            testList.Add(i);
+        }
+        Assert.That(MainWindowViewModel.SortingMethod(testList), Is.EqualTo(10));
     }
 }

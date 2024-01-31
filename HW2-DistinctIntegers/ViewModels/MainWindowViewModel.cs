@@ -26,7 +26,7 @@ public class MainWindowViewModel : ViewModelBase
             "meaning it'll search through N items, given that N is the amount of items in the list, \n" +
             "which leads to O(N) time complexity");
         responseString.AppendLine("Method 2: O(1) Storage method: " + OOneMethod(numbers) + " unique numbers");
-        
+        responseString.AppendLine("Method 3: Sorted method: " + SortingMethod(numbers) + " unique numbers");
         //Converting the StringBuild response to a string and returning that
         return responseString.ToString();
         // return "Hello World";
@@ -37,22 +37,22 @@ public class MainWindowViewModel : ViewModelBase
         HashSet<int> hashNums = new HashSet<int>();
         for (int i = 0; i < numbers.Count; i++)
         {
-            hashNums.Add(numbers[i]);
+            hashNums.Add(numbers[i]); //All items in numbers list get added, and duplicates don't count
         }
-        return hashNums.Count;
+        return hashNums.Count; //Return size of hash map,
     }
 
     public static int OOneMethod(List<int> numbers)
     {
         int numListSize = numbers.Count;
-        int uniqueItems = numListSize;
+        int uniqueItems = numListSize; //Number of distinct items starts as size of list, will go down
         for (int i = 0; i < numListSize; i++)
         {
-            for (int k = i + 1; k < numListSize; k++)
+            for (int k = i + 1; k < numListSize; k++) //Double for loop, iterates through list for each item
             {
-                if (numbers[i] == numbers[k])
+                if (numbers[i] == numbers[k]) //If there's a duplicate item
                 {
-                    uniqueItems--;
+                    uniqueItems--; //Decrease total number of unique items by 1
                     break;
                 }
             }
@@ -62,16 +62,16 @@ public class MainWindowViewModel : ViewModelBase
 
     public static int SortingMethod(List<int> numbers)
     {
-        numbers.Sort();
+        numbers.Sort(); // Sorting list
         int numSize = numbers.Count;
         int total = 0;
         for (int i = 0; i < numSize; i++)
         {
             while (i < numSize - 1 && numbers[i] == numbers[i + 1])
-            {
+            {  // If any duplicate items are next to each other, we'll skip those duplicates
                 i++;
             }
-            total++;
+            total++; //Incremented number of distinct elements
         }
         return total;
     }
