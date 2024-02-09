@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using HW3.ViewModels;
 using TextFileLoaderSaver.ViewModels;
 using TextFileLoaderSaver.Views;
 

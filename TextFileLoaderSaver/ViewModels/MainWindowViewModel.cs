@@ -22,6 +22,7 @@ public class MainWindowViewModel : ViewModelBase
 
         // Similarly to load, there is a need to create an interaction for saving into a file:
         // TODO: Your code goes here.
+        Greeting = "Hello World\nFoo Bar\r\tNext line";
     }
 
     /// <summary>
@@ -31,7 +32,11 @@ public class MainWindowViewModel : ViewModelBase
     public string FibonacciNumbers
     {
         get => FibonacciNumbers;
-        private set => this.RaiseAndSetIfChanged(ref FibonacciNumbers, value);
+        private set
+        {
+            var backingField = FibonacciNumbers;
+            this.RaiseAndSetIfChanged(ref backingField, value);
+        }
     }
 
     /// <summary>
@@ -55,7 +60,7 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     public Interaction<Unit, string?> AskForFileToLoad { get; }
-    public object Greeting { get; }
+    public object Greeting { get ; }
 
     // other code...
 }

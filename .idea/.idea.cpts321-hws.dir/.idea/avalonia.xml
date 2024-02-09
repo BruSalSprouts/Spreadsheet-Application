@@ -4,6 +4,7 @@
     <option name="projectPerEditor">
       <map>
         <entry key="TextFileLoaderSaver/App.axaml" value="TextFileLoaderSaver/TextFileLoaderSaver.csproj" />
+        <entry key="TextFileLoaderSaver/Views/MainWindow.axaml" value="TextFileLoaderSaver/TextFileLoaderSaver.csproj" />
       </map>
     </option>
   </component>
