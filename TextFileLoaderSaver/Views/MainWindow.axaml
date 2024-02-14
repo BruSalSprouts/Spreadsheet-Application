@@ -17,5 +17,12 @@
     </Design.DataContext>
 
     <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+    <Button>
+        <StackPanel>
+            <Button></Button>
+            <Button></Button>
+            <Button></Button>
+        </StackPanel>
+    </Button>
+    <TextBlock Text="{Binding TheNumbers}" />
 </Window>

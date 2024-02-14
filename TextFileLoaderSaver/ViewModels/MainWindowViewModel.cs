@@ -3,18 +3,18 @@
 // </copyright>
 
 using TextFileLoaderSaver.ViewModels;
-
 namespace HW3.ViewModels;
 
 using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
 using ReactiveUI;
+//using PropertiesChangeEvent.ViewModels; 
 
-public class MainWindowViewModel : ViewModelBase
+public class MainWindowViewModel : ViewModelBase//, INotifyPropertyChanged 
 {
 
-    public MainWindowViewModel()
+    public MainWindowViewModel() 
     {
 
         // Create an interaction between the view model and the view for the file to be loaded:

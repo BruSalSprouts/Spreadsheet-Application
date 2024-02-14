@@ -3,6 +3,8 @@
   <component name="AvaloniaProject">
     <option name="projectPerEditor">
       <map>
+        <entry key="FileLoaderSaver/App.axaml" value="FileLoaderSaver/FileLoaderSaver.csproj" />
+        <entry key="FileLoaderSaver/Views/MainWindow.axaml" value="FileLoaderSaver/FileLoaderSaver.csproj" />
         <entry key="TextFileLoaderSaver/App.axaml" value="TextFileLoaderSaver/TextFileLoaderSaver.csproj" />
         <entry key="TextFileLoaderSaver/Views/MainWindow.axaml" value="TextFileLoaderSaver/TextFileLoaderSaver.csproj" />
       </map>

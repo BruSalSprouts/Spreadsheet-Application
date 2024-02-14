@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "KxKvjiB4MPwokf7P4IsjJGwEBL0oPa+UeF/RN6ZP+o7IrVeXIUBpuaRPZq40h5Zb2bMyWRIgg6sa09ngm3jbNQ==",
+  "dgSpecHash": "wW96/hituWCtmaFS7vDOc1df59ALWjPu+xxWkgyVTBwhyATDcPG0uT8CC9AI6WKd3jff/rHeI8nJPryVI6PzOw==",
   "success": true,
   "projectFilePath": "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\HW3Tester\\HW3Tester.csproj",
   "expectedPackageFiles": [
@@ -16,7 +16,10 @@
     "C:\\Users\\bruno\\.nuget\\packages\\nunit\\3.13.3\\nunit.3.13.3.nupkg.sha512",
     "C:\\Users\\bruno\\.nuget\\packages\\nunit.analyzers\\3.6.1\\nunit.analyzers.3.6.1.nupkg.sha512",
     "C:\\Users\\bruno\\.nuget\\packages\\nunit3testadapter\\4.4.2\\nunit3testadapter.4.4.2.nupkg.sha512",
-    "C:\\Users\\bruno\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512"
+    "C:\\Users\\bruno\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.15\\microsoft.netcore.app.ref.7.0.15.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.15\\microsoft.windowsdesktop.app.ref.7.0.15.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.15\\microsoft.aspnetcore.app.ref.7.0.15.nupkg.sha512"
   ],
   "logs": []
 }

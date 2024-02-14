@@ -13,6 +13,9 @@
         <AvaloniaResource Include="Assets\**"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Compile Include="TextFileLoaderSaver\**\*.cs"/>
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.0.6"/>

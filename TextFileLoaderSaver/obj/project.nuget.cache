@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "xUkkwwLLB0E3zoLJbWNh2eKPCLqoSqpavuPutwljBSdGGX2ioSztTqqSDdzirSlG2nDkO+Y1RDrgrvT7UAlCdQ==",
+  "dgSpecHash": "wzwL+3pEMl2OcU9YOTE/N5CK9KQ0k7SvhbaiJAxDy+w6OolmVl6hOHYvuoq++OlLL4M7WQHkmmLFA2t3DExc0A==",
   "success": true,
   "projectFilePath": "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\TextFileLoaderSaver\\TextFileLoaderSaver.csproj",
   "expectedPackageFiles": [
@@ -78,7 +78,11 @@
     "C:\\Users\\bruno\\.nuget\\packages\\system.threading\\4.3.0\\system.threading.4.3.0.nupkg.sha512",
     "C:\\Users\\bruno\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
     "C:\\Users\\bruno\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
-    "C:\\Users\\bruno\\.nuget\\packages\\tmds.dbus.protocol\\0.15.0\\tmds.dbus.protocol.0.15.0.nupkg.sha512"
+    "C:\\Users\\bruno\\.nuget\\packages\\tmds.dbus.protocol\\0.15.0\\tmds.dbus.protocol.0.15.0.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.15\\microsoft.netcore.app.ref.7.0.15.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.15\\microsoft.windowsdesktop.app.ref.7.0.15.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.15\\microsoft.aspnetcore.app.ref.7.0.15.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.15\\microsoft.netcore.app.host.win-x64.7.0.15.nupkg.sha512"
   ],
   "logs": []
 }
