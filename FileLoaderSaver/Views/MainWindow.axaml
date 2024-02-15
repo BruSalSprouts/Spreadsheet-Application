@@ -1,0 +1,33 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:FileLoaderSaver.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="250"
+        x:Class="FileLoaderSaver.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Avalonia Notepad" Width="400" Height="600"> 
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="Load from file..."/>
+                <MenuItem Header="Load Fibonacci numbers (First 50)"/>
+                <MenuItem Header="Load Fibonacci numbers (First 50)"/>
+                <Separator/>
+                <MenuItem Header="Save to file..."/>
+            </MenuItem>
+            <Separator/>
+        </Menu>
+        
+        <TextBlock/>
+        <!-- <TextBox Text="{Binding TextContent}" AcceptsReturn="True" Multiline="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/> -->
+    </DockPanel>
+</Window>

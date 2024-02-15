@@ -1,0 +1,14 @@
+C:\Users\bruno\RiderProjects\cpts321-hws\TextReaderAndSaver\bin\Debug\net7.0\TextReaderAndSaver.exe
+C:\Users\bruno\RiderProjects\cpts321-hws\TextReaderAndSaver\bin\Debug\net7.0\TextReaderAndSaver.deps.json
+C:\Users\bruno\RiderProjects\cpts321-hws\TextReaderAndSaver\bin\Debug\net7.0\TextReaderAndSaver.runtimeconfig.json
+C:\Users\bruno\RiderProjects\cpts321-hws\TextReaderAndSaver\bin\Debug\net7.0\TextReaderAndSaver.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\TextReaderAndSaver\bin\Debug\net7.0\TextReaderAndSaver.pdb
+C:\Users\bruno\RiderProjects\cpts321-hws\TextReaderAndSaver\obj\Debug\net7.0\TextReaderAndSaver.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bruno\RiderProjects\cpts321-hws\TextReaderAndSaver\obj\Debug\net7.0\TextReaderAndSaver.AssemblyInfoInputs.cache
+C:\Users\bruno\RiderProjects\cpts321-hws\TextReaderAndSaver\obj\Debug\net7.0\TextReaderAndSaver.AssemblyInfo.cs
+C:\Users\bruno\RiderProjects\cpts321-hws\TextReaderAndSaver\obj\Debug\net7.0\TextReaderAndSaver.csproj.CoreCompileInputs.cache
+C:\Users\bruno\RiderProjects\cpts321-hws\TextReaderAndSaver\obj\Debug\net7.0\TextReaderAndSaver.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\TextReaderAndSaver\obj\Debug\net7.0\refint\TextReaderAndSaver.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\TextReaderAndSaver\obj\Debug\net7.0\TextReaderAndSaver.pdb
+C:\Users\bruno\RiderProjects\cpts321-hws\TextReaderAndSaver\obj\Debug\net7.0\TextReaderAndSaver.genruntimeconfig.cache
+C:\Users\bruno\RiderProjects\cpts321-hws\TextReaderAndSaver\obj\Debug\net7.0\ref\TextReaderAndSaver.dll
