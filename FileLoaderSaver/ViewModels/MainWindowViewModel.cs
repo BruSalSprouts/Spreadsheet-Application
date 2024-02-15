@@ -10,6 +10,7 @@ namespace FileLoaderSaver.ViewModels;
 public class MainWindowViewModel : ViewModelBase
 {
     private string fibonacciNumbers;
+    // private FibonacciTextReader fibReader = new FibonacciTextReader();
     private string textContent;
     #pragma warning disable CA1822 // Mark members as static
     public string Greeting => "Welcome to Avalonia!";
