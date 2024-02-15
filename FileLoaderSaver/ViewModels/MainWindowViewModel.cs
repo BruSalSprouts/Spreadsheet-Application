@@ -36,23 +36,20 @@ public class MainWindowViewModel : ViewModelBase
     public string TextContent
     {
         get => textContent;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref textContent, value);
-        }
+        set => this.RaiseAndSetIfChanged(ref textContent, value);
     }
     /// <summary>
     /// This method will be executed when the user wants to load content from a file.
     /// </summary>
     public async void LoadFromFile()
     {
-    // Wait for the user to select the file to load from.
-        var filePath = await AskForFileToLoad.Handle(default);
+        // Wait for the user to select the file to load from.
+        string filePath = await AskForFileToLoad.Handle(default);
         if (filePath == null) return;
-    // If the user selected a file, create the stream reader and load the text.
-        var textReader = new StreamReader(filePath);
-        LoadText(textReader);
-        textReader.Close();
+        // If the user selected a file, create the stream reader and load the text.
+        TextReader textFile = new StreamReader(FinishFilePath(filePath));
+        LoadText(textFile);
+        textFile.Close();
     }
     /// <summary>
     /// Takes in a relative path and returns an absolute file path within the folder of the current project
@@ -84,6 +81,8 @@ public class MainWindowViewModel : ViewModelBase
 /// <param name="sr"></param>
     public void LoadText(TextReader sr)
     {
-        
+        StringBuilder tempStr = new StringBuilder();
+        textContent = (string) sr.ReadToEnd();
+        Console.WriteLine(textContent);
     }
 }

@@ -1,12 +1,10 @@
 using System.IO;
+using System.Numerics;
+using System.Text;
 
 namespace FileLoaderSaver.Models;
 
 public class FibonacciTextReader : TextReader
 {
-    private int maxLines = 0;
-    FibonacciTextReader(int maxLines)
-    {
-        this.maxLines = maxLines;
-    }
+    
 }
