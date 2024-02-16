@@ -45,9 +45,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         // Start async operation to open the dialog.
         var filePath = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                Title = "Open Text File",
-                AllowMultiple = false,
-                FileTypeFilter = fileTypes,
+                Title = "Open Text File"
             });
         interaction.SetOutput(filePath.Count == 1 ? filePath[0].Path.AbsolutePath : null);
     }

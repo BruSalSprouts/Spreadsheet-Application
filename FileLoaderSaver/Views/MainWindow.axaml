@@ -19,17 +19,23 @@
         <StackPanel>
             <Menu DockPanel.Dock="Top" >
                         <MenuItem Header="_File">
-                            <MenuItem Header="Load from file..."/>
-                            <MenuItem Header="Load Fibonacci numbers (First 50)"/>
-                            <MenuItem Header="Load Fibonacci numbers (First 100)"/>
+                            <MenuItem Header="Load from file..." Command="{Binding LoadFromFile}"/>
+                            <MenuItem Header="Load Fibonacci numbers (First 50)" 
+                                      Command="{Binding FibonacciTimeFifty}"/>
+                            <MenuItem Header="Load Fibonacci numbers (First 100)" 
+                                      Command="{Binding FibonacciTimeHundred}"/>
                             <Separator/>
-                            <MenuItem Header="Save to file..." />
-                            
+                            <MenuItem Header="Save to file..." 
+                                      Command="{Binding SaveToFile}"/>
+                            <MenuItem Header="UwU" Command="{Binding OwO}"/>
                         </MenuItem>
                         
                     </Menu>
                     <Separator/>
-                    <TextBlock Text="{Binding TextContent}"/>
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <TextBlock Text="{Binding TextContent}"/>
+                    </ScrollViewer>
+                    
         </StackPanel>
         
         <!-- <TextBox Text="{Binding TextContent}" AcceptsReturn="True" Multiline="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/> -->

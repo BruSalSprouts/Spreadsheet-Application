@@ -5,16 +5,15 @@ using System.Reactive.Linq;
 using System.Text;
 using ReactiveUI;
 using System.ComponentModel;
+using System.Net.Mime;
 using FileLoaderSaver.Models;
 namespace FileLoaderSaver.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-    private string fibonacciNumbers;
-    // private FibonacciTextReader fibReader = new FibonacciTextReader();
-    private string textContent;
+    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+    
+    private string _textContent;
     private static string _basePath = "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\FileLoaderSaver\\TextFiles\\";
     #pragma warning disable CA1822 // Mark members as static
     public string Greeting => "Welcome to Avalonia!";
@@ -25,23 +24,27 @@ public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
         AskForFileToLoad = new Interaction<Unit, string?>();
         
         // Similarly to load, there's a need to create an interaction for saving into a file:
-        // TODO: Your code goes here
         AskForFileSave = new Interaction<Unit, string?>();
+    }
+
+    private void _PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        this.RaisePropertyChanged();
     }
     /// <summary>
     /// This is a property that will notify the user interface when changed.
     /// TODO: You need to bind this property in the .axaml file
     /// </summary>
-    public string FibonacciNumbers
-    {
-        get => fibonacciNumbers;
-        private set => this.RaiseAndSetIfChanged(ref fibonacciNumbers, value);
-    }
+    
 
     public string TextContent
     {
-        get => textContent;
-        set => this.RaiseAndSetIfChanged(ref textContent, value);
+        get => _textContent;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _textContent, value);
+            PropertyChanged(this, new PropertyChangedEventArgs("TextContent"));
+        } 
     }
     /// <summary>
     /// This method will be executed when the user wants to load content from a file.
@@ -52,7 +55,7 @@ public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
         var filePath = await AskForFileToLoad.Handle(default);
         if (filePath == null) return;
         // If the user selected a file, create the stream reader and load the text.
-        TextReader textFile = new StreamReader(FinishFilePath(filePath));
+        TextReader textFile = new StreamReader(filePath);
         LoadText(textFile);
         textFile.Close();
     }
@@ -96,19 +99,51 @@ public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
             return;
         }
 
-        var textWriter = new StreamWriter(FinishFilePath(filePath));
-        saveText(textWriter);
+        TextWriter textWriter = new StreamWriter(filePath);
+        SaveText(textWriter);
+        Console.WriteLine($"Saved to {filePath}");
         textWriter.Close();
     }
     /// <summary>
     /// Takes in a TextWriter tw and saves the contents of TextContent into into the file within tw
     /// </summary>
     /// <param name="tw"></param>
-    public void saveText(TextWriter tw )
+    public void SaveText(TextWriter tw )
     {
         tw.Write(TextContent);
     }
     public Interaction<Unit, string?> AskForFileToLoad { get; }
     public Interaction<Unit, string?> AskForFileSave { get; }
-    
+    /// <summary>
+    /// Broadcasts to listeners with propertyName
+    /// </summary>
+    /// <param name="propertyName"></param>
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+        
+    // Ignore this command, I made this for fun with a friend
+    public void OwO()
+    {
+        TextContent = "uWu";
+    }
+    /// <summary>
+    /// Command that takes makes a fibonacciTextReader object fibonacciNumbers that will add up to 50 times at most,
+    /// and sets the results of the text made from fibonacciNumbers to TextContent
+    /// </summary>
+    public void FibonacciTimeFifty()
+    {
+        FibonacciTextReader fibonacciNumbers = new FibonacciTextReader(50);
+        TextContent = fibonacciNumbers.ReadToEnd();
+    }
+    /// <summary>
+    /// Command that takes makes a fibonacciTextReader object fibonacciNumbers that will add up to 100 times at most,
+    /// and sets the results of the text made from fibonacciNumbers to TextContent
+    /// </summary>
+    public void FibonacciTimeHundred()
+    {
+        FibonacciTextReader fibonacciNumbers = new FibonacciTextReader(100);
+        TextContent = fibonacciNumbers.ReadToEnd();
+    }
 }
