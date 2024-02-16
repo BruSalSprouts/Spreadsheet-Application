@@ -24,6 +24,8 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         this.WhenActivated(d =>
             d(ViewModel!.AskForFileToLoad.RegisterHandler(DoOpenFile)));
         // TODO: add code for saving
+        this.WhenActivated(d =>
+            d(ViewModel!.AskForFileSave.RegisterHandler(DoSaveFile)));
     }
     
     // Use the following version of DoOpenFile if you are using Avalonia 11
@@ -57,5 +59,10 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     private async Task DoSaveFile(InteractionContext<Unit, string?> interaction)
     {
         // TODO: your code goes here.
+        var topLevel = TopLevel.GetTopLevel(this); //Gets top level from current control
+        //Starts async operation to open dialogue. This opens up the user's default File Explorer
+        var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            { Title = "Save Text File" });
+        interaction.SetOutput(file.Path.AbsolutePath); //Returns the file's absolute path
     }
 }

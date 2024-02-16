@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FileLoaderSaver")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b0935e78cd4594396a8f840e014533bf3e2c708c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+51cf305ef9f8259d9bff40769eed987a9e70a871")]
 [assembly: System.Reflection.AssemblyProductAttribute("FileLoaderSaver")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FileLoaderSaver")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

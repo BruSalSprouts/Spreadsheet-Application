@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TextReaderAndSaver")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ffd097eeaecc8b0210725cac79da758b49722002")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+51cf305ef9f8259d9bff40769eed987a9e70a871")]
 [assembly: System.Reflection.AssemblyProductAttribute("TextReaderAndSaver")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TextReaderAndSaver")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

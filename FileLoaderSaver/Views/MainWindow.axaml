@@ -16,18 +16,22 @@
     </Design.DataContext>
 
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
-                <MenuItem Header="Load from file..."/>
-                <MenuItem Header="Load Fibonacci numbers (First 50)"/>
-                <MenuItem Header="Load Fibonacci numbers (First 50)"/>
-                <Separator/>
-                <MenuItem Header="Save to file..."/>
-            </MenuItem>
-            <Separator/>
-        </Menu>
+        <StackPanel>
+            <Menu DockPanel.Dock="Top" >
+                        <MenuItem Header="_File">
+                            <MenuItem Header="Load from file..."/>
+                            <MenuItem Header="Load Fibonacci numbers (First 50)"/>
+                            <MenuItem Header="Load Fibonacci numbers (First 100)"/>
+                            <Separator/>
+                            <MenuItem Header="Save to file..." Command=""/>
+                            
+                        </MenuItem>
+                        
+                    </Menu>
+                    <Separator/>
+                    <TextBlock Text="{Binding TextContent}"/>
+        </StackPanel>
         
-        <TextBlock/>
         <!-- <TextBox Text="{Binding TextContent}" AcceptsReturn="True" Multiline="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/> -->
     </DockPanel>
 </Window>
