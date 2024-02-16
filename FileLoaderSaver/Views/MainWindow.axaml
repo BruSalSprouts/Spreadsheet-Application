@@ -7,7 +7,7 @@
         x:Class="FileLoaderSaver.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Avalonia Notepad" Width="400" Height="600"> 
+        Title="Avalonia Notepad" Width="350" Height="600" Background="#070F2B" > 
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -15,27 +15,31 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <DockPanel>
+    <DockPanel >
         <StackPanel>
-            <Menu DockPanel.Dock="Top" >
-                        <MenuItem Header="_File">
-                            <MenuItem Header="Load from file..." Command="{Binding LoadFromFile}"/>
-                            <MenuItem Header="Load Fibonacci numbers (First 50)" 
-                                      Command="{Binding FibonacciTimeFifty}"/>
-                            <MenuItem Header="Load Fibonacci numbers (First 100)" 
-                                      Command="{Binding FibonacciTimeHundred}"/>
-                            <Separator/>
-                            <MenuItem Header="Save to file..." 
-                                      Command="{Binding SaveToFile}"/>
-                            <MenuItem Header="UwU" Command="{Binding OwO}"/>
-                        </MenuItem>
-                        
-                    </Menu>
-                    <Separator/>
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                        <TextBlock Text="{Binding TextContent}"/>
-                    </ScrollViewer>
-                    
+            <Menu DockPanel.Dock="Top" Background="#1B1A55">
+                <MenuItem Header="_File" Background="#535C91">
+                    <MenuItem Background="#535C91" Header="Load from file..." 
+                              Command="{Binding LoadFromFile}"/>
+                    <MenuItem Background="#535C91" Header="Load Fibonacci numbers (First 50)" 
+                              Command="{Binding FibonacciTimeFifty}"/>
+                    <MenuItem Background="#535C91" Header="Load Fibonacci numbers (First 100)" 
+                              Command="{Binding FibonacciTimeHundred}"/>
+                    <Separator Background="#535C91"/>
+                    <MenuItem Background="#535C91" Header="Save to file..." 
+                              Command="{Binding SaveToFile}"/>
+                    <!-- <MenuItem Header="UwU" Command="{Binding OwO}"/> -->
+                </MenuItem>
+            </Menu>
+            <Separator/>
+            <Border Width="340" Height="570">
+                <ScrollViewer AllowAutoHide="False" VerticalScrollBarVisibility="Auto" 
+                              HorizontalScrollBarVisibility="Auto">
+                    <Label><TextBlock TextWrapping="Wrap" 
+                                      Text="{Binding TextContent}"/></Label>
+                </ScrollViewer>
+            </Border>
+            
         </StackPanel>
         
         <!-- <TextBox Text="{Binding TextContent}" AcceptsReturn="True" Multiline="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/> -->

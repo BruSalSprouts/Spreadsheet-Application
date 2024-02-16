@@ -57,11 +57,12 @@ public class FibonacciTextReader : TextReader
     public override string ReadToEnd()
     {
         StringBuilder resultBuilder = new StringBuilder();
-
+        int currentIteration = 1;
         string? line; // In case we return null from the error handling
         while ((line = ReadLine()) != null)
         {
-            resultBuilder.AppendLine(line); //Adds the line
+            resultBuilder.AppendLine(currentIteration + ": " + line); //Adds the line
+            currentIteration++;
         }
 
         return resultBuilder.ToString();
