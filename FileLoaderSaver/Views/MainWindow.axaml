@@ -23,7 +23,7 @@
                             <MenuItem Header="Load Fibonacci numbers (First 50)"/>
                             <MenuItem Header="Load Fibonacci numbers (First 100)"/>
                             <Separator/>
-                            <MenuItem Header="Save to file..." Command=""/>
+                            <MenuItem Header="Save to file..." />
                             
                         </MenuItem>
                         
