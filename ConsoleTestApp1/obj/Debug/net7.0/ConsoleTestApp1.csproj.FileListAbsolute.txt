@@ -1,0 +1,14 @@
+C:\Users\bruno\RiderProjects\cpts321-hws\ConsoleTestApp1\bin\Debug\net7.0\ConsoleTestApp1.exe
+C:\Users\bruno\RiderProjects\cpts321-hws\ConsoleTestApp1\bin\Debug\net7.0\ConsoleTestApp1.deps.json
+C:\Users\bruno\RiderProjects\cpts321-hws\ConsoleTestApp1\bin\Debug\net7.0\ConsoleTestApp1.runtimeconfig.json
+C:\Users\bruno\RiderProjects\cpts321-hws\ConsoleTestApp1\bin\Debug\net7.0\ConsoleTestApp1.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\ConsoleTestApp1\bin\Debug\net7.0\ConsoleTestApp1.pdb
+C:\Users\bruno\RiderProjects\cpts321-hws\ConsoleTestApp1\obj\Debug\net7.0\ConsoleTestApp1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bruno\RiderProjects\cpts321-hws\ConsoleTestApp1\obj\Debug\net7.0\ConsoleTestApp1.AssemblyInfoInputs.cache
+C:\Users\bruno\RiderProjects\cpts321-hws\ConsoleTestApp1\obj\Debug\net7.0\ConsoleTestApp1.AssemblyInfo.cs
+C:\Users\bruno\RiderProjects\cpts321-hws\ConsoleTestApp1\obj\Debug\net7.0\ConsoleTestApp1.csproj.CoreCompileInputs.cache
+C:\Users\bruno\RiderProjects\cpts321-hws\ConsoleTestApp1\obj\Debug\net7.0\ConsoleTestApp1.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\ConsoleTestApp1\obj\Debug\net7.0\refint\ConsoleTestApp1.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\ConsoleTestApp1\obj\Debug\net7.0\ConsoleTestApp1.pdb
+C:\Users\bruno\RiderProjects\cpts321-hws\ConsoleTestApp1\obj\Debug\net7.0\ConsoleTestApp1.genruntimeconfig.cache
+C:\Users\bruno\RiderProjects\cpts321-hws\ConsoleTestApp1\obj\Debug\net7.0\ref\ConsoleTestApp1.dll

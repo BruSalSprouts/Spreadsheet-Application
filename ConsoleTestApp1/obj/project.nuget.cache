@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "H+KI7cpnXG7u64DY/yW9+Ga6dM9qgIsgRVP8GrFHRw1zv43K60OoOsOAMicYjS7mRJrxMDlUQqL8T8OY0tGlqw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\ConsoleTestApp1\\ConsoleTestApp1.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\bruno\\.nuget\\packages\\stylecop.analyzers\\1.2.0-beta.556\\stylecop.analyzers.1.2.0-beta.556.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\stylecop.analyzers.unstable\\1.2.0.556\\stylecop.analyzers.unstable.1.2.0.556.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.16\\microsoft.netcore.app.ref.7.0.16.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.16\\microsoft.windowsdesktop.app.ref.7.0.16.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.16\\microsoft.aspnetcore.app.ref.7.0.16.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.16\\microsoft.netcore.app.host.win-x64.7.0.16.nupkg.sha512"
+  ],
+  "logs": []
+}
