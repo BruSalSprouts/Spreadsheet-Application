@@ -12,20 +12,26 @@ namespace Spreadsheet_Bruno_SanchezParra.Views;
 
 public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MainWindow"/> class.
+    /// </summary>
     public MainWindow()
     {
-        InitializeComponent();
+        this.InitializeComponent();
         this.WhenAnyValue(x => x.DataContext)
             .Where(dataContext => dataContext != null)
             .Subscribe(dataContext =>
             {
                 if (dataContext is MainWindowViewModel)
                 {
-                    InitializeDataGrid();
+                    this.InitializeDataGrid();
                 }
             });
     }
 
+    /// <summary>
+    /// Creates a row of cell columns that have headers that go from A - Z
+    /// </summary>
     private void InitializeDataGrid()
     {
         // Assuming there's the DataGrid in the XAML file named SpreadsheetDataGrid

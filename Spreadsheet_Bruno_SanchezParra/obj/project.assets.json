@@ -1449,6 +1449,16 @@
         "runtime": {
           "lib/net6.0/Tmds.DBus.Protocol.dll": {}
         }
+      },
+      "SpreadsheetEngine/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/SpreadsheetEngine.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SpreadsheetEngine.dll": {}
+        }
       }
     }
   },
@@ -4715,6 +4725,11 @@
         "tmds.dbus.protocol.0.15.0.nupkg.sha512",
         "tmds.dbus.protocol.nuspec"
       ]
+    },
+    "SpreadsheetEngine/1.0.0": {
+      "type": "project",
+      "path": "../SpreadsheetEngine/SpreadsheetEngine.csproj",
+      "msbuildProject": "../SpreadsheetEngine/SpreadsheetEngine.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4726,6 +4741,7 @@
       "Avalonia.Fonts.Inter >= 11.0.6",
       "Avalonia.ReactiveUI >= 11.0.6",
       "Avalonia.Themes.Fluent >= 11.0.6",
+      "SpreadsheetEngine >= 1.0.0",
       "StyleCop.Analyzers >= 1.1.118"
     ]
   },
@@ -4755,7 +4771,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\SpreadsheetEngine\\SpreadsheetEngine.csproj": {
+              "projectPath": "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\SpreadsheetEngine\\SpreadsheetEngine.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

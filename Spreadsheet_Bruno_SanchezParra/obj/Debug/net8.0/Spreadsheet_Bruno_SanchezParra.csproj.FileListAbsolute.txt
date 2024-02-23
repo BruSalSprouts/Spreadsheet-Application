@@ -134,3 +134,5 @@ C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Bruno_SanchezParra\obj\Debu
 C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Bruno_SanchezParra\obj\Debug\net8.0\Spreadsheet_Bruno_SanchezParra.csproj.CopyComplete
 C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Bruno_SanchezParra\obj\Debug\net8.0\Spreadsheet_Bruno_SanchezParra.genruntimeconfig.cache
 C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Bruno_SanchezParra\obj\Debug\net8.0\ref\Spreadsheet_Bruno_SanchezParra.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Bruno_SanchezParra\bin\Debug\net8.0\SpreadsheetEngine.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Bruno_SanchezParra\bin\Debug\net8.0\SpreadsheetEngine.pdb

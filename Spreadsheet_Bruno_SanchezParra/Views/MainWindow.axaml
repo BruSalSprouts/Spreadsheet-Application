@@ -15,7 +15,8 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
     <DataGrid Name="SpreadsheetDataGrid" AutoGenerateColumns="False" 
-              HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+              HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" 
+              BorderThickness="1">
         
     </DataGrid>
 </Window>
