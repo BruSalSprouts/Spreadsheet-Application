@@ -384,6 +384,16 @@
             "related": ".xml"
           }
         }
+      },
+      "SpreadsheetEngine/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/SpreadsheetEngine.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SpreadsheetEngine.dll": {}
+        }
       }
     }
   },
@@ -1002,6 +1012,11 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "SpreadsheetEngine/1.0.0": {
+      "type": "project",
+      "path": "../SpreadsheetEngine/SpreadsheetEngine.csproj",
+      "msbuildProject": "../SpreadsheetEngine/SpreadsheetEngine.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -1010,6 +1025,7 @@
       "NUnit >= 3.13.3",
       "NUnit.Analyzers >= 3.6.1",
       "NUnit3TestAdapter >= 4.2.1",
+      "SpreadsheetEngine >= 1.0.0",
       "StyleCop.Analyzers >= 1.1.118",
       "coverlet.collector >= 6.0.0"
     ]
@@ -1040,7 +1056,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\SpreadsheetEngine\\SpreadsheetEngine.csproj": {
+              "projectPath": "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\SpreadsheetEngine\\SpreadsheetEngine.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

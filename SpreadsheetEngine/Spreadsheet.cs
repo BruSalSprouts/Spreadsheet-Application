@@ -13,77 +13,77 @@ public class Spreadsheet
 {
     private int rows;
     private int columns;
-    private List<List<SpreadsheetCell>> cells; 
-        
+    private SpreadsheetCell[,] cells; 
+
     public Spreadsheet(int rowNum, int colNum) 
     {
-        this.rows = rowNum;
-        this.columns = colNum;
-        this.cells = new List<List<SpreadsheetCell>>();
+        this.Columns = colNum;
+        this.Rows = rowNum;
+        this.cells = new SpreadsheetCell[rowNum, colNum];
+    }
+
+    /// <summary>
+    /// Property for Rows .
+    /// </summary>
+    public int Rows { get; set; }
+
+    /// <summary>
+    /// Property for Columns.
+    /// </summary>
+    public int Columns { get; set; }
+
+    /// <summary>
+    ///  Takes rowInd and colInd and returns the cell at that location or null if there is no such cell
+    /// </summary>
+    /// <param name="rowInd" />
+    /// <param name="colInd" />
+    /// <returns>an Cell object</returns>
+    public Cell GetCell(int rowInd, int colInd)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// Returns the number of columns in the spreadsheet
+    /// </summary>
+    /// <returns>int columns</returns>
+    public int ColumnCount()
+    {
+        return this.Columns;
+    }
+
+    /// <summary>
+    /// Returns the number of rows in the spreadsheet
+    /// </summary>
+    /// <returns>int rows</returns>
+    public int RowCount()
+    {
+        return this.Rows;
     }
 
     /// <summary>
     /// The private SpreadsheetCell class that is the implementation of the Cell class
     /// We'll be using this inside the Spreadsheet to make our cells
     /// </summary>
-    private class SpreadsheetCell : Cell, INotifyPropertyChanged
+    private class SpreadsheetCell(int rows, int cols) : Cell(rows, cols), INotifyPropertyChanged
     {
-        public new event PropertyChangedEventHandler? PropertyChanged = (sender, e) => { };
+        /// <summary>
+        /// Gets makes RowIndex property
+        /// </summary>
+        public new int RowIndex { get; }
 
-        public SpreadsheetCell(int rows, int cols)
-            : base(rows, cols)
-        {
-        }
-        
         /// <summary>
-        /// Gets or sets makes RowIndex property
+        /// Gets makes ColumnIndex property
         /// </summary>
-        public int RowIndex { get; }
-    
-        /// <summary>
-        /// Gets or sets makes ColumnIndex property
-        /// </summary>
-        public int ColumnIndex { get; }
+        public new int ColumnIndex { get; }
 
         /// <summary>
         /// Publicly gets or Protectedly sets to make the Value property
         /// </summary>
-        public string Value
+        protected string Value
         {
             get => this.Value;
-            private set => this.Value = value;
-        }
-
-        /// <summary>
-        /// Gets or sets makes Text property
-        /// </summary>
-        protected string Text
-        {
-            get => this.Text; // Getter
-            set // Setter
-            {
-                // Conditional to ignore if new value is same as old value
-                if (!string.Equals(this.Text, value, StringComparison.Ordinal))
-                {
-                    this.Text = value;
-
-                    // Event handler for if text changes
-                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
-                }
-            }
-        }
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            field = value;
-            this.OnPropertyChanged(propertyName);
-            return true;
+            set => this.Value = value;
         }
     }
-    
 }

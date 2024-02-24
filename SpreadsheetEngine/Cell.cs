@@ -15,29 +15,30 @@ public abstract class Cell : INotifyPropertyChanged
     /// <summary>
     /// Initializes a new instance of the <see cref="Cell"/> class.
     /// </summary>
-    /// <param name="rows" />
-    /// <param name="cols" />
-    /// <param name="text" />
-    protected Cell(int rows, int cols)
+    /// <param name="row" />
+    /// <param name="col" />
+    protected Cell(int row, int col)
     {
-        this.RowIndex = rows;
-        this.ColumnIndex = cols;
+        this.ColumnIndex = col;
+        this.RowIndex = row;
+        this.Text = string.Empty;
+        this.value = string.Empty;
     }
 
     /// <summary>
-    /// Gets or sets makes RowIndex property
+    /// Gets the RowIndex property
     /// </summary>
-    public int RowIndex { get; set; }
+    public int RowIndex { get; }
 
     /// <summary>
-    /// Gets or sets makes ColumnIndex property
+    /// Gets the ColumnIndex property
     /// </summary>
-    public int ColumnIndex { get; set; }
+    public int ColumnIndex { get; }
 
     /// <summary>
     /// Gets or sets makes Text property
     /// </summary>
-    public string Text
+    public virtual string Text
     {
         get => this.text; // Getter
         set // Setter
@@ -54,14 +55,13 @@ public abstract class Cell : INotifyPropertyChanged
     }
 
     /// <summary>
-    /// Publicly gets or Protectedly sets to make the Value property
+    /// Gets publicly gets or Protectedly sets to make the Value property
     /// </summary>
-    public string Value
+    public virtual string Value
     {
         get => this.value;
-        protected internal set => this.value = value;
     }
-    
+
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -69,7 +69,11 @@ public abstract class Cell : INotifyPropertyChanged
 
     protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        if (EqualityComparer<T>.Default.Equals(field, value))
+        {
+            return false;
+        }
+
         field = value;
         this.OnPropertyChanged(propertyName);
         return true;
