@@ -11,17 +11,46 @@ namespace SpreadsheetEngine;
 
 public class Spreadsheet
 {
+    public new event PropertyChangedEventHandler? CellPropertyChanged = (sender, e) => { };
+
     private int rows;
     private int columns;
     private SpreadsheetCell[,] cells; 
 
     public Spreadsheet(int rowNum, int colNum) 
     {
+        if (rowNum < 1)
+        {
+            throw new ArgumentOutOfRangeException("rowNum should be positive!");
+        }
+        if (colNum < 1)
+        {
+            throw new ArgumentOutOfRangeException("colNum should be positive!");
+        }
+
         this.Columns = colNum;
         this.Rows = rowNum;
-        this.cells = new SpreadsheetCell[rowNum, colNum];
+        this.InitializeCells(rowNum, colNum);
     }
 
+    /// <summary>
+    /// Initializes the 2D array cells by initializing each cell within the 2D array
+    /// </summary>
+    /// <param name="rowNum"></param>
+    /// <param name="colNum"></param>
+    private void InitializeCells(int rowNum, int colNum)
+    {
+        this.cells = new SpreadsheetCell[rowNum, colNum];
+        for (int r = 0; r < rowNum; r++)
+        {
+            for (int c = 0; c < colNum; c++)
+            {
+                this.cells[r, c] = new SpreadsheetCell(r, c);
+                this.cells[r, c].PropertyChanged += this.NotifyPropertyChanged;
+            }
+        }
+    }
+    
     /// <summary>
     /// Property for Rows .
     /// </summary>
@@ -40,7 +69,12 @@ public class Spreadsheet
     /// <returns>an Cell object</returns>
     public Cell GetCell(int rowInd, int colInd)
     {
-        throw new NotImplementedException();
+        if (rowInd < 0 || rowInd >= this.Rows || colInd < 0 || colInd >= this.Columns)
+        {
+            throw new IndexOutOfRangeException("The rows and columns have to be within range!");
+        }
+
+        return this.cells[rowInd, colInd];
     }
 
     /// <summary>
@@ -61,22 +95,34 @@ public class Spreadsheet
         return this.Rows;
     }
 
+    private void NotifyPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        this.CellPropertyChanged?.Invoke(sender, e);
+    }
+
+    // private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    // {
+    //     this.CellPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    // }
+
+    // protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    // {
+    //     if (EqualityComparer<T>.Default.Equals(field, value))
+    //     {
+    //         return false;
+    //     }
+    //
+    //     field = value;
+    //     this.OnPropertyChanged(propertyName);
+    //     return true;
+    // }
+
     /// <summary>
     /// The private SpreadsheetCell class that is the implementation of the Cell class
     /// We'll be using this inside the Spreadsheet to make our cells
     /// </summary>
-    private class SpreadsheetCell(int rows, int cols) : Cell(rows, cols), INotifyPropertyChanged
+    private class SpreadsheetCell(int row, int col) : Cell(row, col), INotifyPropertyChanged
     {
-        /// <summary>
-        /// Gets makes RowIndex property
-        /// </summary>
-        public new int RowIndex { get; }
-
-        /// <summary>
-        /// Gets makes ColumnIndex property
-        /// </summary>
-        public new int ColumnIndex { get; }
-
         /// <summary>
         /// Publicly gets or Protectedly sets to make the Value property
         /// </summary>
