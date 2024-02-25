@@ -15,16 +15,24 @@ public class Spreadsheet
 
     private int rows;
     private int columns;
-    private SpreadsheetCell[,] cells; 
+    private SpreadsheetCell[,] cells;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
+    /// Also checks for invalid row and column numbers.
+    /// </summary>
+    /// <param name="rowNum"></param>
+    /// <param name="colNum"></param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     public Spreadsheet(int rowNum, int colNum) 
     {
         if (rowNum < 1)
-        {
+        { // Row error check
             throw new ArgumentOutOfRangeException("rowNum should be positive!");
         }
-        if (colNum < 1)
-        {
+
+        if (colNum < 1) 
+        { // Column error Check
             throw new ArgumentOutOfRangeException("colNum should be positive!");
         }
 
@@ -46,6 +54,7 @@ public class Spreadsheet
             for (int c = 0; c < colNum; c++)
             {
                 this.cells[r, c] = new SpreadsheetCell(r, c);
+                // Time to announce the event of the new cell creation 
                 this.cells[r, c].PropertyChanged += this.NotifyPropertyChanged;
             }
         }
@@ -70,7 +79,7 @@ public class Spreadsheet
     public Cell GetCell(int rowInd, int colInd)
     {
         if (rowInd < 0 || rowInd >= this.Rows || colInd < 0 || colInd >= this.Columns)
-        {
+        { // Out of bounds exception check
             throw new IndexOutOfRangeException("The rows and columns have to be within range!");
         }
 
@@ -95,6 +104,24 @@ public class Spreadsheet
         return this.Rows;
     }
 
+    
+    /// <summary>
+    /// Updates the Value of the respective cell[rowInd][colInd]. If the Text of the cell doesn't
+    /// start with '=', then the value is just set to the text. Otherwise the value must be
+    /// gotten from the value of the cell whose name follows the '='
+    /// </summary>
+    /// <param name="rowInd"></param>
+    /// <param name="colInd"></param>
+    private void ValueUpdate(SpreadsheetCell sender)
+    {
+        
+    }
+    
+    /// <summary>
+    /// Where CellPropertyCHanged is being handled, and also updates the cell's Value 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void NotifyPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         this.CellPropertyChanged?.Invoke(sender, e);
@@ -124,12 +151,12 @@ public class Spreadsheet
     private class SpreadsheetCell(int row, int col) : Cell(row, col), INotifyPropertyChanged
     {
         /// <summary>
-        /// Publicly gets or Protectedly sets to make the Value property
+        /// Sets value with val
         /// </summary>
-        protected string Value
+        /// <param name="val"></param>
+        public void SetValue(string val)
         {
-            get => this.Value;
-            set => this.Value = value;
+            this.value = val;
         }
     }
 }

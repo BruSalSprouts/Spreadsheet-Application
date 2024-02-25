@@ -105,4 +105,70 @@ public class SpreadsheetCellsTests
             Assert.Pass();
         }
     }
+
+    [Test]
+    public void FormulaTest1()
+    {
+        this.spreadsheet.GetCell(0, 0).Text = "hello";
+        this.spreadsheet.GetCell(0, 1).Text = "=A1";
+        Assert.That(this.spreadsheet.GetCell(0, 1).Value, Is.EqualTo("hello"));
+    }
+    
+    [Test]
+    public void FormulaTest2()
+    {
+        this.spreadsheet.GetCell(0, 0).Text = "hello";
+        this.spreadsheet.GetCell(1, 2).Text = "=a1";
+        Assert.That(this.spreadsheet.GetCell(1, 2).Value, Is.EqualTo("hello"));
+    }
+    
+    [Test]
+    public void FormulaTest3()
+    {
+        try
+        {
+            this.spreadsheet.GetCell(1, 2).Text = "=aA";
+            Assert.Fail();
+        }
+        catch (FormatException f)
+        {
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void FormulaTest4()
+    {
+        try
+        {
+            this.spreadsheet.GetCell(1, 2).Text = "=11";
+            Assert.Fail();
+        }
+        catch (IndexOutOfRangeException f)
+        {
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void FormulaTest5()
+    {
+        try
+        {
+            this.spreadsheet.GetCell(1, 2).Text = "=A0";
+            Assert.Fail();
+        }
+        catch (IndexOutOfRangeException f)
+        {
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void FormulaTest6()
+    {
+        this.spreadsheet.GetCell(0, 0).Text = "hello";
+        this.spreadsheet.GetCell(0, 0).Text = "=A1";
+        Assert.That(this.spreadsheet.GetCell(0, 0).Value, Is.EqualTo("hello"));
+    }
 }

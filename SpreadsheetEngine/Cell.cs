@@ -8,10 +8,9 @@ public abstract class Cell : INotifyPropertyChanged
     // The Event Handler part
     public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
-    // Fields for later properties
-    protected string text;
     protected string value;
-
+    protected string text;
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="Cell"/> class.
     /// </summary>
@@ -21,7 +20,7 @@ public abstract class Cell : INotifyPropertyChanged
     {
         this.ColumnIndex = col;
         this.RowIndex = row;
-        this.Text = string.Empty;
+        this.text = string.Empty;
         this.value = string.Empty;
     }
 
@@ -67,15 +66,15 @@ public abstract class Cell : INotifyPropertyChanged
         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value))
-        {
-            return false;
-        }
-
-        field = value;
-        this.OnPropertyChanged(propertyName);
-        return true;
-    }
+    // protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    // {
+    //     if (EqualityComparer<T>.Default.Equals(field, value))
+    //     {
+    //         return false;
+    //     }
+    //
+    //     field = value;
+    //     this.OnPropertyChanged(propertyName);
+    //     return true;
+    // }
 }
