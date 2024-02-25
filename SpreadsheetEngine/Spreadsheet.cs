@@ -83,6 +83,11 @@ public class Spreadsheet
             throw new IndexOutOfRangeException("The rows and columns have to be within range!");
         }
 
+        if (this.cells[rowInd, colInd].Text == string.Empty)
+        {
+            return null;
+        }
+
         return this.cells[rowInd, colInd];
     }
 
@@ -114,9 +119,32 @@ public class Spreadsheet
     /// <param name="colInd"></param>
     private void ValueUpdate(SpreadsheetCell sender)
     {
-        
+        string tempText = sender.Text;
+        if (tempText != string.Empty)
+        {
+            if (tempText[0] == '=')
+            {
+                sender.SetValue(this.ValueFromCell(tempText.Substring(1).ToUpper()));
+            }
+            else
+            {
+                sender.SetValue(tempText);
+            }
+        }
     }
     
+    /// <summary>
+    /// Takes a string, which contains the address for a Cell's location, and returns
+    /// the Value of that Cell.
+    /// </summary>
+    /// <param name="cellText"></param>
+    /// <returns> string Value (which comes from a Cell)</returns>
+    private string ValueFromCell(string cellText)
+    {
+        int colInd = cellText[0] - 'A';
+        int rowInd = int.Parse(cellText.Substring(1)) - 1;
+        return this.GetCell(rowInd, colInd).Value;
+    }
     /// <summary>
     /// Where CellPropertyCHanged is being handled, and also updates the cell's Value 
     /// </summary>
@@ -125,6 +153,7 @@ public class Spreadsheet
     private void NotifyPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         this.CellPropertyChanged?.Invoke(sender, e);
+        ValueUpdate((SpreadsheetCell) sender);
     }
 
     // private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
