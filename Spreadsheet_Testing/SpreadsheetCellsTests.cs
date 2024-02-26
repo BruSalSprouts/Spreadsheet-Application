@@ -8,11 +8,13 @@ using SpreadsheetEngine;
 public class SpreadsheetCellsTests
 {
     private Spreadsheet? spreadsheet;
+    private Spreadsheet? s2;
     private bool catcherCalled;
     [SetUp]
     public void Setup()
     {
         this.spreadsheet = new Spreadsheet(5, 4);
+        this.s2 = new Spreadsheet(4, 4);
         catcherCalled = false;
     }
 
@@ -170,5 +172,51 @@ public class SpreadsheetCellsTests
         this.spreadsheet.GetCell(0, 0).Text = "hello";
         this.spreadsheet.GetCell(0, 0).Text = "=A1";
         Assert.That(this.spreadsheet.GetCell(0, 0).Value, Is.EqualTo("hello"));
+    }
+
+    [Test]
+    public void CellsStaySameTest1()
+    {
+        for (int row = 0; row < 4; row++)
+        {
+            for (int col = 0; col < 4; col++)
+            {
+                var cell = this.s2?.GetCell(row, col);
+                if (cell != null)
+                {
+                    if (cell.Value != string.Empty)
+                    {
+                        Assert.Fail();
+                    }
+                }
+            }
+        }
+
+        Assert.Pass();
+    }
+
+    [Test]
+    public void CellsStaySameTest2()
+    {
+        this.s2.GetCell(1, 1).Text = "test";
+        for (int row = 0; row < 4; row++)
+        {
+            for (int col = 0; col < 4; col++)
+            {
+                if (row != 1 || col != 1)
+                {
+                    var cell = this.s2?.GetCell(row, col);
+                    if (cell != null)
+                    {
+                        if (cell.Text != string.Empty)
+                        {
+                            Assert.Fail();
+                        }
+                    }
+                }
+            }
+        }
+
+        Assert.Pass();
     }
 }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Spreadsheet_Testing")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1e6359afc1bc062026b02ebd4cedf6879f3a5d53")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3e2874824b83dcb2f35edb2a81ef64a405238988")]
 [assembly: System.Reflection.AssemblyProductAttribute("Spreadsheet_Testing")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Spreadsheet_Testing")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

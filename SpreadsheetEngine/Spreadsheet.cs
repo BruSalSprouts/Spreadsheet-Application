@@ -82,12 +82,6 @@ public class Spreadsheet
         { // Out of bounds exception check
             throw new IndexOutOfRangeException("The rows and columns have to be within range!");
         }
-
-        if (this.cells[rowInd, colInd].Text == string.Empty)
-        {
-            return null;
-        }
-
         return this.cells[rowInd, colInd];
     }
 
@@ -145,6 +139,7 @@ public class Spreadsheet
         int rowInd = int.Parse(cellText.Substring(1)) - 1;
         return this.GetCell(rowInd, colInd).Value;
     }
+
     /// <summary>
     /// Where CellPropertyCHanged is being handled, and also updates the cell's Value 
     /// </summary>
@@ -152,8 +147,8 @@ public class Spreadsheet
     /// <param name="e"></param>
     private void NotifyPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
+        this.ValueUpdate((SpreadsheetCell) sender);
         this.CellPropertyChanged?.Invoke(sender, e);
-        ValueUpdate((SpreadsheetCell) sender);
     }
 
     // private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
