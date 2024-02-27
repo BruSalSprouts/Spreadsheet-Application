@@ -48,7 +48,8 @@ public abstract class Cell : INotifyPropertyChanged
                 this.text = value;
 
                 // Event handler for if text changes
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
+                // this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
+                this.OnPropertyChanged();
             }
         }
     }

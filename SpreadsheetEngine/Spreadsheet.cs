@@ -24,15 +24,17 @@ public class Spreadsheet
     /// <param name="rowNum"></param>
     /// <param name="colNum"></param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public Spreadsheet(int rowNum, int colNum) 
+    public Spreadsheet(int rowNum, int colNum)
     {
         if (rowNum < 1)
-        { // Row error check
+        {
+            // Row error check
             throw new ArgumentOutOfRangeException("rowNum should be positive!");
         }
 
-        if (colNum < 1) 
-        { // Column error Check
+        if (colNum < 1)
+        {
+            // Column error Check
             throw new ArgumentOutOfRangeException("colNum should be positive!");
         }
 
@@ -54,12 +56,33 @@ public class Spreadsheet
             for (int c = 0; c < colNum; c++)
             {
                 this.cells[r, c] = new SpreadsheetCell(r, c);
+
                 // Time to announce the event of the new cell creation 
                 this.cells[r, c].PropertyChanged += this.NotifyPropertyChanged;
+                this.cells[r,c].PropertyChanging += OnPropertyChanging;
             }
         }
     }
+
+    /// <summary>
+    /// Removes notification from other cell
+    /// </summary>
+    /// <param name="cell"></param>
+    private void Unbind(SpreadsheetCell cell)
+    {
+        var tempText = cell.Text;
+        if (tempText.Length > 2 && tempText[0] == '=')
+        {
+            string cellText = tempText.Substring(1).ToUpper();
+            int colInd = cellText[0] - 'A';
+            int rowInd = int.Parse(cellText.Substring(1)) - 1;
+            var otherCell = this.GetCell(rowInd, colInd);
+            cell.Unbind(otherCell);
+        }
+    }
+
     
+
     /// <summary>
     /// Property for Rows .
     /// </summary>
@@ -79,9 +102,11 @@ public class Spreadsheet
     public Cell GetCell(int rowInd, int colInd)
     {
         if (rowInd < 0 || rowInd >= this.Rows || colInd < 0 || colInd >= this.Columns)
-        { // Out of bounds exception check
+        {
+            // Out of bounds exception check
             throw new IndexOutOfRangeException("The rows and columns have to be within range!");
         }
+
         return this.cells[rowInd, colInd];
     }
 
@@ -103,41 +128,30 @@ public class Spreadsheet
         return this.Rows;
     }
 
-    
     /// <summary>
     /// Updates the Value of the respective cell[rowInd][colInd]. If the Text of the cell doesn't
     /// start with '=', then the value is just set to the text. Otherwise the value must be
     /// gotten from the value of the cell whose name follows the '='
     /// </summary>
-    /// <param name="rowInd"></param>
-    /// <param name="colInd"></param>
+    /// <param name="sender"></param>
     private void ValueUpdate(SpreadsheetCell sender)
     {
-        string tempText = sender.Text;
-        if (tempText != string.Empty)
+        var tempText = sender.Text;
+        var nextValue = tempText;
+        if (nextValue != sender.Value)
         {
             if (tempText[0] == '=')
             {
-                sender.SetValue(this.ValueFromCell(tempText.Substring(1).ToUpper()));
+                string cellText = tempText.Substring(1).ToUpper();
+                int colInd = cellText[0] - 'A';
+                int rowInd = int.Parse(cellText.Substring(1)) - 1;
+                var otherCell = this.GetCell(rowInd, colInd);
+                nextValue = otherCell.Value;
+                sender.Bind(otherCell);
             }
-            else
-            {
-                sender.SetValue(tempText);
-            }
+
+            sender.SetValue(nextValue);
         }
-    }
-    
-    /// <summary>
-    /// Takes a string, which contains the address for a Cell's location, and returns
-    /// the Value of that Cell.
-    /// </summary>
-    /// <param name="cellText"></param>
-    /// <returns> string Value (which comes from a Cell)</returns>
-    private string ValueFromCell(string cellText)
-    {
-        int colInd = cellText[0] - 'A';
-        int rowInd = int.Parse(cellText.Substring(1)) - 1;
-        return this.GetCell(rowInd, colInd).Value;
     }
 
     /// <summary>
@@ -147,40 +161,24 @@ public class Spreadsheet
     /// <param name="e"></param>
     private void NotifyPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        this.ValueUpdate((SpreadsheetCell) sender);
+        if (sender != null && sender is SpreadsheetCell && e.PropertyName == "Text")
+        {
+            this.ValueUpdate((SpreadsheetCell)sender);
+        }
+
         this.CellPropertyChanged?.Invoke(sender, e);
     }
 
-    // private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    // {
-    //     this.CellPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    // }
-
-    // protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-    // {
-    //     if (EqualityComparer<T>.Default.Equals(field, value))
-    //     {
-    //         return false;
-    //     }
-    //
-    //     field = value;
-    //     this.OnPropertyChanged(propertyName);
-    //     return true;
-    // }
-
     /// <summary>
-    /// The private SpreadsheetCell class that is the implementation of the Cell class
-    /// We'll be using this inside the Spreadsheet to make our cells
+    /// Receives notification that Text is about to change
     /// </summary>
-    private class SpreadsheetCell(int row, int col) : Cell(row, col), INotifyPropertyChanged
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void OnPropertyChanging(object? sender, PropertyChangingEventArgs e)
     {
-        /// <summary>
-        /// Sets value with val
-        /// </summary>
-        /// <param name="val"></param>
-        public void SetValue(string val)
+        if (sender != null && sender is SpreadsheetCell && e.PropertyName == "Text")
         {
-            this.value = val;
+            this.Unbind((SpreadsheetCell)sender);
         }
     }
 }

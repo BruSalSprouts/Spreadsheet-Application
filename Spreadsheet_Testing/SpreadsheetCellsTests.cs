@@ -55,7 +55,7 @@ public class SpreadsheetCellsTests
         {
             cellActual.PropertyChanged += (sender, args) =>
             {
-                Assert.That(args.PropertyName, Is.EqualTo("Text"));
+                Assert.True(args.PropertyName is "Value" or "Text");
                 this.catcherCalled = true;
             };
             cellActual.Text = "test";
@@ -170,8 +170,8 @@ public class SpreadsheetCellsTests
     public void FormulaTest6()
     {
         this.spreadsheet.GetCell(0, 0).Text = "hello";
-        this.spreadsheet.GetCell(0, 0).Text = "=A1";
-        Assert.That(this.spreadsheet.GetCell(0, 0).Value, Is.EqualTo("hello"));
+        this.spreadsheet.GetCell(0, 1).Text = "=A1";
+        Assert.That(this.spreadsheet.GetCell(0, 1).Value, Is.EqualTo("hello"));
     }
 
     [Test]
@@ -218,5 +218,14 @@ public class SpreadsheetCellsTests
         }
 
         Assert.Pass();
+    }
+
+    [Test]
+    public void CellValueUpdateTest1()
+    {
+        this.spreadsheet.GetCell(0, 1).Text = "=A1";
+        this.spreadsheet.GetCell(0, 0).Text = "hello";
+        Assert.That(this.spreadsheet.GetCell(0, 0).Value, Is.EqualTo("hello"));
+        Assert.That(this.spreadsheet.GetCell(0, 1).Value, Is.EqualTo("hello"));
     }
 }
