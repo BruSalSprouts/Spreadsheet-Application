@@ -6,16 +6,20 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-// Will add private Spreadsheet cell class
 namespace SpreadsheetEngine;
 
 public class Spreadsheet
 {
+    // The Event Handler for Spreadsheet, CellPropertyChanged
     public new event PropertyChangedEventHandler? CellPropertyChanged = (sender, e) => { };
 
-    private int rows;
-    private int columns;
-    private SpreadsheetCell[,] cells;
+    private int rows; // int value for RowCount
+    private int columns; // int value for ColumnCount
+    private List<List<SpreadsheetCell>> cells;
+
+    public Cell this[int row, int col] => this.GetCell(row, col);
+
+    public IEnumerable<Cell> this[int row] => this.cells[row];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
@@ -26,17 +30,9 @@ public class Spreadsheet
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public Spreadsheet(int rowNum, int colNum)
     {
-        if (rowNum < 1)
-        {
-            // Row error check
-            throw new ArgumentOutOfRangeException("rowNum should be positive!");
-        }
-
-        if (colNum < 1)
-        {
-            // Column error Check
-            throw new ArgumentOutOfRangeException("colNum should be positive!");
-        }
+        // The following Exceptions will prevent the Spreadsheet from having invalid rows and columns
+        ArgumentOutOfRangeException.ThrowIfLessThan(rowNum, 1);
+        ArgumentOutOfRangeException.ThrowIfLessThan(colNum, 1);
 
         this.Columns = colNum;
         this.Rows = rowNum;
@@ -44,23 +40,28 @@ public class Spreadsheet
     }
 
     /// <summary>
-    /// Initializes the 2D array cells by initializing each cell within the 2D array
+    /// Initializes the 2D list of cells by initializing each cell within the 2D list
     /// </summary>
     /// <param name="rowNum"></param>
     /// <param name="colNum"></param>
     private void InitializeCells(int rowNum, int colNum)
     {
-        this.cells = new SpreadsheetCell[rowNum, colNum];
-        for (int r = 0; r < rowNum; r++)
+        this.cells = new();
+        for (var r = 0; r < rowNum; r++)
         {
+            // Each column from here will have it's cells affected
+            List<SpreadsheetCell> column = [];
             for (int c = 0; c < colNum; c++)
             {
-                this.cells[r, c] = new SpreadsheetCell(r, c);
+                var cell = new SpreadsheetCell(r, c);
 
+                column.Add(cell);
                 // Time to announce the event of the new cell creation 
-                this.cells[r, c].PropertyChanged += this.NotifyPropertyChanged; 
-                this.cells[r, c].PropertyChanging += OnPropertyChanging; 
+                cell.PropertyChanged += this.NotifyPropertyChanged;
+                cell.PropertyChanging += this.OnPropertyChanging;
             }
+
+            this.cells.Add(column);
         }
     }
 
@@ -73,15 +74,16 @@ public class Spreadsheet
         var tempText = cell.Text;
         if (tempText.Length > 2 && tempText[0] == '=')
         {
-            string cellText = tempText.Substring(1).ToUpper();
+            // Makes sure the right cell's name is being called so that cell is no longer bound
+            string cellText = tempText[1..].ToUpper();
             int colInd = cellText[0] - 'A';
-            int rowInd = int.Parse(cellText.Substring(1)) - 1;
+            int rowInd = int.Parse(cellText[1..]) - 1;
             var otherCell = this.GetCell(rowInd, colInd);
+
+            // Calls the Unbind method from SpreadsheetCell class
             cell.Unbind(otherCell);
         }
     }
-
-    
 
     /// <summary>
     /// Property for Rows .
@@ -107,7 +109,7 @@ public class Spreadsheet
             throw new IndexOutOfRangeException("The rows and columns have to be within range!");
         }
 
-        return this.cells[rowInd, colInd];
+        return this.cells[rowInd][colInd];
     }
 
     /// <summary>
@@ -140,13 +142,18 @@ public class Spreadsheet
         var nextValue = tempText;
         if (nextValue != sender.Value)
         {
-            if (tempText[0] == '=')
+            if (!string.IsNullOrEmpty(tempText) && tempText[0] == '=')
             {
-                string cellText = tempText.Substring(1).ToUpper();
+                // The following part is just getting the right Cell name
+                string cellText = tempText[1..].ToUpper();
                 int colInd = cellText[0] - 'A';
-                int rowInd = int.Parse(cellText.Substring(1)) - 1;
+                int rowInd = int.Parse(cellText[1..]) - 1;
+
+                // gets the cell after having the name
                 var otherCell = this.GetCell(rowInd, colInd);
                 nextValue = otherCell.Value;
+
+                // Calls the Bind function from SpreadsheetCell
                 sender.Bind(otherCell);
             }
 
@@ -159,11 +166,11 @@ public class Spreadsheet
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void NotifyPropertyChanged(object sender, PropertyChangedEventArgs e)
+    private void NotifyPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (sender != null && sender is SpreadsheetCell && e.PropertyName == "Text")
+        if (sender is SpreadsheetCell cell && e.PropertyName == "Text")
         {
-            this.ValueUpdate((SpreadsheetCell)sender);
+            this.ValueUpdate(cell);
         }
 
         this.CellPropertyChanged?.Invoke(sender, e);
@@ -176,9 +183,9 @@ public class Spreadsheet
     /// <param name="e"></param>
     private void OnPropertyChanging(object? sender, PropertyChangingEventArgs e)
     {
-        if (sender != null && sender is SpreadsheetCell && e.PropertyName == "Text")
+        if (sender is SpreadsheetCell cell && e.PropertyName == "Text")
         {
-            this.Unbind((SpreadsheetCell)sender);
+            this.Unbind(cell);
         }
     }
 }

@@ -20,8 +20,7 @@
             <Button Name="DemoClick"
                     Content="Demo HWS" 
                     Margin="12" 
-                    Command="{Binding DoDemoHw}"
-                    CommandParameter="From the button 2"/>
+                    Command="{Binding DoDemoHw}"/>
             <TextBox Name="MyText" Margin="12">...</TextBox>
             
         </DockPanel>
@@ -31,6 +30,7 @@
                       HeadersVisibility="All" GridLinesVisibility="All"
                       HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                       CellPointerPressed="MainGridOnCellPointerPressed"
+                      IsReadOnly="True"
                       BorderThickness="1" BorderBrush="Gray">
                 <!-- CellPointerPressed="MainGrid_OnCellPointerPressed" -->
             <DataGrid.Styles>

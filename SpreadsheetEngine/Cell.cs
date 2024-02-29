@@ -5,12 +5,12 @@ namespace SpreadsheetEngine;
 
 public abstract class Cell : INotifyPropertyChanged
 {
-    // The Event Handler part
-    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+    // The Event Handler for Cell, PropertyChanged
+    public event PropertyChangedEventHandler? PropertyChanged = (sender, e) => { };
 
     protected string value;
     protected string text;
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Cell"/> class.
     /// </summary>
@@ -62,6 +62,10 @@ public abstract class Cell : INotifyPropertyChanged
         get => this.value;
     }
 
+    /// <summary>
+    /// Event handler method for PropertyChanged event. Sends message to subscribers of PropertyChanged handler
+    /// </summary>
+    /// <param name="propertyName"></param>
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

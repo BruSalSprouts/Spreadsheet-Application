@@ -9,6 +9,9 @@ public class SpreadsheetConstructorTests
     {
     }
 
+    /// <summary>
+    /// Tests to see if invalid parameters cause a Spreadsheet's initialization to fail
+    /// </summary>
     [Test]
     public void ConstructorInvalid1()
     {
@@ -24,6 +27,9 @@ public class SpreadsheetConstructorTests
         }
     }
 
+    /// <summary>
+    /// Tests to see if invalid parameters cause a Spreadsheet's initialization to fail
+    /// </summary>
     [Test]
     public void ConstructorInvalid2()
     {
@@ -39,6 +45,9 @@ public class SpreadsheetConstructorTests
         }
     }
 
+    /// <summary>
+    /// Tests to see if a Spreadsheet can be created
+    /// </summary>
     [Test]
     public void ConstructorValid1()
     {

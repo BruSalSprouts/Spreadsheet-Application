@@ -13,7 +13,8 @@ namespace SpreadsheetEngine;
 /// </summary>
 internal class SpreadsheetCell(int row, int col) : Cell(row, col), INotifyPropertyChanged
 {
-    public event PropertyChangingEventHandler? PropertyChanging = delegate { };
+    // The Event Handler for SpreadsheetCell, PropertyChanging
+    public event PropertyChangingEventHandler? PropertyChanging = (sender, e) => { };
 
     /// <summary>
     /// Sets value with val
@@ -44,7 +45,8 @@ internal class SpreadsheetCell(int row, int col) : Cell(row, col), INotifyProper
     }
 
     /// <summary>
-    /// Gets or sets overriden Text property. When text changes, before changing it, it sends an event for one event to stop caring
+    /// Gets or sets overriden Text property. When text changes, before changing it,
+    /// it sends an event for one event to stop caring
     /// </summary>
     public override string Text
     {
@@ -77,6 +79,4 @@ internal class SpreadsheetCell(int row, int col) : Cell(row, col), INotifyProper
             this.OnPropertyChanged("Text");
         }
     }
-
-
 }
