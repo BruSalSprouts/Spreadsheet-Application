@@ -80,7 +80,7 @@ public class SpreadsheetCellsTests
             cellActual.Text = "test";
         }
     }
-    
+
     [Test]
     public void GetCellTestError1()
     {
@@ -94,6 +94,7 @@ public class SpreadsheetCellsTests
             Assert.Pass();
         }
     }
+
     [Test]
     public void GetCellTestError2()
     {
@@ -115,7 +116,7 @@ public class SpreadsheetCellsTests
         this.spreadsheet.GetCell(0, 1).Text = "=A1";
         Assert.That(this.spreadsheet.GetCell(0, 1).Value, Is.EqualTo("hello"));
     }
-    
+
     [Test]
     public void FormulaTest2()
     {
@@ -123,7 +124,7 @@ public class SpreadsheetCellsTests
         this.spreadsheet.GetCell(1, 2).Text = "=a1";
         Assert.That(this.spreadsheet.GetCell(1, 2).Value, Is.EqualTo("hello"));
     }
-    
+
     [Test]
     public void FormulaTest3()
     {
@@ -137,7 +138,7 @@ public class SpreadsheetCellsTests
             Assert.Pass();
         }
     }
-    
+
     [Test]
     public void FormulaTest4()
     {

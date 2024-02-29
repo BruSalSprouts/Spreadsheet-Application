@@ -58,8 +58,8 @@ public class Spreadsheet
                 this.cells[r, c] = new SpreadsheetCell(r, c);
 
                 // Time to announce the event of the new cell creation 
-                this.cells[r, c].PropertyChanged += this.NotifyPropertyChanged;
-                this.cells[r,c].PropertyChanging += OnPropertyChanging;
+                this.cells[r, c].PropertyChanged += this.NotifyPropertyChanged; 
+                this.cells[r, c].PropertyChanging += OnPropertyChanging; 
             }
         }
     }
