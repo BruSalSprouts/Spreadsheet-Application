@@ -1,0 +1,191 @@
+// <copyright file="Spreadsheet.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+using SpreadsheetEngine;
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+namespace SpreadsheetEngine;
+
+public class Spreadsheet
+{
+    // The Event Handler for Spreadsheet, CellPropertyChanged
+    public new event PropertyChangedEventHandler? CellPropertyChanged = (sender, e) => { };
+
+    private int rows; // int value for RowCount
+    private int columns; // int value for ColumnCount
+    private List<List<SpreadsheetCell>> cells;
+
+    public Cell this[int row, int col] => this.GetCell(row, col);
+
+    public IEnumerable<Cell> this[int row] => this.cells[row];
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
+    /// Also checks for invalid row and column numbers.
+    /// </summary>
+    /// <param name="rowNum"></param>
+    /// <param name="colNum"></param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public Spreadsheet(int rowNum, int colNum)
+    {
+        // The following Exceptions will prevent the Spreadsheet from having invalid rows and columns
+        ArgumentOutOfRangeException.ThrowIfLessThan(rowNum, 1);
+        ArgumentOutOfRangeException.ThrowIfLessThan(colNum, 1);
+
+        this.Columns = colNum;
+        this.Rows = rowNum;
+        this.InitializeCells(rowNum, colNum);
+    }
+
+    /// <summary>
+    /// Initializes the 2D list of cells by initializing each cell within the 2D list
+    /// </summary>
+    /// <param name="rowNum"></param>
+    /// <param name="colNum"></param>
+    private void InitializeCells(int rowNum, int colNum)
+    {
+        this.cells = new();
+        for (var r = 0; r < rowNum; r++)
+        {
+            // Each column from here will have it's cells affected
+            List<SpreadsheetCell> column = [];
+            for (int c = 0; c < colNum; c++)
+            {
+                var cell = new SpreadsheetCell(r, c);
+
+                column.Add(cell);
+                // Time to announce the event of the new cell creation 
+                cell.PropertyChanged += this.NotifyPropertyChanged;
+                cell.PropertyChanging += this.OnPropertyChanging;
+            }
+
+            this.cells.Add(column);
+        }
+    }
+
+    /// <summary>
+    /// Removes notification from other cell
+    /// </summary>
+    /// <param name="cell"></param>
+    private void Unbind(SpreadsheetCell cell)
+    {
+        var tempText = cell.Text;
+        if (tempText.Length > 2 && tempText[0] == '=')
+        {
+            // Makes sure the right cell's name is being called so that cell is no longer bound
+            string cellText = tempText[1..].ToUpper();
+            int colInd = cellText[0] - 'A';
+            int rowInd = int.Parse(cellText[1..]) - 1;
+            var otherCell = this.GetCell(rowInd, colInd);
+
+            // Calls the Unbind method from SpreadsheetCell class
+            cell.Unbind(otherCell);
+        }
+    }
+
+    /// <summary>
+    /// Property for Rows .
+    /// </summary>
+    public int Rows { get; set; }
+
+    /// <summary>
+    /// Property for Columns.
+    /// </summary>
+    public int Columns { get; set; }
+
+    /// <summary>
+    ///  Takes rowInd and colInd and returns the cell at that location or null if there is no such cell
+    /// </summary>
+    /// <param name="rowInd" />
+    /// <param name="colInd" />
+    /// <returns>an Cell object</returns>
+    public Cell GetCell(int rowInd, int colInd)
+    {
+        if (rowInd < 0 || rowInd >= this.Rows || colInd < 0 || colInd >= this.Columns)
+        {
+            // Out of bounds exception check
+            throw new IndexOutOfRangeException("The rows and columns have to be within range!");
+        }
+
+        return this.cells[rowInd][colInd];
+    }
+
+    /// <summary>
+    /// Returns the number of columns in the spreadsheet
+    /// </summary>
+    /// <returns>int columns</returns>
+    public int ColumnCount()
+    {
+        return this.Columns;
+    }
+
+    /// <summary>
+    /// Returns the number of rows in the spreadsheet
+    /// </summary>
+    /// <returns>int rows</returns>
+    public int RowCount()
+    {
+        return this.Rows;
+    }
+
+    /// <summary>
+    /// Updates the Value of the respective cell[rowInd][colInd]. If the Text of the cell doesn't
+    /// start with '=', then the value is just set to the text. Otherwise the value must be
+    /// gotten from the value of the cell whose name follows the '='
+    /// </summary>
+    /// <param name="sender"></param>
+    private void ValueUpdate(SpreadsheetCell sender)
+    {
+        var tempText = sender.Text;
+        var nextValue = tempText;
+        if (nextValue != sender.Value)
+        {
+            if (!string.IsNullOrEmpty(tempText) && tempText[0] == '=')
+            {
+                // The following part is just getting the right Cell name
+                string cellText = tempText[1..].ToUpper();
+                int colInd = cellText[0] - 'A';
+                int rowInd = int.Parse(cellText[1..]) - 1;
+
+                // gets the cell after having the name
+                var otherCell = this.GetCell(rowInd, colInd);
+                nextValue = otherCell.Value;
+
+                // Calls the Bind function from SpreadsheetCell
+                sender.Bind(otherCell);
+            }
+
+            sender.SetValue(nextValue);
+        }
+    }
+
+    /// <summary>
+    /// Where CellPropertyCHanged is being handled, and also updates the cell's Value 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void NotifyPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (sender is SpreadsheetCell cell && e.PropertyName == "Text")
+        {
+            this.ValueUpdate(cell);
+        }
+
+        this.CellPropertyChanged?.Invoke(sender, e);
+    }
+
+    /// <summary>
+    /// Receives notification that Text is about to change
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void OnPropertyChanging(object? sender, PropertyChangingEventArgs e)
+    {
+        if (sender is SpreadsheetCell cell && e.PropertyName == "Text")
+        {
+            this.Unbind(cell);
+        }
+    }
+}

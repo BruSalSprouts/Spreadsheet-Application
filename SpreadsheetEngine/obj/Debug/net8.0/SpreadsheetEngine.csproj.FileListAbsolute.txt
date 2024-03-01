@@ -1,0 +1,11 @@
+C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\bin\Debug\net8.0\SpreadsheetEngine.deps.json
+C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\bin\Debug\net8.0\SpreadsheetEngine.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\bin\Debug\net8.0\SpreadsheetEngine.pdb
+C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\obj\Debug\net8.0\SpreadsheetEngine.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\obj\Debug\net8.0\SpreadsheetEngine.AssemblyInfoInputs.cache
+C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\obj\Debug\net8.0\SpreadsheetEngine.AssemblyInfo.cs
+C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\obj\Debug\net8.0\SpreadsheetEngine.csproj.CoreCompileInputs.cache
+C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\obj\Debug\net8.0\SpreadsheetEngine.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\obj\Debug\net8.0\refint\SpreadsheetEngine.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\obj\Debug\net8.0\SpreadsheetEngine.pdb
+C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\obj\Debug\net8.0\ref\SpreadsheetEngine.dll
