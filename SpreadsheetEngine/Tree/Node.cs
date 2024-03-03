@@ -4,6 +4,9 @@
 
 namespace SpreadsheetEngine.Tree;
 
+/// <summary>
+/// The base Node class
+/// </summary>
 public abstract class Node
 {
     /// <summary>

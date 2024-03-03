@@ -4,6 +4,7 @@
 
 using SpreadsheetEngine.Operations;
 using SpreadsheetEngine.Tree;
+using SpreadsheetEngine.Variables;
 
 namespace Spreadsheet_Testing;
 
@@ -44,7 +45,7 @@ public class BinOperatorNodeTests
         };
         Assert.That(node.GetValue(), Is.EqualTo(0));
     }
-    
+
     [Test]
     public void TestRightEmptyBinNode()
     {
@@ -54,7 +55,7 @@ public class BinOperatorNodeTests
         };
         Assert.That(node.GetValue(), Is.EqualTo(0));
     }
-    
+
     [Test]
     public void EvaluateExpressionTest()
     {
@@ -64,5 +65,28 @@ public class BinOperatorNodeTests
         ((BinOperatorNode)root.Left).Right = new NumberNode(3.0);
         root.Right = new NumberNode(5.0);
         Assert.That(root.GetValue(), Is.EqualTo(20.0));
+    }
+
+    [Test]
+    public void EvaluateWithVariablesTest()
+    {
+        var handler = new VariableHandler();
+        handler.AddVariable("left", 10.0);
+        handler.AddVariable("right", 5.0);
+        BinOperatorNode root = new BinOperatorNode(new AddOperator());
+        root.Left = new VariableNode("left", handler);
+        root.Right = new VariableNode("right", handler);
+        Assert.That(root.GetValue(), Is.EqualTo(15.0));
+    }
+
+    [Test]
+    public void EvaluateWithVariableAndNumberTest()
+    {
+        var handler = new VariableHandler();
+        handler.AddVariable("right", 5.0);
+        BinOperatorNode root = new BinOperatorNode(new AddOperator());
+        root.Left = new NumberNode(5);
+        root.Right = new VariableNode("right", handler);
+        Assert.That(root.GetValue(), Is.EqualTo(10.0));
     }
 }

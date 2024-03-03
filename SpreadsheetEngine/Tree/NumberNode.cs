@@ -2,10 +2,13 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-
 namespace SpreadsheetEngine.Tree;
 
-public class NumberNode(double val) : Node
+/// <summary>
+/// The NumberNode class. It represents a constant numerical value
+/// </summary>
+/// <param name="value">double.</param>
+public class NumberNode(double value) : Node
 {
     /// <summary>
     /// Gets the value of the Node.
@@ -13,6 +16,6 @@ public class NumberNode(double val) : Node
     /// <returns>Double.</returns>
     public override double GetValue()
     {
-        return val;
+        return value;
     }
 }
