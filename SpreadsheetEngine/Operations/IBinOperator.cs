@@ -1,10 +1,12 @@
-// <copyright file="Operator.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
 namespace SpreadsheetEngine.Operations;
 
-internal interface IBinOperator
+/// <summary>
+/// The IBinOperator interface. What we'll be using for future classes
+/// </summary>
+public interface IBinOperator
 {
     /// <summary>
     /// Does something with lhs and rhs and returns the result

@@ -4,6 +4,9 @@
 
 namespace SpreadsheetEngine.Operations;
 
+/// <summary>
+/// The AddOperator class. Basically handles Addition Operations.
+/// </summary>
 public class AddOperator : IBinOperator
 {
     /// <summary>

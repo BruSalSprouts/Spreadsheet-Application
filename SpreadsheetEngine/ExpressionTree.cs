@@ -2,20 +2,28 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+using SpreadsheetEngine.Tree;
+
 namespace SpreadsheetEngine;
 
+/// <summary>
+/// ExpressionTree class
+/// </summary>
 public class ExpressionTree
 {
+    private Node? root;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ExpressionTree"/> class.
     /// Constructor that constructs an Expression Tree from a specific expression.
     /// </summary>
     /// <param name="expression">String from which an expression tree will be made</param>
-    public ExpressionTree(string expression)
+    /// <param name="root">Extra parameter for testing.</param>
+    public ExpressionTree(string expression, Node? root)
     {
-        
+        this.root = root;
     }
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -33,6 +41,6 @@ public class ExpressionTree
     /// (Default for now is 0.0).</returns>
     public double Evaluate()
     {
-        return 0.0;
+        return this.root?.GetValue() ?? 0.0;
     }
 }

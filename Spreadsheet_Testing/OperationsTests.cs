@@ -55,4 +55,14 @@ public class OperationsTests
         var divide = new DivideOperator();
         Assert.That(divide.Do(12, 4), Is.EqualTo(3));
     }
+
+    /// <summary>
+    /// Tests the Divide Operator when dividing by 0.
+    /// </summary>
+    [Test]
+    public void DivideByZeroTest()
+    {
+        var divide = new DivideOperator();
+        Assert.That(divide.Do(12, 0), Is.EqualTo(double.PositiveInfinity));
+    }
 }

@@ -4,6 +4,9 @@
 
 namespace SpreadsheetEngine.Operations;
 
+/// <summary>
+/// The SubtractOperator class. Basically handles Subtraction Operations.
+/// </summary>
 public class SubtractOperator : IBinOperator
 {
     /// <summary>

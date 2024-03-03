@@ -4,6 +4,9 @@
 
 namespace SpreadsheetEngine.Operations;
 
+/// <summary>
+/// The MultiplyOperator class. Basically handles multiplication Operations
+/// </summary>
 public class MultiplyOperator : IBinOperator
 {
     /// <summary>

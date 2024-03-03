@@ -2,15 +2,24 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+using SpreadsheetEngine.Operations;
+
 namespace SpreadsheetEngine.Tree;
 
+/// <summary>
+/// BinOperatorNode class
+/// </summary>
 public class BinOperatorNode : Node
 {
-    protected Node? left;
-    protected Node? right;
-    private char binOperator;
+    private Node? left;
+    private Node? right;
+    private readonly IBinOperator binOperator;
 
-    public BinOperatorNode(char binOperator)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BinOperatorNode"/> class.
+    /// </summary>
+    /// <param name="binOperator">Receives an operator <see cref="IBinOperator"/>.</param>
+    public BinOperatorNode(IBinOperator binOperator)
     {
         this.binOperator = binOperator;
         this.left = null;
@@ -36,9 +45,9 @@ public class BinOperatorNode : Node
     }
 
     /// <summary>
-    /// 
+    /// Performs the operation in the node
     /// </summary>
-    /// <returns></returns>
+    /// <returns>double.</returns>
     public override double GetValue()
     {
         double l = 0;
@@ -53,6 +62,6 @@ public class BinOperatorNode : Node
              r = this.Right.GetValue();
         }
 
-        return l + r;
+        return this.binOperator.Do(l, r);
     }
 }
