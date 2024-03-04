@@ -1,15 +1,14 @@
 // <copyright file="VariableNode.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-
 using SpreadsheetEngine.Variables;
 
 namespace SpreadsheetEngine.Tree;
 
 /// <summary>
-/// The VariableNode class. It represents a variable
+/// The VariableNode class. It represents a variable.
 /// </summary>
-public class VariableNode : Node
+public class VariableNode : Node, ILeafNode
 {
     private readonly string varName;
     private readonly IVariableResolver resolver;

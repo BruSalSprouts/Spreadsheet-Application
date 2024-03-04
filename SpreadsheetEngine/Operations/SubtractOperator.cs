@@ -10,7 +10,7 @@ namespace SpreadsheetEngine.Operations;
 public class SubtractOperator : IBinOperator
 {
     /// <summary>
-    /// Subtracts rhs from lhs and returns the result
+    /// Subtracts rhs from lhs and returns the result.
     /// </summary>
     /// <param name="lhs">left hand side double.</param>
     /// <param name="rhs">right hand side double.</param>

@@ -7,18 +7,18 @@ using SpreadsheetEngine.Operations;
 namespace SpreadsheetEngine.Tree;
 
 /// <summary>
-/// BinOperatorNode class
+/// BinOperatorNode class.
 /// </summary>
 public class BinOperatorNode : Node
 {
+    private readonly IBinOperator binOperator;
     private Node? left;
     private Node? right;
-    private readonly IBinOperator binOperator;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BinOperatorNode"/> class.
     /// </summary>
-    /// <param name="binOperator">Receives an operator <see cref="IBinOperator"/>.</param>
+    /// <param name="binOperator">Receives an operator.<see cref="IBinOperator"/>.</param>
     public BinOperatorNode(IBinOperator binOperator)
     {
         this.binOperator = binOperator;
@@ -45,7 +45,7 @@ public class BinOperatorNode : Node
     }
 
     /// <summary>
-    /// Performs the operation in the node
+    /// Performs the operation in the node.
     /// </summary>
     /// <returns>double.</returns>
     public override double GetValue()
@@ -53,15 +53,16 @@ public class BinOperatorNode : Node
         double l = 0;
         double r = 0;
         if (this.Left != null)
-        {
+        { // Get the left leaf node's value
             l = this.Left.GetValue();
         }
 
         if (this.Right != null)
-        {
+        { // Get the right leaf node's value.
              r = this.Right.GetValue();
         }
 
+        // Do some operation with l and r. In the case that l or r are missing, it'll then be doing something with 0
         return this.binOperator.Do(l, r);
     }
 }

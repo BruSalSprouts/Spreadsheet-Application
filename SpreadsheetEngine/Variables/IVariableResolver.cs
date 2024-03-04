@@ -5,7 +5,7 @@
 namespace SpreadsheetEngine.Variables;
 
 /// <summary>
-/// Interface for VariableResolver
+/// Interface for VariableResolver.
 /// </summary>
 public interface IVariableResolver
 {

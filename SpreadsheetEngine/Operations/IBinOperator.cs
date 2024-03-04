@@ -4,12 +4,12 @@
 namespace SpreadsheetEngine.Operations;
 
 /// <summary>
-/// The IBinOperator interface. What we'll be using for future classes
+/// The IBinOperator interface. What we'll be using for future classes.
 /// </summary>
 public interface IBinOperator
 {
     /// <summary>
-    /// Does something with lhs and rhs and returns the result
+    /// Does something with lhs and rhs and returns the result.
     /// </summary>
     /// <param name="lhs">left hand side double.</param>
     /// <param name="rhs">right hand side double.</param>

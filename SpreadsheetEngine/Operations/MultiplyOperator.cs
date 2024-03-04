@@ -5,12 +5,12 @@
 namespace SpreadsheetEngine.Operations;
 
 /// <summary>
-/// The MultiplyOperator class. Basically handles multiplication Operations
+/// The MultiplyOperator class. Basically handles multiplication Operations.
 /// </summary>
 public class MultiplyOperator : IBinOperator
 {
     /// <summary>
-    /// Adds lhs and rhs and returns the result
+    /// Adds lhs and rhs and returns the result.
     /// </summary>
     /// <param name="lhs">left hand side double.</param>
     /// <param name="rhs">right hand side double.</param>

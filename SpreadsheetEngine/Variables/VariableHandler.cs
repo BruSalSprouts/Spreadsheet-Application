@@ -5,7 +5,7 @@
 namespace SpreadsheetEngine.Variables;
 
 /// <summary>
-/// Class VariableHandler, for variable handling
+/// Class VariableHandler, for variable handling.
 /// </summary>
 public class VariableHandler : IVariableResolver
 {
@@ -20,7 +20,7 @@ public class VariableHandler : IVariableResolver
     }
 
     /// <summary>
-    /// Gets the value from a variable varName
+    /// Gets the value from a variable varName.
     /// </summary>
     /// <param name="varName">string.</param>
     /// <returns>double.</returns>
@@ -30,7 +30,7 @@ public class VariableHandler : IVariableResolver
     }
 
     /// <summary>
-    /// Stores a value to a variable varName's value
+    /// Stores a value to a variable varName's value.
     /// </summary>
     /// <param name="varName">string.</param>
     /// <param name="value">double.</param>
@@ -40,7 +40,7 @@ public class VariableHandler : IVariableResolver
     }
 
     /// <summary>
-    /// Empties the stored variables
+    /// Empties the stored variables.
     /// </summary>
     public void Clear()
     {

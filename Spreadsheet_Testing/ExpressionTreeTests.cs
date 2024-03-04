@@ -16,14 +16,42 @@ public class ExpressionTreeTests
     }
 
     [Test]
-    public void TestEvaluateWithBasicTree()
+    public void TreeBuiltSingleVariableElementTest()
     {
-        BinOperatorNode root = new BinOperatorNode(new AddOperator());
-        root.Left = new BinOperatorNode(new MultiplyOperator());
-        ((BinOperatorNode)root.Left).Left = new NumberNode(5.0);
-        ((BinOperatorNode)root.Left).Right = new NumberNode(3.0);
-        root.Right = new NumberNode(5.0);
-        var tree = new ExpressionTree(string.Empty, root);
-        Assert.That(tree.Evaluate(), Is.EqualTo(20.0));
+        var tree = new ExpressionTree("Hello");
+        var node = tree.GetRoot();
+        Assert.IsTrue(node is VariableNode);
     }
+
+    [Test]
+    public void TreeBuiltSingleNumberElementTest()
+    {
+        var tree = new ExpressionTree("987.654321");
+        var node = tree.GetRoot();
+        Assert.IsTrue(node is NumberNode);
+    }
+
+    [Test]
+    public void TreeBuiltSimpleExpressionTest()
+    {
+        var tree = new ExpressionTree("Blah+99");
+        var root = tree.GetRoot();
+        var node = root as BinOperatorNode;
+        Assert.NotNull(node);
+        Assert.Multiple(
+            () =>
+        {
+            Assert.That(node?.Left is VariableNode, Is.True);
+            Assert.That(node?.Right is NumberNode, Is.True);
+        });
+    }
+    
+    [Test]
+    public void TreeBuiltSimpleExpressionEvaluationTest()
+    {
+        var tree = new ExpressionTree("Blah+99");
+        tree.SetVariable("Blah", 1);
+        Assert.That(tree.Evaluate(), Is.EqualTo(100));
+    }
+
 }

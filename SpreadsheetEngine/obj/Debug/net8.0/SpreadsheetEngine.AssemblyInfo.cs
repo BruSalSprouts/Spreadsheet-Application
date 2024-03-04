@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SpreadsheetEngine")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+14838b392be1f1bb75114caeddc4cf642632b641")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e38256faa19a31a2b8342ecf21f2b7eccd0dcf98")]
 [assembly: System.Reflection.AssemblyProductAttribute("SpreadsheetEngine")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SpreadsheetEngine")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

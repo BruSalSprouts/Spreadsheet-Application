@@ -5,10 +5,10 @@
 namespace SpreadsheetEngine.Tree;
 
 /// <summary>
-/// The NumberNode class. It represents a constant numerical value
+/// The NumberNode class. It represents a constant numerical value.
 /// </summary>
 /// <param name="value">double.</param>
-public class NumberNode(double value) : Node
+public class NumberNode(double value) : Node, ILeafNode
 {
     /// <summary>
     /// Gets the value of the Node.

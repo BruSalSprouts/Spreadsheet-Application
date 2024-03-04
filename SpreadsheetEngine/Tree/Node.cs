@@ -5,14 +5,14 @@
 namespace SpreadsheetEngine.Tree;
 
 /// <summary>
-/// The base Node class
+/// The base Node class.
 /// </summary>
 public abstract class Node
 {
     /// <summary>
-    /// Gets the value associated with the node
+    /// Gets the value associated with the node.
     /// </summary>
-    /// <returns>Double associated with the node</returns>
+    /// <returns>Double associated with the node.</returns>
     public virtual double GetValue()
     {
         return 0.0;

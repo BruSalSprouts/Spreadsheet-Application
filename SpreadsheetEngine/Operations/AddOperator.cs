@@ -10,7 +10,7 @@ namespace SpreadsheetEngine.Operations;
 public class AddOperator : IBinOperator
 {
     /// <summary>
-    /// Adds lhs and rhs and returns the result
+    /// Adds lhs and rhs and returns the result.
     /// </summary>
     /// <param name="lhs">left hand side double.</param>
     /// <param name="rhs">right hand side double.</param>
