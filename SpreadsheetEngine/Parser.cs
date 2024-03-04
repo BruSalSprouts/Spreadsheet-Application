@@ -2,8 +2,9 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+#pragma warning disable SA1200
 using System.Text;
-using SpreadsheetEngine.Tree;
+#pragma warning restore SA1200
 
 namespace SpreadsheetEngine;
 
@@ -31,6 +32,25 @@ public class Parser
     public List<string> Parse(string line)
     {
         var pieces = new List<string>();
+        var sb = new StringBuilder();
+        foreach (var c in line)
+        {
+            if (DelimiterChars.Contains(c))
+            {
+                pieces.Add(sb.ToString());
+                pieces.Add(c.ToString());
+                sb.Clear();
+            }
+            else
+            {
+                sb.Append(c);
+            }
+        }
+
+        if (sb.Length > 0)
+        {
+            pieces.Add(sb.ToString());
+        }
 
         return pieces;
     }

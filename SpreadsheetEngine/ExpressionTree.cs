@@ -2,11 +2,13 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+#pragma warning disable SA1200
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using SpreadsheetEngine.Operations;
 using SpreadsheetEngine.Tree;
 using SpreadsheetEngine.Variables;
+#pragma warning restore SA1200
 
 namespace SpreadsheetEngine;
 
@@ -23,9 +25,9 @@ namespace SpreadsheetEngine;
     Justification = "Parameters that extend offscreen to exorbitant lengths exist, such as this one")]
 public class ExpressionTree
 {
-    private VariableHandler handler;
-    private Node? root;
+    private readonly VariableHandler handler;
     private readonly string expression;
+    private Node? root;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ExpressionTree"/> class.
@@ -89,6 +91,55 @@ public class ExpressionTree
     /// <exception cref="ValidationException">Error handling in case a node is where it shouldn't be.</exception>
     private void BuildTree(List<Node> nodes)
     {
+        foreach (var current in nodes)
+        {
+            switch (this.root)
+            {
+                case null:
+                    this.root = current;
+                    break;
+
+                // If the root is a Leaf Node
+                case ILeafNode:
+                {// if the left branch of the root doesn't exist
+                    if (current is not BinOperatorNode cur)
+                    {
+                        throw new ValidationException("Invalid Expression");
+                    }
+
+                    cur.Left = this.root;
+                    this.root = cur;
+                    break;
+                }
+
+                // If the root is a BinOperatorNode
+                default:
+                {
+                    var opRoot = this.root as BinOperatorNode;
+
+                    // If the right branch of the root doesn't exist
+                    if (opRoot?.Right == null)
+                    {
+                        if (opRoot != null)
+                        {
+                            opRoot.Right = current;
+                        }
+                    }
+                    else
+                    {// Time to make the current node the root
+                        if (current is not BinOperatorNode cur)
+                        {
+                            throw new ValidationException("Invalid Expression");
+                        }
+
+                        cur.Left = this.root;
+                        this.root = cur;
+                    }
+
+                    break;
+                }
+            }
+        }
     }
 
     /// <summary>

@@ -5,7 +5,7 @@
 namespace SpreadsheetEngine.Operations;
 
 /// <summary>
-/// The BinOperatorClassifier class. Ultimate purpose is to make a string into an Operator type of object
+/// The BinOperatorClassifier class. Ultimate purpose is to make a string into an Operator type of object.
 /// </summary>
 public class BinOperatorClassifer
 {

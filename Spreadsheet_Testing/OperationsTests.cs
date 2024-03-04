@@ -2,14 +2,20 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+#pragma warning disable SA1200
 using SpreadsheetEngine.Operations;
+#pragma warning restore SA1200
 
 namespace Spreadsheet_Testing;
 
+/// <summary>
+/// OperationsTests class. Here we test the operations themselves to make
+/// sure they work.
+/// </summary>
 public class OperationsTests
 {
     /// <summary>
-    /// Tests Setup
+    /// Tests Setup.
     /// </summary>
     [SetUp]
     public void Setup()
@@ -17,7 +23,7 @@ public class OperationsTests
     }
 
     /// <summary>
-    /// Tests the Add Operator
+    /// Tests the Add Operator.
     /// </summary>
     [Test]
     public void AddTest()
@@ -27,7 +33,7 @@ public class OperationsTests
     }
 
     /// <summary>
-    /// Tests the Subtract Operator
+    /// Tests the Subtract Operator.
     /// </summary>
     [Test]
     public void SubtractTest()
@@ -37,7 +43,7 @@ public class OperationsTests
     }
 
     /// <summary>
-    /// Tests the Multiply Operator
+    /// Tests the Multiply Operator.
     /// </summary>
     [Test]
     public void MultiplyTest()

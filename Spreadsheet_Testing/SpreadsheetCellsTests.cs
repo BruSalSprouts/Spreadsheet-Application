@@ -1,10 +1,15 @@
-using System.ComponentModel;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+// <copyright file="SpreadsheetCellsTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Spreadsheet_Testing;
 
 using System;
 using SpreadsheetEngine;
+
+/// <summary>
+/// SpreadsheetCellsTests class. Tests the functionality of SpreadsheetCells
+/// </summary>
 public class SpreadsheetCellsTests
 {
     private Spreadsheet? spreadsheet;

@@ -2,7 +2,9 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+#pragma warning disable SA1200
 using SpreadsheetEngine.Operations;
+#pragma warning restore SA1200
 
 namespace SpreadsheetEngine.Tree;
 
