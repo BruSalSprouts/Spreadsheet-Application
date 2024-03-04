@@ -27,7 +27,7 @@ public class ExpressionTree
 {
     private readonly VariableHandler handler;
     private readonly string expression;
-    private Node? root;
+    private INode? root;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ExpressionTree"/> class.
@@ -49,7 +49,7 @@ public class ExpressionTree
     {
         var parser = new Parser();
         var words = parser.Parse(this.expression);
-        List<Node> nodes = this.ToNodeList(words);
+        List<INode> nodes = this.ToNodeList(words);
         this.BuildTree(nodes);
     }
 
@@ -58,9 +58,9 @@ public class ExpressionTree
     /// </summary>
     /// <param name="pieces">List of Strings.</param>
     /// <returns>List of Nodes.</returns>
-    private List<Node> ToNodeList(List<string> pieces)
+    private List<INode> ToNodeList(List<string> pieces)
     {
-        var nodes = new List<Node>();
+        var nodes = new List<INode>();
         foreach (var piece in pieces)
         {
             if (double.TryParse(piece, out var val))
@@ -89,7 +89,7 @@ public class ExpressionTree
     /// </summary>
     /// <param name="nodes">List of nodes (get from ToNodeList).</param>
     /// <exception cref="ValidationException">Error handling in case a node is where it shouldn't be.</exception>
-    private void BuildTree(List<Node> nodes)
+    private void BuildTree(List<INode> nodes)
     {
         foreach (var current in nodes)
         {
@@ -156,7 +156,7 @@ public class ExpressionTree
     /// Returns the root of the tree as a Node.
     /// </summary>
     /// <returns>Node.</returns>
-    public Node? GetRoot()
+    public INode? GetRoot()
     {
         return this.root;
     }

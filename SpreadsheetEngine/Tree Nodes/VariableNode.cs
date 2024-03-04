@@ -8,7 +8,7 @@ namespace SpreadsheetEngine.Tree;
 /// <summary>
 /// The VariableNode class. It represents a variable.
 /// </summary>
-public class VariableNode : Node, ILeafNode
+public class VariableNode : INode, ILeafNode
 {
     private readonly string varName;
     private readonly IVariableResolver resolver;
@@ -28,7 +28,7 @@ public class VariableNode : Node, ILeafNode
     /// Gets the value of the variable.
     /// </summary>
     /// <returns>double.</returns>
-    public override double GetValue()
+    public double GetValue()
     {
         return this.resolver.GetValue(this.varName);
     }

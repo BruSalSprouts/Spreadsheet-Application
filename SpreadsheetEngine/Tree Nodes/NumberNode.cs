@@ -8,13 +8,13 @@ namespace SpreadsheetEngine.Tree;
 /// The NumberNode class. It represents a constant numerical value.
 /// </summary>
 /// <param name="value">double.</param>
-public class NumberNode(double value) : Node, ILeafNode
+public class NumberNode(double value) : INode, ILeafNode
 {
     /// <summary>
     /// Gets the value of the Node.
     /// </summary>
     /// <returns>Double.</returns>
-    public override double GetValue()
+    public double GetValue()
     {
         return value;
     }

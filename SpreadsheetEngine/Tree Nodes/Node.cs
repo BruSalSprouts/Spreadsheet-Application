@@ -5,16 +5,13 @@
 namespace SpreadsheetEngine.Tree;
 
 /// <summary>
-/// The base Node class.
+/// The base Node interface.
 /// </summary>
-public abstract class Node
+public interface INode
 {
     /// <summary>
     /// Gets the value associated with the node.
     /// </summary>
     /// <returns>Double associated with the node.</returns>
-    public virtual double GetValue()
-    {
-        return 0.0;
-    }
+    public double GetValue();
 }

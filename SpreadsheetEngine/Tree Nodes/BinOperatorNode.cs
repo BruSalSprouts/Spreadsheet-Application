@@ -11,11 +11,11 @@ namespace SpreadsheetEngine.Tree;
 /// <summary>
 /// BinOperatorNode class.
 /// </summary>
-public class BinOperatorNode : Node
+public class BinOperatorNode : INode
 {
     private readonly IBinOperator binOperator;
-    private Node? left;
-    private Node? right;
+    private INode? left;
+    private INode? right;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BinOperatorNode"/> class.
@@ -31,7 +31,7 @@ public class BinOperatorNode : Node
     /// <summary>
     /// Gets or sets left Node Property.
     /// </summary>
-    public Node? Left
+    public INode? Left
     {
         get => this.left;
         set => this.left = value;
@@ -40,7 +40,7 @@ public class BinOperatorNode : Node
     /// <summary>
     /// Gets or sets right Node Property.
     /// </summary>
-    public Node? Right
+    public INode? Right
     {
         get => this.right;
         set => this.right = value;
@@ -50,7 +50,7 @@ public class BinOperatorNode : Node
     /// Performs the operation in the node.
     /// </summary>
     /// <returns>double.</returns>
-    public override double GetValue()
+    public double GetValue()
     {
         double l = 0;
         double r = 0;
