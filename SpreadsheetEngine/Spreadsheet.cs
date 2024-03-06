@@ -1,13 +1,17 @@
 // <copyright file="Spreadsheet.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-using SpreadsheetEngine;
-using System;
+// Name: Bruno Sanchez
+// WSU ID: 11714424
+#pragma warning disable SA1200
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
+#pragma warning restore SA1200
 
 namespace SpreadsheetEngine;
 
+/// <summary>
+/// The Spreadsheet class. Handles stuff at the spreadsheet level
+/// </summary>
 public class Spreadsheet
 {
     // The Event Handler for Spreadsheet, CellPropertyChanged
@@ -17,17 +21,20 @@ public class Spreadsheet
     private int columns; // int value for ColumnCount
     private List<List<SpreadsheetCell>> cells;
 
+    /// <summary>
+    /// Gets a Cell from the 2D List at location cells[row, col];
+    /// </summary>
+    /// <param name="row">int.</param>
+    /// <param name="col">Int.</param>s
     public Cell this[int row, int col] => this.GetCell(row, col);
-
-    public IEnumerable<Cell> this[int row] => this.cells[row];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
     /// Also checks for invalid row and column numbers.
     /// </summary>
-    /// <param name="rowNum"></param>
-    /// <param name="colNum"></param>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <param name="rowNum">ìnt.</param>
+    /// <param name="colNum">Int. </param>
+    /// <exception cref="ArgumentOutOfRangeException">Error handling.</exception>
     public Spreadsheet(int rowNum, int colNum)
     {
         // The following Exceptions will prevent the Spreadsheet from having invalid rows and columns
@@ -40,10 +47,10 @@ public class Spreadsheet
     }
 
     /// <summary>
-    /// Initializes the 2D list of cells by initializing each cell within the 2D list
+    /// Initializes the 2D list of cells by initializing each cell within the 2D list.
     /// </summary>
-    /// <param name="rowNum"></param>
-    /// <param name="colNum"></param>
+    /// <param name="rowNum">int row index.</param>
+    /// <param name="colNum">int col index.</param>
     private void InitializeCells(int rowNum, int colNum)
     {
         this.cells = new();
@@ -51,11 +58,12 @@ public class Spreadsheet
         {
             // Each column from here will have it's cells affected
             List<SpreadsheetCell> column = [];
-            for (int c = 0; c < colNum; c++)
+            for (var c = 0; c < colNum; c++)
             {
                 var cell = new SpreadsheetCell(r, c);
 
                 column.Add(cell);
+
                 // Time to announce the event of the new cell creation 
                 cell.PropertyChanged += this.NotifyPropertyChanged;
                 cell.PropertyChanging += this.OnPropertyChanging;

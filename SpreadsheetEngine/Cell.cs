@@ -1,3 +1,8 @@
+// <copyright file="Cell.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// Name: Bruno Sanchez
+// WSU ID: 11714424
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 

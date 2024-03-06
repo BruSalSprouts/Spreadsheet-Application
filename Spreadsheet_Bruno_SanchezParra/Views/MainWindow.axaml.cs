@@ -1,3 +1,8 @@
+// <copyright file="MainWindow.axaml.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// Name: Bruno Sanchez
+// WSU ID: 11714424
 using System;
 using System.Collections.Generic;
 using System.Data.Common;

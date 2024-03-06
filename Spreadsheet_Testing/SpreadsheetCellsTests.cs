@@ -1,10 +1,16 @@
-using System.ComponentModel;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
-
+// <copyright file="SpreadsheetCellsTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// Name: Bruno Sanchez
+// WSU ID: 11714424
 namespace Spreadsheet_Testing;
 
 using System;
 using SpreadsheetEngine;
+
+/// <summary>
+/// SpreadsheetCellsTests class. Tests the functionality of SpreadsheetCells.
+/// </summary>
 public class SpreadsheetCellsTests
 {
     private Spreadsheet? spreadsheet;
@@ -12,7 +18,7 @@ public class SpreadsheetCellsTests
     private bool catcherCalled;
 
     /// <summary>
-    /// This is the setup for all the tests in class SpreadSheetCellsTests
+    /// This is the setup for all the tests in class SpreadSheetCellsTests.
     /// </summary>
     [SetUp]
     public void Setup()
@@ -23,7 +29,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Tests to see if the right amount of columns are gotten from ColumnCount method
+    /// Tests to see if the right amount of columns are gotten from ColumnCount method.
     /// </summary>
     [Test]
     public void ColumnTest()
@@ -33,7 +39,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Tests to see if the right amount of rows are gotten from RowCount method
+    /// Tests to see if the right amount of rows are gotten from RowCount method.
     /// </summary>
     [Test]
     public void RowTest()
@@ -43,7 +49,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Tests to see if a Cell is retrieved and is not null
+    /// Tests to see if a Cell is retrieved and is not null.
     /// </summary>
     [Test]
     public void GetCellTest1()
@@ -53,7 +59,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Tests to see if a Cell is retrieved and checks to see if the Text is an empty string as it should be
+    /// Tests to see if a Cell is retrieved and checks to see if the Text is an empty string as it should be.
     /// </summary>
     [Test]
     public void GetCellTest2()
@@ -68,7 +74,7 @@ public class SpreadsheetCellsTests
 
     /// <summary>
     /// Tests to see if a Cell is retrieved, an event that the Cell and/or Value changes, and if the text
-    /// is the right set text or not
+    /// is the right set text or not.
     /// </summary>
     [Test]
     public void GetCellTest3()
@@ -94,7 +100,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Test to see if we can properly fire a test event to CellPropertyChanged
+    /// Test to see if we can properly fire a test event to CellPropertyChanged.
     /// </summary>
     [Test]
     public void EventTest1()
@@ -120,7 +126,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Test to see if Getting a cell that's out of range fails
+    /// Test to see if Getting a cell that's out of range fails.
     /// </summary>
     [Test]
     public void GetCellTestError1()
@@ -137,7 +143,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Test to see if getting a cell that's out of range (with negative numbers) fails
+    /// Test to see if getting a cell that's out of range (with negative numbers) fails.
     /// </summary>
     [Test]
     public void GetCellTestError2()
@@ -154,7 +160,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Test to see if Setting cell A2 to A1 works properly
+    /// Test to see if Setting cell A2 to A1 works properly.
     /// </summary>
     [Test]
     public void FormulaTest1()
@@ -171,7 +177,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Test to see if Setting cell B3 to A1 works properly
+    /// Test to see if Setting cell B3 to A1 works properly.
     /// </summary>
     [Test]
     public void FormulaTest2()
@@ -188,7 +194,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Test to see if setting a cell to an invalid Cell properly throws an exception
+    /// Test to see if setting a cell to an invalid Cell properly throws an exception.
     /// </summary>
     [Test]
     public void FormulaTest3()
@@ -210,7 +216,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Test to see if setting a cell to an invalid Cell properly throws an exception
+    /// Test to see if setting a cell to an invalid Cell properly throws an exception.
     /// </summary>
     [Test]
     public void FormulaTest4()
@@ -232,7 +238,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Test to see if setting a cell to an invalid Cell that's out of range properly throws an exception
+    /// Test to see if setting a cell to an invalid Cell that's out of range properly throws an exception.
     /// </summary>
     [Test]
     public void FormulaTest5()
@@ -255,7 +261,7 @@ public class SpreadsheetCellsTests
 
     /// <summary>
     /// Test to see if changing the value a cell which another cell's value is assigned to will cause the assigning
-    /// cell to also change it's value
+    /// cell to also change it's value.
     /// </summary>
     [Test]
     public void FormulaTest6()
@@ -272,7 +278,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Test to see changing the text of a cell to Empty will change the cell's value to Empty too
+    /// Test to see changing the text of a cell to Empty will change the cell's value to Empty too.
     /// </summary>
     [Test]
     public void CellToEmptyCellTest()
@@ -290,7 +296,7 @@ public class SpreadsheetCellsTests
 
     /// <summary>
     /// Test to see changing the value of a cell to Empty will cause another cell who is assigned to the original cell
-    /// to change it's value to Empty too
+    /// to change it's value to Empty too.
     /// </summary>
     [Test]
     public void CellToEmptyFormulaTest()
@@ -308,7 +314,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Tests to see if upon initializing all the cells in a Spreadsheet, they all remain empty
+    /// Tests to see if upon initializing all the cells in a Spreadsheet, they all remain empty.
     /// </summary>
     [Test]
     public void CellsStaySameTest1()
@@ -332,7 +338,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Tests to see that after changing the Text and Value of a cell, the other cells' Text remain the same
+    /// Tests to see that after changing the Text and Value of a cell, the other cells' Text remain the same.
     /// </summary>
     [Test]
     public void CellsStaySameTest2()
@@ -368,7 +374,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Tests to see if a cell that's assgined to another cell have the same Value
+    /// Tests to see if a cell that's assgined to another cell have the same Value.
     /// </summary>
     [Test]
     public void CellValueUpdateTest1()

@@ -1,3 +1,8 @@
+// <copyright file="App.axaml.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// Name: Bruno Sanchez
+// WSU ID: 11714424
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;

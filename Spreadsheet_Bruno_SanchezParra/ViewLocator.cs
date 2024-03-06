@@ -1,3 +1,8 @@
+// <copyright file="ViewLocator.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// Name: Bruno Sanchez
+// WSU ID: 11714424
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
