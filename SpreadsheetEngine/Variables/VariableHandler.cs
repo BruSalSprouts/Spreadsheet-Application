@@ -1,7 +1,8 @@
 // <copyright file="VariableHandler.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-
+// Name: Bruno Sanchez
+// WSU ID: 11714424
 namespace SpreadsheetEngine.Variables;
 
 /// <summary>

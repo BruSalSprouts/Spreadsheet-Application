@@ -1,6 +1,8 @@
 // <copyright file="Spreadsheet.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
+// Name: Bruno Sanchez
+// WSU ID: 11714424
 #pragma warning disable SA1200
 using System.ComponentModel;
 #pragma warning restore SA1200

@@ -1,10 +1,10 @@
 // <copyright file="ExpressionTree.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-
+// Name: Bruno Sanchez
+// WSU ID: 11714424
 using SpreadsheetEngine.Nodes;
 #pragma warning disable SA1200
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using SpreadsheetEngine.Variables;
 #pragma warning restore SA1200

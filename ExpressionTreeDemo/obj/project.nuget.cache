@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "AONLjRBG039EUywxogLDexjO75+k4FbRaNn5eIB+oOveINIo8sS0xvTKFLQfnru6phchkdYpyQ59til6wiYGKA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\ExpressionTreeDemo\\ExpressionTreeDemo.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\bruno\\.nuget\\packages\\stylecop.analyzers\\1.1.118\\stylecop.analyzers.1.1.118.nupkg.sha512"
+  ],
+  "logs": []
+}

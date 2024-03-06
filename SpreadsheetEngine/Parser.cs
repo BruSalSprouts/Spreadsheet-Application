@@ -1,7 +1,8 @@
 // <copyright file="Parser.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-
+// Name: Bruno Sanchez
+// WSU ID: 11714424
 using System.Text;
 using SpreadsheetEngine.Nodes;
 using SpreadsheetEngine.Variables;
@@ -15,7 +16,6 @@ public class Parser
 {
     // private static readonly char[] delimiterChars = ['+', '-', '*', '/']; // Delimiters for expression.
     private readonly NodeFactory factory;
-    private readonly char[] symbols = ['+', '-', '*', '/'];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Parser"/> class.
@@ -39,8 +39,10 @@ public class Parser
             return node;
         }
 
+        var symbols = NodeFactory.GetSymbols();
+
         // For each of the operation characters listed in symbol
-        foreach (var symbol in this.symbols)
+        foreach (var symbol in symbols)
         {
             var index = expression.LastIndexOf(symbol); // Finds the last occurrence of a symbol
             if (index == -1)
@@ -71,8 +73,8 @@ public class Parser
         var sb = new StringBuilder();
         foreach (var c in line)
         {
-            if (this.symbols.Contains(c))
-            {
+            if (NodeFactory.GetSymbols().Contains(c))
+            { // If char c is one of the symbols, it adds sb to the list and c itself to the list
                 pieces.Add(sb.ToString());
                 pieces.Add(c.ToString());
                 sb.Clear();
@@ -84,7 +86,7 @@ public class Parser
         }
 
         if (sb.Length > 0)
-        {
+        { // In case sb still has something
             pieces.Add(sb.ToString());
         }
 

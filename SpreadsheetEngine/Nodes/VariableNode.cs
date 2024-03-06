@@ -1,7 +1,8 @@
 // <copyright file="VariableNode.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-
+// Name: Bruno Sanchez
+// WSU ID: 11714424
 #pragma warning disable SA1200
 using SpreadsheetEngine.Variables;
 #pragma warning restore SA1200
@@ -37,7 +38,7 @@ public class VariableNode : INode, ILeafNode
     }
 
     /// <summary>
-    /// ToString
+    /// Returns the variable name.
     /// </summary>
     /// <returns>string.</returns>
     public override string ToString()

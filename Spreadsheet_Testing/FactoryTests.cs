@@ -1,7 +1,8 @@
 // <copyright file="FactoryTests.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-
+// Name: Bruno Sanchez
+// WSU ID: 11714424
 using SpreadsheetEngine.Nodes;
 using SpreadsheetEngine.Variables;
 
@@ -12,8 +13,8 @@ namespace Spreadsheet_Testing;
 /// </summary>
 public class FactoryTests
 {
-    private NodeFactory? factory;
     private readonly VariableHandler solver = new VariableHandler();
+    private NodeFactory? factory;
 
     /// <summary>
     /// Setup.

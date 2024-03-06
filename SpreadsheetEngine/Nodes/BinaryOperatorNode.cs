@@ -1,7 +1,8 @@
 // <copyright file="BinaryOperatorNode.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-
+// Name: Bruno Sanchez
+// WSU ID: 11714424
 using System.Data;
 
 namespace SpreadsheetEngine.Nodes;
@@ -14,7 +15,7 @@ public abstract class BinaryOperatorNode : INode
     /// <summary>
     /// Initializes a new instance of the <see cref="BinaryOperatorNode"/> class.
     /// </summary>
-    public BinaryOperatorNode()
+    protected BinaryOperatorNode()
     {
         this.Left = null;
         this.Right = null;

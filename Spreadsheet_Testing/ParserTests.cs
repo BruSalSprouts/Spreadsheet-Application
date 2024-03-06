@@ -1,7 +1,8 @@
 // <copyright file="ParserTests.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-
+// Name: Bruno Sanchez
+// WSU ID: 11714424
 using SpreadsheetEngine.Nodes;
 using SpreadsheetEngine.Variables;
 #pragma warning disable SA1200
@@ -78,7 +79,7 @@ public class ParserTests
     }
 
     /// <summary>
-    /// Tests if the root node is a proper addition node
+    /// Tests if the root node is a proper addition node.
     /// </summary>
     [Test]
     public void ParseAddExpressionTest()
@@ -89,7 +90,7 @@ public class ParserTests
     }
 
     /// <summary>
-    /// Tests if the root node is a proper subtraction node
+    /// Tests if the root node is a proper subtraction node.
     /// </summary>
     [Test]
     public void ParseSubtractExpressionTest()
@@ -100,7 +101,7 @@ public class ParserTests
     }
 
     /// <summary>
-    /// Tests if the root node is a proper subtraction node
+    /// Tests if the root node is a proper subtraction node.
     /// </summary>
     [Test]
     public void ParseMultiplyExpressionTest()
@@ -111,7 +112,7 @@ public class ParserTests
     }
 
     /// <summary>
-    /// Tests if the root node is a proper subtraction node
+    /// Tests if the root node is a proper subtraction node.
     /// </summary>
     [Test]
     public void ParseDivideExpressionTest()
@@ -123,7 +124,7 @@ public class ParserTests
 
     /// <summary>
     /// Tests a complex expression so root node is an addition node while the root's children
-    /// are multiplication nodes
+    /// are multiplication nodes.
     /// </summary>
     [Test]
     public void ParseAddAndMultiplyComplexExpressionTest()

@@ -1,24 +1,42 @@
 // <copyright file="NodeFactory.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-
+// Name: Bruno Sanchez
+// WSU ID: 11714424
 using System.Text.RegularExpressions;
 using SpreadsheetEngine.Variables;
 
 namespace SpreadsheetEngine.Nodes;
 
-public class NodeFactory
+/// <summary>
+/// The Node factory class.
+/// </summary>
+public partial class NodeFactory
 {
+    // The symbols that will be used in the Expression Tree
+    // The order is reverse PEMDAS.
+    // IMPORTANT! DO NOT CHANGE THE ORDER OF SYMBOLS OR THE TREE WILL BREAK
+    private static readonly char[] Symbols = ['+', '-', '*', '/'];
+
     /// <summary>
-    /// Dictionary that maps each operation to a specific type of OperatorNode
+    /// Dictionary that maps each operation to a specific type of OperatorNode.
     /// </summary>
     private readonly Dictionary<char, Type> operationMap = new Dictionary<char, Type>()
     {
-        { '+', typeof(AddNode) },
-        { '-', typeof(SubtractNode) },
-        { '*', typeof(MultiplyNode) },
-        { '/', typeof(DivideNode) },
+        { Symbols[0], typeof(AddNode) },
+        { Symbols[1], typeof(SubtractNode) },
+        { Symbols[2], typeof(MultiplyNode) },
+        { Symbols[3], typeof(DivideNode) },
     };
+
+    /// <summary>
+    /// Returns the list of symbols.
+    /// </summary>
+    /// <returns>list of symbols.</returns>
+    public static IEnumerable<char> GetSymbols()
+    {
+        return Symbols;
+    }
 
     /// <summary>
     /// Factory that returns a node.
@@ -46,14 +64,12 @@ public class NodeFactory
             return new NumberNode(value);
         }
 
-        // If a variable is within the regular expression pattern:
+        // Add expression as a VariableNode if a variable is within the regular expression pattern:
         // If the initial character is A-Z (uppercase or lowercase), then if the rest of the characters are
         // alphanumeric
-        if (Regex.IsMatch(expression, "^[A-Za-z]+[A-Za-z0-9]*$"))
-        {
-            return new VariableNode(expression, solver);
-        }
-
-        return null;
+        return expression != null && MyRegex().IsMatch(expression) ? new VariableNode(expression, solver) : null;
     }
+
+    [GeneratedRegex("^[A-Za-z]+[A-Za-z0-9]*$")]
+    private static partial Regex MyRegex();
 }
