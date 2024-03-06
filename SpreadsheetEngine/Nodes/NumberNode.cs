@@ -2,7 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace SpreadsheetEngine.Tree;
+namespace SpreadsheetEngine.Nodes;
 
 /// <summary>
 /// The NumberNode class. It represents a constant numerical value.

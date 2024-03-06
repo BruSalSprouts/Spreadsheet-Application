@@ -2,9 +2,10 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+using SpreadsheetEngine.Nodes;
 #pragma warning disable SA1200
 using SpreadsheetEngine;
-using SpreadsheetEngine.Tree;
+
 #pragma warning restore SA1200
 
 namespace Spreadsheet_Testing;
@@ -56,7 +57,7 @@ public class ExpressionTreeTests
     {
         var tree = new ExpressionTree("Blah+99");
         var root = tree.GetRoot();
-        var node = root as BinOperatorNode;
+        var node = root as BinaryOperatorNode;
         Assert.That(node, Is.Not.Null);
         Assert.Multiple(
             () =>

@@ -2,9 +2,9 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-#pragma warning disable SA1200
 using System.Text;
-#pragma warning restore SA1200
+using SpreadsheetEngine.Nodes;
+using SpreadsheetEngine.Variables;
 
 namespace SpreadsheetEngine;
 
@@ -14,13 +14,49 @@ namespace SpreadsheetEngine;
 public class Parser
 {
     // private static readonly char[] delimiterChars = ['+', '-', '*', '/']; // Delimiters for expression.
-    private static readonly HashSet<char> DelimiterChars = ['+', '-', '*', '/'];
+    private readonly NodeFactory factory;
+    private readonly char[] symbols = ['+', '-', '*', '/'];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Parser"/> class.
     /// </summary>
     public Parser()
     {
+        this.factory = new NodeFactory();
+    }
+
+    /// <summary>
+    /// This parses an expression into an Expression Tree.
+    /// </summary>
+    /// <param name="expression">string.</param>
+    /// <param name="solver">IVariableResolver.</param>
+    /// <returns>INode?.</returns>
+    public INode? ParseExpression(string expression, IVariableResolver solver)
+    {
+        var node = this.factory.Create(expression, solver);
+        if (node != null)
+        { // If the expression is empty or invalid
+            return node;
+        }
+
+        // For each of the operation characters listed in symbol
+        foreach (var symbol in this.symbols)
+        {
+            var index = expression.LastIndexOf(symbol); // Finds the last occurrence of a symbol
+            if (index == -1)
+            {
+                continue;
+            }
+
+            var left = expression[..index]; // Gets the left hand side
+            var right = expression[(index + 1)..]; // Gets the right hand side
+            node = this.factory.Create(symbol.ToString(), solver); // Makes the BinaryOperatorNode
+            ((BinaryOperatorNode)node).Left = this.ParseExpression(left.Trim(), solver); // Parses the left hand side
+            ((BinaryOperatorNode)node).Right = this.ParseExpression(right.Trim(), solver); // Parses the right hand side
+            return node;
+        }
+
+        return node;
     }
 
     /// <summary>
@@ -35,7 +71,7 @@ public class Parser
         var sb = new StringBuilder();
         foreach (var c in line)
         {
-            if (DelimiterChars.Contains(c))
+            if (this.symbols.Contains(c))
             {
                 pieces.Add(sb.ToString());
                 pieces.Add(c.ToString());

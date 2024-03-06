@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Spreadsheet_Bruno_SanchezParra")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d866342cfe38b11b347662653c53349a5ea70649")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1ea6e5e93010e75800aeb29fd38cd80f0c5787cd")]
 [assembly: System.Reflection.AssemblyProductAttribute("Spreadsheet_Bruno_SanchezParra")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Spreadsheet_Bruno_SanchezParra")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

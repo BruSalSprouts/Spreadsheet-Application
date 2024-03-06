@@ -1,9 +1,12 @@
 // <copyright file="VariableNode.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-using SpreadsheetEngine.Variables;
 
-namespace SpreadsheetEngine.Tree;
+#pragma warning disable SA1200
+using SpreadsheetEngine.Variables;
+#pragma warning restore SA1200
+
+namespace SpreadsheetEngine.Nodes;
 
 /// <summary>
 /// The VariableNode class. It represents a variable.
@@ -31,5 +34,14 @@ public class VariableNode : INode, ILeafNode
     public double GetValue()
     {
         return this.resolver.GetValue(this.varName);
+    }
+
+    /// <summary>
+    /// ToString
+    /// </summary>
+    /// <returns>string.</returns>
+    public override string ToString()
+    {
+        return this.varName;
     }
 }
