@@ -11,16 +11,25 @@ using Spreadsheet_Bruno_SanchezParra.Views;
 
 namespace Spreadsheet_Bruno_SanchezParra;
 
+/// <summary>
+/// Partial class App.
+/// </summary>
 public partial class App : Application
 {
+    /// <summary>
+    /// The initializer for the Avalonia Application.
+    /// </summary>
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
     }
 
+    /// <summary>
+    /// Sets up framework initialization.
+    /// </summary>
     public override void OnFrameworkInitializationCompleted()
     {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow
             {

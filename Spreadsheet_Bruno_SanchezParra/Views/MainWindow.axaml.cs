@@ -1,3 +1,4 @@
+// ReSharper disable RedundantUsingDirective
 // <copyright file="MainWindow.axaml.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
@@ -14,11 +15,14 @@ using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
-using SpreadsheetEngine;
 using Spreadsheet_Bruno_SanchezParra.ViewModels;
+using SpreadsheetEngine;
 
 namespace Spreadsheet_Bruno_SanchezParra.Views;
 
+/// <summary>
+/// MainWindow Class.
+/// </summary>
 public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 {
     private new bool isInitialized;
@@ -33,6 +37,8 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         this.SpreadsheetDataGrid.HeadersVisibility = DataGridHeadersVisibility.All;
         this.WhenAnyValue(x => x.DataContext)
             .Where(dataContext => dataContext != null)
+
+            // ReSharper disable once BadParensLineBreaks
             .Subscribe(dataContext =>
             {
                 if (dataContext is MainWindowViewModel)
@@ -43,7 +49,23 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     }
 
     /// <summary>
-    /// Creates a row of cell columns that have headers that go from A - Z
+    /// Binding handler which creates the Row Headers.
+    /// </summary>
+    /// <param name="sender">nullable object.</param>
+    /// <param name="e">DataGridRowEventArgs.</param>
+    private static void MainGridOnLoadingRow(object? sender, DataGridRowEventArgs e)
+    {
+        var row = e.Row;
+        row.Header = (row.GetIndex() + 1).ToString();
+        var color1 = new SolidColorBrush(Colors.CornflowerBlue); // First color for Spreadsheet
+        var color2 = new SolidColorBrush(Colors.DarkSlateBlue); // Second color for Spreadsheet
+
+        // row.Background = (row.GetIndex() % 2 == 0) ? new SolidColorBrush(0xffe0e0e0) : new SolidColorBrush(0xffd0d0d0);
+        row.Background = row.GetIndex() % 2 == 0 ? color1 : color2;
+    }
+
+    /// <summary>
+    /// Creates a row of cell columns that have headers that go from A - Z.
     /// </summary>
     private void InitializeDataGrid()
     {
@@ -77,27 +99,11 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     }
 
     /// <summary>
-    /// Binding handler which creates the Row Headers
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private static void MainGridOnLoadingRow(object? sender, DataGridRowEventArgs e)
-    {
-        var row = e.Row;
-        row.Header = (row.GetIndex() + 1).ToString();
-        var color1 = new SolidColorBrush(Colors.CornflowerBlue); // First color for Spreadsheet
-        var color2 = new SolidColorBrush(Colors.DarkSlateBlue); // Second color for Spreadsheet
-
-        // row.Background = (row.GetIndex() % 2 == 0) ? new SolidColorBrush(0xffe0e0e0) : new SolidColorBrush(0xffd0d0d0);
-        row.Background = (row.GetIndex() % 2 == 0) ? color1 : color2;
-    }
-
-    /// <summary>
     /// Event handler so every time a Cell is clicked on, the row is highlighted and ultimately the cell's Text
-    /// contents are copied to MyText.Text
+    /// contents are copied to MyText.Text.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">nullable object.</param>
+    /// <param name="e">DataGridCellPointerPressedEventArgs.</param>
     private void MainGridOnCellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
     {
         if (sender == null)

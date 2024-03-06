@@ -7,6 +7,9 @@ using ReactiveUI;
 
 namespace Spreadsheet_Bruno_SanchezParra.ViewModels;
 
+/// <summary>
+/// Constructor for ViewModelBase.
+/// </summary>
 public class ViewModelBase : ReactiveObject
 {
 }

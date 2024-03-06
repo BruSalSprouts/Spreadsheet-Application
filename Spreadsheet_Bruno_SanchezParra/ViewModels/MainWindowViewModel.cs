@@ -6,21 +6,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ReactiveUI;
 using SpreadsheetEngine;
 
 namespace Spreadsheet_Bruno_SanchezParra.ViewModels;
 
+/// <summary>
+/// MainWindowViewModel class. Here is where it takes logic from SpreadsheetEngine and does stuff with it.
+/// </summary>
 public class MainWindowViewModel : ViewModelBase
 {
-    // So since we don't yet have the Spreadsheet or Cell classes done, we'll just make the spreadsheets 
-    // using lists for now
-    public List<List<Cell>> SpreadsheetData { get; set; }
-
-    private Spreadsheet spreadsheet;
     private const int RowCount = 50;
     private const int ColumnCount = 'Z' - 'A' + 1;
-    public Cell[][] Rows { get; }
+
+    // So since we don't yet have the Spreadsheet or Cell classes done,// we'll just make the spreadsheets
+    // using lists for now.
+    private Spreadsheet spreadsheet;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class with InitializeSpreadsheet.
@@ -30,6 +30,27 @@ public class MainWindowViewModel : ViewModelBase
         this.SpreadsheetData = [];
         this.InitializeSpreadsheet();
     }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
+    /// </summary>
+    /// <param name="spreadsheetData">list of list of Cells.</param>
+    // ReSharper disable once UnusedMember.Global
+    public MainWindowViewModel(List<List<Cell>> spreadsheetData)
+    {
+        this.SpreadsheetData = spreadsheetData;
+    }
+
+    /// <summary>
+    /// Gets or sets spreadsheetData.
+    /// </summary>
+    public List<List<Cell>> SpreadsheetData { get; set; }
+
+    /// <summary>
+    /// Gets the Rows Property.
+    /// </summary>
+    // ReSharper disable once UnassignedGetOnlyAutoProperty - Asked for from Assignment.
+    public Cell[][] Rows { get; }
 
     /// <summary>
     /// The Event handler for the HW Demo Button. For each cell it clears text, if it's column A it sets the Value to
@@ -71,7 +92,7 @@ public class MainWindowViewModel : ViewModelBase
 
     /// <summary>
     /// Initializes the spreadsheet by making rows of Cell class.
-    /// (Temporary fix until then is a List of List of char and string)
+    /// (Temporary fix until then is a List of List of char and string).
     /// </summary>
     private void InitializeSpreadsheet()
     {
