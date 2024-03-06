@@ -8,39 +8,33 @@ using System.Runtime.CompilerServices;
 
 namespace SpreadsheetEngine;
 
+/// <summary>
+/// The Cell class. Contains all methods, fields, and properties related to the Cell itself.
+/// </summary>
 public abstract class Cell : INotifyPropertyChanged
 {
-    // The Event Handler for Cell, PropertyChanged
-    public event PropertyChangedEventHandler? PropertyChanged = (sender, e) => { };
+#pragma warning disable SA1600
+    // ReSharper disable once InconsistentNaming
+    internal string text;
 
+    // ReSharper disable once InconsistentNaming
     protected string value;
-    protected string text;
+#pragma warning restore SA1600
+
+    /// <inheritdoc/>
+    public event PropertyChangedEventHandler? PropertyChanged = (sender, e) => { };
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Cell"/> class.
     /// </summary>
-    /// <param name="row" />
-    /// <param name="col" />
-    protected Cell(int row, int col)
+    protected Cell()
     {
-        this.ColumnIndex = col;
-        this.RowIndex = row;
         this.text = string.Empty;
         this.value = string.Empty;
     }
 
     /// <summary>
-    /// Gets the RowIndex property
-    /// </summary>
-    public int RowIndex { get; }
-
-    /// <summary>
-    /// Gets the ColumnIndex property
-    /// </summary>
-    public int ColumnIndex { get; }
-
-    /// <summary>
-    /// Gets or sets makes Text property
+    /// Gets or sets makes Text property.
     /// </summary>
     public virtual string Text
     {
@@ -48,29 +42,28 @@ public abstract class Cell : INotifyPropertyChanged
         set // Setter
         {
             // Conditional to ignore if new value is same as old value
-            if (!string.Equals(this.text, value, StringComparison.Ordinal))
+            if (string.Equals(this.text, value, StringComparison.Ordinal))
             {
-                this.text = value;
-
-                // Event handler for if text changes
-                // this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
-                this.OnPropertyChanged();
+                return;
             }
+
+            this.text = value;
+
+            // Event handler for if text changes
+            // this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
+            this.OnPropertyChanged();
         }
     }
 
     /// <summary>
-    /// Gets publicly gets or Protectedly sets to make the Value property
+    /// Gets publicly gets or Protected sets to make the Value property.
     /// </summary>
-    public virtual string Value
-    {
-        get => this.value;
-    }
+    public virtual string Value => this.value;
 
     /// <summary>
-    /// Event handler method for PropertyChanged event. Sends message to subscribers of PropertyChanged handler
+    /// Event handler method for PropertyChanged event. Sends message to subscribers of PropertyChanged handler.
     /// </summary>
-    /// <param name="propertyName"></param>
+    /// <param name="propertyName">[CallerMemberName] string?.</param>
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -6,20 +6,36 @@
 #pragma warning disable SA1200
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+#pragma warning disable CS9113 // Parameter is unread.
 #pragma warning restore SA1200
 
 namespace SpreadsheetEngine;
 
 /// <summary>
 /// The private SpreadsheetCell class that is the implementation of the Cell class
-/// We'll be using this inside the Spreadsheet to make our cells
+/// We'll be using this inside the Spreadsheet to make our cells.
 /// </summary>
-internal class SpreadsheetCell(int row, int col) : Cell(row, col)
+internal class SpreadsheetCell(int row, int col) : Cell
 {
     /// <summary>
     /// PropertyChanging event handler.
     /// </summary>
     public event PropertyChangingEventHandler? PropertyChanging = (sender, e) => { };
+
+    /// <summary>
+    /// Gets or sets overriden Text property. When text changes, before changing it,
+    /// it sends an event for one event to stop caring.
+    /// </summary>
+    public override string Text
+    {
+        get => base.Text;
+        set
+        {
+            this.OnPropertyChanging();
+            base.Text = value;
+            this.OnPropertyChanged();
+        }
+    }
 
     /// <summary>
     /// Sets value with val.
@@ -28,7 +44,7 @@ internal class SpreadsheetCell(int row, int col) : Cell(row, col)
     public void SetValue(string val)
     {
         this.value = val;
-        this.OnPropertyChanged("Value");
+        this.OnPropertyChanged(nameof(this.Value));
     }
 
     /// <summary>
@@ -50,21 +66,6 @@ internal class SpreadsheetCell(int row, int col) : Cell(row, col)
     }
 
     /// <summary>
-    /// Gets or sets overriden Text property. When text changes, before changing it,
-    /// it sends an event for one event to stop caring.
-    /// </summary>
-    public override string Text
-    {
-        get => base.Text;
-        set
-        {
-            this.OnPropertyChanging();
-            base.Text = value;
-            this.OnPropertyChanged();
-        }
-    }
-
-    /// <summary>
     /// Receives notification that Text is about to change.
     /// </summary>
     /// <param name="propertyName">[CallerMemberName] string.</param>
@@ -74,15 +75,15 @@ internal class SpreadsheetCell(int row, int col) : Cell(row, col)
     }
 
     /// <summary>
-    /// Receives notification that Value of another cell has changed
+    /// Receives notification that Value of another cell has changed.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">object.</param>
+    /// <param name="e">PropertyChangedEventArgs.</param>
     private void OtherOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == "Value")
         {
-            this.OnPropertyChanged("Text");
+            this.OnPropertyChanged(nameof(this.Text));
         }
     }
 }

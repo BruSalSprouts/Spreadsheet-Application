@@ -3,6 +3,7 @@
 // </copyright>
 // Name: Bruno Sanchez
 // WSU ID: 11714424
+#pragma warning disable CS0168 // Variable is declared but never used
 namespace Spreadsheet_Testing;
 
 using System;
@@ -114,15 +115,12 @@ public class SpreadsheetCellsTests
         o.CellPropertyChanged += (sender, args) =>
         {
             // Checks to see if sender is of type Cell
-            Assert.True(sender is Cell);
-            Cell cell = (Cell)sender;
+            Assert.That(sender is Cell, Is.True);
+            var cell = (Cell)sender!;
             Assert.That(cell.Text, Is.EqualTo("test")); // An event fires!
         };
-        var cellActual = o?[4, 3];
-        if (cellActual != null)
-        {
-            cellActual.Text = "test";
-        }
+        var cellActual = o[4, 3];
+        cellActual.Text = "test";
     }
 
     /// <summary>
@@ -374,7 +372,7 @@ public class SpreadsheetCellsTests
     }
 
     /// <summary>
-    /// Tests to see if a cell that's assgined to another cell have the same Value.
+    /// Tests to see if a cell that's assigned to another cell have the same Value.
     /// </summary>
     [Test]
     public void CellValueUpdateTest1()
