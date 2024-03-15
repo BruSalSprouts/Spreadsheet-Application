@@ -30,14 +30,16 @@ public class VariableHandler : IVariableResolver
         return this.store[varName];
     }
 
-    /// <summary>
-    /// Stores a value to a variable varName's value.
-    /// </summary>
-    /// <param name="varName">string.</param>
-    /// <param name="value">double.</param>
-    public void AddVariable(string varName, double value)
+    /// <inheritdoc/>
+    public void SetValue(string varName, double newValue)
     {
-        this.store[varName] = value;
+        this.store[varName] = newValue;
+    }
+
+    /// <inheritdoc/>
+    public bool Exists(string varName)
+    {
+        return this.store.ContainsKey(varName);
     }
 
     /// <summary>

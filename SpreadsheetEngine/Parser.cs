@@ -3,7 +3,10 @@
 // </copyright>
 // Name: Bruno Sanchez
 // WSU ID: 11714424
+
+using System.Collections;
 using System.Text;
+using System.Text.RegularExpressions;
 using SpreadsheetEngine.Nodes;
 using SpreadsheetEngine.Variables;
 
@@ -12,17 +15,30 @@ namespace SpreadsheetEngine;
 /// <summary>
 /// The Parser class. The ultimate goal is to parse a string but including delimiters as their own strings.
 /// </summary>
-public class Parser
+public partial class Parser
 {
     // private static readonly char[] delimiterChars = ['+', '-', '*', '/']; // Delimiters for expression.
     private readonly NodeFactory factory;
 
+    private readonly IVariableResolver solver;
+
+    private readonly Dictionary<char, int> operatorOrder = new ()
+    {
+        { '+', 1 },
+        { '-', 1 },
+        { '*', 2 },
+        { '/', 2 },
+        { '^', 3 },
+    };
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Parser"/> class.
     /// </summary>
-    public Parser()
+    /// <param name="solver">IVariableResolver.</param>
+    public Parser(IVariableResolver solver)
     {
         this.factory = new NodeFactory();
+        this.solver = solver;
     }
 
     /// <summary>
@@ -31,9 +47,9 @@ public class Parser
     /// <param name="expression">string.</param>
     /// <param name="solver">IVariableResolver.</param>
     /// <returns>INode?.</returns>
-    public INode? ParseExpression(string expression, IVariableResolver solver)
+    public INode? ParseExpression(string expression)
     {
-        var node = this.factory.Create(expression, solver);
+        var node = this.factory.Create(expression, this.solver);
         if (node != null)
         { // If the expression is empty or invalid
             return node;
@@ -52,9 +68,9 @@ public class Parser
 
             var left = expression[..index]; // Gets the left hand side
             var right = expression[(index + 1)..]; // Gets the right hand side
-            node = this.factory.Create(symbol.ToString(), solver); // Makes the BinaryOperatorNode
-            ((BinaryOperatorNode)node).Left = this.ParseExpression(left.Trim(), solver); // Parses the left hand side
-            ((BinaryOperatorNode)node).Right = this.ParseExpression(right.Trim(), solver); // Parses the right hand side
+            node = this.factory.Create(symbol.ToString(), this.solver); // Makes the BinaryOperatorNode
+            ((BinaryOperatorNode)node).Left = this.ParseExpression(left.Trim()); // Parses the left hand side
+            ((BinaryOperatorNode)node).Right = this.ParseExpression(right.Trim()); // Parses the right hand side
             return node;
         }
 
@@ -92,4 +108,139 @@ public class Parser
 
         return pieces;
     }
+
+    /// <summary>
+    /// Implementation from https://en.wikipedia.org/wiki/Shunting_yard_algorithm.
+    /// </summary>
+    /// <param name="line">string.</param>
+    /// <returns>List of INode.</returns>
+    private List<INode> ShuntingYard(string line)
+    {
+        var expressionList = new List<INode>();
+        var operatorStack = new Stack<string>();
+
+        // Regex for numbers from https://stackoverflow.com/questions/12643009/regular-expression-for-floating-point-numbers.
+        var matches = MyRegex().Matches(line);
+
+        foreach (var match in matches)
+        {
+            var token = match.ToString();
+            if (string.IsNullOrEmpty(token))
+            {
+                continue;
+            }
+
+            var node = this.factory.Create(token, this.solver);
+            if (node is ILeafNode)
+            { // If it's not an operator node
+                if (node is VariableNode variableNode)
+                {
+                    // Initialize new variables to 0.0
+                    var name = variableNode.GetName();
+                    if (!this.solver.Exists(name))
+                    {
+                        this.solver.SetValue(name, 0.0);
+                    }
+                }
+
+                expressionList.Add(node);
+            }
+            else
+            {
+                switch (token[0])
+                {
+                    // Push to stack
+                    case '(':
+                        operatorStack.Push(token);
+                        break;
+                    case ')':
+                        // While the top operator is (
+                        while (operatorStack.Count > 0 && operatorStack.Peek()![0] != '(')
+                        {
+                            var opNode = this.factory.Create(operatorStack.Pop(), this.solver);
+                            if (opNode != null)
+                            {
+                                expressionList.Add(opNode);
+                            }
+                        }
+
+                        if (operatorStack.Count < 1)
+                        { // Invalid parentheses error handler (returns empty list)
+                            return [];
+                        }
+
+                        operatorStack.Pop(); // Discards (
+                        break;
+                    default:
+                        if (this.operatorOrder.TryGetValue(token[0], out var precedenceCheck))
+                        {
+                            // Handle precedence here
+                            while (operatorStack.Count > 0 &&
+                                   this.operatorOrder.ContainsKey(operatorStack.Peek()[0]) &&
+                                   this.operatorOrder[operatorStack.Peek()[0]] >= precedenceCheck)
+                            {
+                                var opNode = this.factory.Create(operatorStack.Pop(), this.solver);
+                                if (opNode != null)
+                                {
+                                    expressionList.Add(opNode);
+                                }
+                            }
+
+                            operatorStack.Push(token);
+                        }
+
+                        break;
+                }
+            }
+        }
+
+        // Deals with remaining operators
+        while (operatorStack.Count > 0)
+        {
+            var opNode = this.factory.Create(operatorStack.Pop(), this.solver);
+            if (opNode != null)
+            {
+                expressionList.Add(opNode);
+            }
+        }
+
+        return expressionList;
+    }
+
+    internal INode? ParseWithShuntingYard(string line)
+    {
+        var nodes = this.ShuntingYard(line);
+        var nodesStack = new Stack<INode>();
+        foreach (var node in nodes)
+        {
+            if (node is ILeafNode)
+            { // Push leaf node to stack
+                nodesStack.Push(node);
+            }
+            else
+            { // Get the top two nodes from the stack
+                // Invalid expression check
+                if (nodesStack.Count < 2)
+                {
+                    return null;
+                }
+
+                var right = nodesStack.Pop();
+                var left = nodesStack.Pop();
+
+                // Assign the nodes to a simple binary tree
+                ((BinaryOperatorNode)node).Right = right;
+                ((BinaryOperatorNode)node).Left = left;
+
+                // Push the operator node to stack
+                nodesStack.Push(node);
+            }
+        }
+
+        // If only one thing is in the stack, we return the successfully made tree. Else we return null (An error)
+        return nodesStack.Count == 1 ? nodesStack.Pop() : null;
+    }
+
+    [GeneratedRegex(@"([*+/\-\^)(])|(([0-9]*[.])?[0-9]+|[a-zA-Z]+[a-zA-Z0-9]*)")]
+    private static partial Regex MyRegex();
 }

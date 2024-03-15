@@ -29,6 +29,15 @@ public class VariableNode : INode, ILeafNode
     }
 
     /// <summary>
+    /// Returns the variable name.
+    /// </summary>
+    /// <returns>string.</returns>
+    public string GetName()
+    {
+        return this.varName;
+    }
+
+    /// <summary>
     /// Gets the value of the variable.
     /// </summary>
     /// <returns>double.</returns>

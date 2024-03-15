@@ -24,7 +24,7 @@ public class ParserTests
     [SetUp]
     public void Setup()
     {
-        this.parser = new Parser();
+        this.parser = new Parser(new VariableHandler());
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ public class ParserTests
     [Test]
     public void ParseAddExpressionTest()
     {
-        var actual = this.parser?.ParseExpression("a+b+c", new VariableHandler());
+        var actual = this.parser?.ParseExpression("a+b+c");
         Assert.That(actual, Is.Not.Null);
         Assert.That(actual, Is.TypeOf(typeof(AddNode)));
     }
@@ -95,7 +95,7 @@ public class ParserTests
     [Test]
     public void ParseSubtractExpressionTest()
     {
-        var actual = this.parser?.ParseExpression("a-b-c", new VariableHandler());
+        var actual = this.parser?.ParseExpression("a-b-c");
         Assert.That(actual, Is.Not.Null);
         Assert.That(actual, Is.TypeOf(typeof(SubtractNode)));
     }
@@ -106,7 +106,7 @@ public class ParserTests
     [Test]
     public void ParseMultiplyExpressionTest()
     {
-        var actual = this.parser?.ParseExpression("a*b*c", new VariableHandler());
+        var actual = this.parser?.ParseExpression("a*b*c");
         Assert.That(actual, Is.Not.Null);
         Assert.That(actual, Is.TypeOf(typeof(MultiplyNode)));
     }
@@ -117,7 +117,7 @@ public class ParserTests
     [Test]
     public void ParseDivideExpressionTest()
     {
-        var actual = this.parser?.ParseExpression("a/b/c", new VariableHandler());
+        var actual = this.parser?.ParseExpression("a/b/c");
         Assert.That(actual, Is.Not.Null);
         Assert.That(actual, Is.TypeOf(typeof(DivideNode)));
     }
@@ -129,7 +129,7 @@ public class ParserTests
     [Test]
     public void ParseAddAndMultiplyComplexExpressionTest()
     {
-        var actual = this.parser?.ParseExpression("a*c+b*d", new VariableHandler());
+        var actual = this.parser?.ParseExpression("a*c+b*d");
         Assert.That(actual, Is.Not.Null);
         Assert.That(actual, Is.TypeOf(typeof(AddNode)));
         var op = actual as BinaryOperatorNode;

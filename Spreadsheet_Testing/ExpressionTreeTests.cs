@@ -93,4 +93,84 @@ public class ExpressionTreeTests
         tree.SetVariable("Three", 3);
         Assert.That(tree.Evaluate(), Is.EqualTo(6));
     }
+
+    /// <summary>
+    /// Tests whether an expression tree can evaluate an expression that contains parentheses
+    /// with proper Order of Operations.
+    /// </summary>
+    [Test]
+    public void TreeBuiltWithParentheses()
+    {
+        var tree = new ExpressionTree("(1+2)*(5-2)");
+        Assert.That(tree.Evaluate(), Is.EqualTo((1 + 2) * (5 - 2)));
+    }
+
+    /// <summary>
+    /// Tests whether an expression tree that is "built" with invalid expression (wrong number of parentheses)
+    /// returns a null tree.
+    /// </summary>
+    [Test]
+    public void TreeBuiltWithInvalidParenthesesExpression()
+    {
+        var tree = new ExpressionTree("1+2)*(5-2)");
+        Assert.Multiple(
+            () =>
+        {
+            Assert.That(tree.GetRoot(), Is.Null);
+            Assert.That(tree.Evaluate(), Is.EqualTo(0.0));
+        });
+    }
+
+    /// <summary>
+    /// Tests whether a tree that contains an invalid expression (Operators are out of order)
+    /// returns a null tree.
+    /// </summary>
+    [Test]
+    public void TreeBuiltWithInvaidExpression()
+    {
+        var tree = new ExpressionTree("5/*4");
+        Assert.Multiple(
+            () =>
+            {
+                Assert.That(tree.GetRoot(), Is.Null);
+                Assert.That(tree.Evaluate(), Is.EqualTo(0.0));
+            });
+    }
+
+    /// <summary>
+    /// Tests whether an expression tree can evaluate with Exponents (recently added for fun).
+    /// </summary>
+    [Test]
+    public void EvaluateWithExponent()
+    {
+        var tree = new ExpressionTree("1 + 2 ^ 3");
+        Assert.That(tree.Evaluate(), Is.EqualTo(1 + Math.Pow(2, 3)));
+    }
+
+    /// <summary>
+    /// Tests whether an expression tree's variables A and B are set to 0 automatically, so when
+    /// C's value is set, the expression returns a proper answer. (Should be 0, since anything
+    /// times 0 is 0).
+    /// </summary>
+    [Test]
+    public void EvaluateWithVariables()
+    {
+        var tree = new ExpressionTree("A+B*C");
+        tree.SetVariable("C", 5342);
+        Assert.That(tree.Evaluate(), Is.EqualTo(0));
+    }
+
+    /// <summary>
+    /// Tests whether an expression tree's variable nodes' values remain after evaluating the tree.
+    /// </summary>
+    [Test]
+    public void VariablesDontResetAfterEvaluation()
+    {
+        var tree = new ExpressionTree("A+B");
+        tree.SetVariable("A", 4);
+        tree.SetVariable("B", 5);
+        Assert.That(tree.Evaluate(), Is.EqualTo(9));
+        Assert.That(tree.GetVariable("A"), Is.EqualTo(4));
+        Assert.That(tree.GetVariable("B"), Is.EqualTo(5));
+    }
 }

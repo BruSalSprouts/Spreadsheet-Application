@@ -15,8 +15,8 @@ public partial class NodeFactory
 {
     // The symbols that will be used in the Expression Tree
     // The order is reverse PEMDAS.
-    // IMPORTANT! DO NOT CHANGE THE ORDER OF SYMBOLS OR THE TREE WILL BREAK
-    private static readonly char[] Symbols = ['+', '-', '*', '/'];
+    // IMPORTANT! PUT THE ORDER OF SYMBOLS IN REVERSE PEMDAS OR THE TREE WILL BREAK
+    private static readonly char[] Symbols = ['+', '-', '*', '/', '^'];
 
     /// <summary>
     /// Dictionary that maps each operation to a specific type of OperatorNode.
@@ -27,6 +27,7 @@ public partial class NodeFactory
         { Symbols[1], typeof(SubtractNode) },
         { Symbols[2], typeof(MultiplyNode) },
         { Symbols[3], typeof(DivideNode) },
+        { Symbols[4], typeof(ExponentNode) },
     };
 
     /// <summary>
