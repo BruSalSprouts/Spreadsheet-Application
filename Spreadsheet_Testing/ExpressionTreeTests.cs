@@ -93,4 +93,43 @@ public class ExpressionTreeTests
         tree.SetVariable("Three", 3);
         Assert.That(tree.Evaluate(), Is.EqualTo(6));
     }
+
+    [Test]
+    public void TreeBuiltWithParentheses()
+    {
+        var tree = new ExpressionTree("(1+2)*(5-2)");
+        Assert.That(tree.Evaluate(), Is.EqualTo((1 + 2) * (5 - 2)));
+    }
+
+    [Test]
+    public void TreeBuiltWithInvalidParenthesesExpression()
+    {
+        var tree = new ExpressionTree("1+2)*(5-2)");
+        Assert.Multiple(
+            () =>
+        {
+            Assert.That(tree.GetRoot(), Is.Null);
+            Assert.That(tree.Evaluate(), Is.EqualTo(0.0));
+        });
+    }
+
+    [Test]
+    public void TreeBuiltWithInvaidExpression()
+    {
+        var tree = new ExpressionTree("5/*4");
+        Assert.Multiple(
+            () =>
+            {
+                Assert.That(tree.GetRoot(), Is.Null);
+                Assert.That(tree.Evaluate(), Is.EqualTo(0.0));
+            });
+    }
+
+    [Test]
+    public void EvaluateWithVariables()
+    {
+        var tree = new ExpressionTree("A+B*C");
+        tree.SetVariable("C", 5342);
+        Assert.That(tree.Evaluate(), Is.EqualTo(0));
+    }
 }

@@ -46,8 +46,13 @@ public class ExpressionTree
     /// </summary>
     private void Parse()
     {
-        var parser = new Parser();
-        this.root = parser.ParseExpression(this.expression, this.handler);
+        var parser = new Parser(this.handler);
+
+        // Old Parser usage
+        // this.root = parser.ParseExpression(this.expression);
+
+        // New Parser usage (with parentheses)
+        this.root = parser.ParseWithShuntingYard(this.expression);
     }
 
     /// <summary>
