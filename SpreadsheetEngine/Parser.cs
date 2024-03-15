@@ -22,6 +22,15 @@ public partial class Parser
 
     private readonly IVariableResolver solver;
 
+    private readonly Dictionary<char, int> operatorOrder = new ()
+    {
+        { '+', 1 },
+        { '-', 1 },
+        { '*', 2 },
+        { '/', 2 },
+        { '^', 3 },
+    };
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Parser"/> class.
     /// </summary>
@@ -107,20 +116,131 @@ public partial class Parser
     /// <returns>List of INode.</returns>
     private List<INode> ShuntingYard(string line)
     {
-        return [];
+        var expressionList = new List<INode>();
+        var operatorStack = new Stack<string>();
+
+        // Regex for numbers from https://stackoverflow.com/questions/12643009/regular-expression-for-floating-point-numbers.
+        var matches = MyRegex().Matches(line);
+
+        foreach (var match in matches)
+        {
+            var token = match.ToString();
+            if (string.IsNullOrEmpty(token))
+            {
+                continue;
+            }
+
+            var node = this.factory.Create(token, this.solver);
+            if (node is ILeafNode)
+            { // If it's not an operator node
+                if (node is VariableNode variableNode)
+                {
+                    // Initialize new variables to 0.0
+                    var name = variableNode.GetName();
+                    if (!this.solver.Exists(name))
+                    {
+                        this.solver.SetValue(name, 0.0);
+                    }
+                }
+
+                expressionList.Add(node);
+            }
+            else
+            {
+                switch (token[0])
+                {
+                    // Push to stack
+                    case '(':
+                        operatorStack.Push(token);
+                        break;
+                    case ')':
+                        // While the top operator is (
+                        while (operatorStack.Count > 0 && operatorStack.Peek()![0] != '(')
+                        {
+                            var opNode = this.factory.Create(operatorStack.Pop(), this.solver);
+                            if (opNode != null)
+                            {
+                                expressionList.Add(opNode);
+                            }
+                        }
+
+                        if (operatorStack.Count < 1)
+                        { // Invalid parentheses error handler (returns empty list)
+                            return [];
+                        }
+
+                        operatorStack.Pop(); // Discards (
+                        break;
+                    default:
+                        if (this.operatorOrder.TryGetValue(token[0], out var precedenceCheck))
+                        {
+                            // Handle precedence here
+                            while (operatorStack.Count > 0 &&
+                                   this.operatorOrder.ContainsKey(operatorStack.Peek()[0]) &&
+                                   this.operatorOrder[operatorStack.Peek()[0]] >= precedenceCheck)
+                            {
+                                var opNode = this.factory.Create(operatorStack.Pop(), this.solver);
+                                if (opNode != null)
+                                {
+                                    expressionList.Add(opNode);
+                                }
+                            }
+
+                            operatorStack.Push(token);
+                        }
+
+                        break;
+                }
+            }
+        }
+
+        // Deals with remaining operators
+        while (operatorStack.Count > 0)
+        {
+            var opNode = this.factory.Create(operatorStack.Pop(), this.solver);
+            if (opNode != null)
+            {
+                expressionList.Add(opNode);
+            }
+        }
+
+        return expressionList;
     }
 
-    /// <summary>
-    /// Builds a tree from an expression using the ShuntingYard algorithm.
-    /// </summary>
-    /// <param name="line">string.</param>
-    /// <returns>INode.</returns>
     internal INode? ParseWithShuntingYard(string line)
     {
-        return null;
+        var nodes = this.ShuntingYard(line);
+        var nodesStack = new Stack<INode>();
+        foreach (var node in nodes)
+        {
+            if (node is ILeafNode)
+            { // Push leaf node to stack
+                nodesStack.Push(node);
+            }
+            else
+            { // Get the top two nodes from the stack
+                // Invalid expression check
+                if (nodesStack.Count < 2)
+                {
+                    return null;
+                }
+
+                var right = nodesStack.Pop();
+                var left = nodesStack.Pop();
+
+                // Assign the nodes to a simple binary tree
+                ((BinaryOperatorNode)node).Right = right;
+                ((BinaryOperatorNode)node).Left = left;
+
+                // Push the operator node to stack
+                nodesStack.Push(node);
+            }
+        }
+
+        // If only one thing is in the stack, we return the successfully made tree. Else we return null (An error)
+        return nodesStack.Count == 1 ? nodesStack.Pop() : null;
     }
 
-    // Regular Expression to tokenize the expression for the ShuntingYard method.
     [GeneratedRegex(@"([*+/\-\^)(])|(([0-9]*[.])?[0-9]+|[a-zA-Z]+[a-zA-Z0-9]*)")]
     private static partial Regex MyRegex();
 }

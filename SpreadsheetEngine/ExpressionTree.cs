@@ -62,7 +62,17 @@ public class ExpressionTree
     /// <param name="variableValue">double.</param>
     public void SetVariable(string variableName, double variableValue)
     {
-        this.handler.AddVariable(variableName, variableValue);
+        this.handler.SetValue(variableName, variableValue);
+    }
+
+    /// <summary>
+    /// Gets the value from variableName.
+    /// </summary>
+    /// <param name="variableName">string.</param>
+    /// <returns>double.</returns>
+    public double GetVariable(string variableName)
+    {
+        return this.handler.GetValue(variableName);
     }
 
     /// <summary>
