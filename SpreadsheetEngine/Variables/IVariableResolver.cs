@@ -18,14 +18,14 @@ public interface IVariableResolver
     public double GetValue(string varName);
 
     /// <summary>
-    /// Sets newValue to variable varName
+    /// Sets newValue to variable varName.
     /// </summary>
     /// <param name="varName">string.</param>
     /// <param name="newValue">double.</param>
     public void SetValue(string varName, double newValue);
 
     /// <summary>
-    /// Checks to see whether variable varName already exists or not
+    /// Checks to see whether variable varName already exists or not.
     /// </summary>
     /// <param name="varName">string.</param>
     /// <returns>bool.</returns>

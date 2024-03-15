@@ -5,7 +5,7 @@
 namespace SpreadsheetEngine.Nodes;
 
 /// <summary>
-/// ExponentNode class. 
+/// ExponentNode class.
 /// </summary>
 public class ExponentNode : BinaryOperatorNode
 {

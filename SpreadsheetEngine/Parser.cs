@@ -4,7 +4,6 @@
 // Name: Bruno Sanchez
 // WSU ID: 11714424
 
-using System.Collections;
 using System.Text;
 using System.Text.RegularExpressions;
 using SpreadsheetEngine.Nodes;
@@ -45,7 +44,6 @@ public partial class Parser
     /// This parses an expression into an Expression Tree.
     /// </summary>
     /// <param name="expression">string.</param>
-    /// <param name="solver">IVariableResolver.</param>
     /// <returns>INode?.</returns>
     public INode? ParseExpression(string expression)
     {
@@ -155,7 +153,7 @@ public partial class Parser
                         break;
                     case ')':
                         // While the top operator is (
-                        while (operatorStack.Count > 0 && operatorStack.Peek()![0] != '(')
+                        while (operatorStack.Count > 0 && operatorStack.Peek()[0] != '(')
                         {
                             var opNode = this.factory.Create(operatorStack.Pop(), this.solver);
                             if (opNode != null)
@@ -207,6 +205,11 @@ public partial class Parser
         return expressionList;
     }
 
+    /// <summary>
+    /// Makes an expression tree from a string using ShuntingYard.
+    /// </summary>
+    /// <param name="line">string.</param>
+    /// <returns>Expression Tree of INodes.</returns>
     internal INode? ParseWithShuntingYard(string line)
     {
         var nodes = this.ShuntingYard(line);
