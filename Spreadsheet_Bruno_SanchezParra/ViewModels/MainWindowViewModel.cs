@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Avalonia.Controls;
 using SpreadsheetEngine;
 
 namespace Spreadsheet_Bruno_SanchezParra.ViewModels;
@@ -110,5 +111,15 @@ public class MainWindowViewModel : ViewModelBase
 
             this.SpreadsheetData.Add(columns);
         }
+    }
+
+    public void SetCellText(int row, int col, string value)
+    {
+        this.spreadsheet[row, col].Text = value;
+    }
+    
+    public string GetCellValueBindingReference(char colName)
+    {
+        return $"[{colName - 'A'}].Value";
     }
 }

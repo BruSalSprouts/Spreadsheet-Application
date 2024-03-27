@@ -8,9 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Reactive.Linq;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
+using Avalonia.Layout;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using Avalonia.ReactiveUI;
@@ -82,12 +84,44 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         grid.Columns.Clear();
 
         // Time to create the columns A - Z
-        for (char colName = 'A'; colName <= 'Z'; colName++)
+        for (var colName = 'A'; colName <= 'Z'; colName++)
         {
-            var col = new DataGridTextColumn();
-            col.Header = colName.ToString();
-            col.Binding = new Binding($"[{colName - 'A'}].Value");
-            grid?.Columns.Add(col);
+            // var col = new DataGridTextColumn();
+            // col.Header = colName.ToString();
+            // col.Binding = new Binding($"[{colName - 'A'}].Value");
+            // grid?.Columns.Add(col);
+            var name = colName;
+            var columnTemplate = new DataGridTemplateColumn
+            {
+                Header = colName.ToString(),
+                CellTemplate = new FuncDataTemplate<List<Cell>>(
+                    (
+                        value,
+                        namescope) => new TextBlock
+                    {
+                        [!TextBlock.TextProperty] =
+                            new Binding($"[{name - 'A'}].Value"),
+                        TextAlignment = TextAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Text = value[name - 'A'].Value,
+                        Padding = Thickness.Parse("5,0,5,0"),
+                        IsVisible = true,
+                    }),
+                CellEditingTemplate = new FuncDataTemplate<List<Cell>>((
+                    value,
+                    namescope) => new TextBox
+                    // Already bound to the Cell Block
+                {
+                    TextAlignment = TextAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Text = value[name - 'A'].Text, // Change the text in spreadsheet, updates cell here.
+                    Padding = Thickness.Parse("5,0,5,0"),
+                    IsVisible = true,
+                }),
+                IsReadOnly = false,
+            };
+            columnTemplate.IsReadOnly = false;
+            grid?.Columns.Add(columnTemplate);
         }
 
         if (grid != null)
@@ -119,5 +153,26 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         var cells = (List<List<Cell>>)dg.ItemsSource;
         var cell = cells[row][col];
         this.MyText.Text = $"[{e.Column.Header}{row + 1}] : {cell.Text}";
+    }
+
+    private void SpreadsheetDataGrid_OnPreparingCellForEdit(object? sender, DataGridPreparingCellForEditEventArgs e)
+    {
+        Console.WriteLine(e);
+    }
+
+    private void SpreadsheetDataGrid_OnCellEditEnding(object? sender, DataGridCellEditEndingEventArgs e)
+    {
+        var vm = ViewModel;
+        var block = (TextBox)e.EditingElement;
+        var dg = (DataGrid)sender!;
+        int row = e.Row.GetIndex();
+        if (vm != null && e.Column != null && block.Text != null)
+        {
+            int? col = e.Column?.Header?.ToString()?[0] - 'A';
+            if (col.HasValue && row < vm.SpreadsheetData.Count && col < vm.SpreadsheetData[0].Count)
+            {
+                vm.SetCellText(row, (int)col, block.Text);
+            }
+        }
     }
 }
