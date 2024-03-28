@@ -169,7 +169,7 @@ public class ExpressionTreeTests
     public void EvaluateWithVariables()
     {
         var tree = new ExpressionTree("A+B*C");
-        tree.SetVariable("C", 5342);
+        tree.SetVariable("C", 542);
         Assert.That(tree.Evaluate(), Is.EqualTo(double.NaN));
     }
 
