@@ -42,6 +42,12 @@ public class VariableHandler : IVariableResolver
         return this.store.ContainsKey(varName);
     }
 
+    /// <inheritdoc/>
+    public IEnumerable<string> GetVariableNames()
+    {
+        return this.store.Keys;
+    }
+
     /// <summary>
     /// Empties the stored variables.
     /// </summary>

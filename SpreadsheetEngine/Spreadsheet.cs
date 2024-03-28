@@ -3,6 +3,8 @@
 // </copyright>
 // Name: Bruno Sanchez
 // WSU ID: 11714424
+
+using System.Globalization;
 #pragma warning disable SA1200
 using System.ComponentModel;
 #pragma warning restore SA1200
@@ -112,16 +114,60 @@ public class Spreadsheet
             if (!string.IsNullOrEmpty(tempText) && tempText[0] == '=')
             {
                 // The following part is just getting the right Cell name
-                string cellText = tempText[1..].ToUpper();
-                int colInd = cellText[0] - 'A';
-                int rowInd = int.Parse(cellText[1..]) - 1;
+                var expression = tempText[1..].ToUpper();
+                nextValue = double.NaN.ToString(CultureInfo.InvariantCulture);
 
-                // gets the cell after having the name
-                var otherCell = this.GetCell(rowInd, colInd);
-                nextValue = otherCell.Value;
+                // The above commend out code is the previous implementation of an Expression before HW 7
+                var tree = new ExpressionTree(expression);
+                foreach (var name in tree.GetVariableNames())
+                {
+                    if (name.Length < 2)
+                    {
+                        nextValue = "#ERROR!";
+                        continue;
+                    }
 
-                // Calls the Bind function from SpreadsheetCell
-                sender.Bind(otherCell);
+                    var colInd = name[0] - 'A';
+                    var rowInd = int.Parse(name[1..]) - 1;
+
+                    if (rowInd < 0 || rowInd >= this.Rows || colInd < 0 || colInd >= this.Columns)
+                    {
+                        nextValue = "#ERROR!";
+                        continue;
+                    }
+
+                    var otherCell = this.GetCell(rowInd, colInd);
+                    var dValue = double.TryParse(otherCell.Value, out var value);
+                    if (dValue)
+                    {
+                        tree.SetVariable(name, value);
+                    }
+                    else
+                    {
+                        tree.SetVariable(name, double.NaN);
+                        nextValue = otherCell.Value;
+                    }
+
+                    sender.Bind(otherCell);
+                }
+
+                // Evaluate the tree
+                var possibleValue = tree.Evaluate();
+                if (tree.IsExpression())
+                {
+                    // It's a number.
+                    // nextValue will be the number.
+                    nextValue = !double.IsNaN(possibleValue) ?
+                        possibleValue.ToString(CultureInfo.InvariantCulture) : "#ERROR!";
+                }
+                else
+                {
+                    if (!double.IsNaN(possibleValue))
+                    { // It's a number.
+                        // nextValue will be the number.
+                        nextValue = possibleValue.ToString(CultureInfo.InvariantCulture);
+                    }
+                }
             }
 
             sender.SetValue(nextValue);
@@ -164,14 +210,25 @@ public class Spreadsheet
         var tempText = cell.Text;
         if (tempText.Length > 2 && tempText[0] == '=')
         {
-            // Makes sure the right cell's name is being called so that cell is no longer bound
-            var cellText = tempText[1..].ToUpper();
-            var colInd = cellText[0] - 'A';
-            var rowInd = int.Parse(cellText[1..]) - 1;
-            var otherCell = this.GetCell(rowInd, colInd);
+            var tree = new ExpressionTree(tempText[1..].ToUpper());
+            foreach (var name in tree.GetVariableNames())
+            {
+                if (name.Length < 2)
+                {
+                    continue;
+                }
 
-            // Calls the Unbind method from SpreadsheetCell class
-            cell.Unbind(otherCell);
+                var colInd = name[0] - 'A';
+                var rowInd = int.Parse(name[1..]) - 1;
+
+                if (rowInd < 0 || rowInd >= this.Rows || colInd < 0 || colInd >= this.Columns)
+                {
+                    continue;
+                }
+
+                var otherCell = this.GetCell(rowInd, colInd);
+                cell.Unbind(otherCell);
+            }
         }
     }
 

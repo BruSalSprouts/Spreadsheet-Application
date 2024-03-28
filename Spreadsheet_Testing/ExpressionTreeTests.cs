@@ -81,6 +81,19 @@ public class ExpressionTreeTests
     }
 
     /// <summary>
+    /// Tests whether a tree can be evaluated without defining it's variables.
+    /// </summary>
+    [Test]
+    public void SolveWithoutDefiningVariableTest()
+    {
+        var tree = new ExpressionTree("B+A+99/C");
+        Assert.That(tree.Evaluate(), Is.EqualTo(double.NaN));
+        var temp = tree.GetVariableNames();
+        List<string> names = [..temp];
+        Assert.That(names.Count, Is.EqualTo(3));
+    }
+
+    /// <summary>
     /// Tests whether an expression tree that's built correctly can evaluate
     /// an expression with 3 variables (and 2 + operands).
     /// </summary>
@@ -126,7 +139,7 @@ public class ExpressionTreeTests
     /// returns a null tree.
     /// </summary>
     [Test]
-    public void TreeBuiltWithInvaidExpression()
+    public void TreeBuiltWithInvalidExpression()
     {
         var tree = new ExpressionTree("5/*4");
         Assert.Multiple(
@@ -157,7 +170,7 @@ public class ExpressionTreeTests
     {
         var tree = new ExpressionTree("A+B*C");
         tree.SetVariable("C", 5342);
-        Assert.That(tree.Evaluate(), Is.EqualTo(0));
+        Assert.That(tree.Evaluate(), Is.EqualTo(double.NaN));
     }
 
     /// <summary>

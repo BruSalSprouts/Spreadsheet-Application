@@ -10,6 +10,12 @@ namespace SpreadsheetEngine.Nodes;
 /// </summary>
 public class SubtractNode : BinaryOperatorNode
 {
+    /// <inheritdoc/>
+    public override int Precedence => 1;
+
+    /// <inheritdoc/>
+    public override char Symbol => '-';
+
     /// <summary>
     /// Subtracts the right-hand node from the left-hand node.
     /// </summary>

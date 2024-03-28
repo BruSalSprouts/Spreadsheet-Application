@@ -3,6 +3,7 @@
 // </copyright>
 // Name: Bruno Sanchez
 // WSU ID: 11714424
+
 #pragma warning disable CS0168 // Variable is declared but never used
 namespace Spreadsheet_Testing;
 
@@ -227,11 +228,11 @@ public class SpreadsheetCellsTests
                 o[1, 2].Text = "=11";
             }
 
-            Assert.Fail();
+            Assert.That(o?[1, 2].Value, Is.EqualTo(11.ToString()));
         }
         catch (IndexOutOfRangeException f)
         {
-            Assert.Pass();
+            Assert.Fail();
         }
     }
 
@@ -249,12 +250,80 @@ public class SpreadsheetCellsTests
                 o[1, 2].Text = "=A0";
             }
 
-            Assert.Fail();
+            Assert.That(o?[1, 2].Value, Is.EqualTo("#ERROR!"));
         }
         catch (IndexOutOfRangeException f)
         {
-            Assert.Pass();
+            Assert.Fail();
         }
+    }
+
+    /// <summary>
+    /// Tests if a short expression tree with just a number node can be evaluated.
+    /// </summary>
+    [Test]
+    public void ShortFormulaTest()
+    {
+        var o = this.spreadsheet;
+        if (o != null)
+        {
+            o[1, 2].Text = "=1";
+        }
+
+        Assert.That(o?[1, 2].Value, Is.EqualTo(1.ToString()));
+    }
+
+    /// <summary>
+    /// Tests if a short expression tree with just a variable node without the variable having a value
+    /// can be evaluated or not.
+    /// </summary>
+    [Test]
+    public void ShortStringFormulaTest()
+    {
+        var o = this.spreadsheet;
+        if (o != null)
+        {
+            o[1, 2].Text = "=A";
+        }
+
+        Assert.That(o?[1, 2].Value, Is.EqualTo("#ERROR!"));
+    }
+
+    /// <summary>
+    /// Tests if a formula of variables without proper definitions will return with an error or not.
+    /// </summary>
+    [Test]
+    public void ValidFormulaInvalidTextTest()
+    {
+        var o = this.spreadsheet;
+        if (o != null)
+        {
+            o[0, 0].Text = "hello";
+            o[0, 1].Text = "world";
+            o[1, 1].Text = "=A1+B1";
+        }
+
+        Assert.That(o?[1, 1].Value, Is.EqualTo("#ERROR!"));
+    }
+
+    /// <summary>
+    /// Tests whether an expression tree with variables will have errors after setting the variables after
+    /// the formula is made.
+    /// </summary>
+    [Test]
+    public void ValidFormulaInvalidTextThenValidTest()
+    {
+        var o = this.spreadsheet;
+        if (o != null)
+        {
+            o[0, 0].Text = "hello";
+            o[0, 1].Text = "world";
+            o[1, 1].Text = "=A1+B1";
+            o[0, 0].Text = "1";
+            o[0, 1].Text = "2";
+        }
+
+        Assert.That(o?[1, 1].Value, Is.EqualTo("3"));
     }
 
     /// <summary>

@@ -27,7 +27,7 @@ namespace Spreadsheet_Bruno_SanchezParra.Views;
 /// </summary>
 public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 {
-    private new bool isInitialized;
+    private bool isInitialized;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -107,9 +107,11 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
                         Padding = Thickness.Parse("5,0,5,0"),
                         IsVisible = true,
                     }),
-                CellEditingTemplate = new FuncDataTemplate<List<Cell>>((
+                CellEditingTemplate = new FuncDataTemplate<List<Cell>>(
+                    (
                     value,
                     namescope) => new TextBox
+
                     // Already bound to the Cell Block
                 {
                     TextAlignment = TextAlignment.Left,
@@ -155,14 +157,23 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         this.MyText.Text = $"[{e.Column.Header}{row + 1}] : {cell.Text}";
     }
 
+    /// <summary>
+    /// Event handler for when a cell is preparing to edit it's contents.
+    /// </summary>
+    /// <param name="sender">object.</param>
+    /// <param name="e">DataGridCellEditEndingEventArgs.</param>
     private void SpreadsheetDataGrid_OnPreparingCellForEdit(object? sender, DataGridPreparingCellForEditEventArgs e)
     {
-        Console.WriteLine(e);
     }
 
+    /// <summary>
+    /// Event handler for when a cell has finished editing it's text contents.
+    /// </summary>
+    /// <param name="sender">object.</param>
+    /// <param name="e">DataGridCellEditEndingEventArgs.</param>
     private void SpreadsheetDataGrid_OnCellEditEnding(object? sender, DataGridCellEditEndingEventArgs e)
     {
-        var vm = ViewModel;
+        var vm = this.ViewModel;
         var block = (TextBox)e.EditingElement;
         var dg = (DataGrid)sender!;
         int row = e.Row.GetIndex();

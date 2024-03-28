@@ -3,7 +3,6 @@
 // </copyright>
 // Name: Bruno Sanchez
 // WSU ID: 11714424
-using SpreadsheetEngine.Nodes;
 using SpreadsheetEngine.Variables;
 #pragma warning disable SA1200
 using SpreadsheetEngine;
@@ -76,64 +75,5 @@ public class ParserTests
         }
 
         CollectionAssert.AreEqual(expected, actual);
-    }
-
-    /// <summary>
-    /// Tests if the root node is a proper addition node.
-    /// </summary>
-    [Test]
-    public void ParseAddExpressionTest()
-    {
-        var actual = this.parser?.ParseExpression("a+b+c");
-        Assert.That(actual, Is.Not.Null);
-        Assert.That(actual, Is.TypeOf(typeof(AddNode)));
-    }
-
-    /// <summary>
-    /// Tests if the root node is a proper subtraction node.
-    /// </summary>
-    [Test]
-    public void ParseSubtractExpressionTest()
-    {
-        var actual = this.parser?.ParseExpression("a-b-c");
-        Assert.That(actual, Is.Not.Null);
-        Assert.That(actual, Is.TypeOf(typeof(SubtractNode)));
-    }
-
-    /// <summary>
-    /// Tests if the root node is a proper subtraction node.
-    /// </summary>
-    [Test]
-    public void ParseMultiplyExpressionTest()
-    {
-        var actual = this.parser?.ParseExpression("a*b*c");
-        Assert.That(actual, Is.Not.Null);
-        Assert.That(actual, Is.TypeOf(typeof(MultiplyNode)));
-    }
-
-    /// <summary>
-    /// Tests if the root node is a proper subtraction node.
-    /// </summary>
-    [Test]
-    public void ParseDivideExpressionTest()
-    {
-        var actual = this.parser?.ParseExpression("a/b/c");
-        Assert.That(actual, Is.Not.Null);
-        Assert.That(actual, Is.TypeOf(typeof(DivideNode)));
-    }
-
-    /// <summary>
-    /// Tests a complex expression so root node is an addition node while the root's children
-    /// are multiplication nodes.
-    /// </summary>
-    [Test]
-    public void ParseAddAndMultiplyComplexExpressionTest()
-    {
-        var actual = this.parser?.ParseExpression("a*c+b*d");
-        Assert.That(actual, Is.Not.Null);
-        Assert.That(actual, Is.TypeOf(typeof(AddNode)));
-        var op = actual as BinaryOperatorNode;
-        Assert.That(op?.Left, Is.TypeOf(typeof(MultiplyNode)));
-        Assert.That(op?.Right, Is.TypeOf(typeof(MultiplyNode)));
     }
 }

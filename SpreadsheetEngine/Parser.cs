@@ -21,14 +21,7 @@ public partial class Parser
 
     private readonly IVariableResolver solver;
 
-    private readonly Dictionary<char, int> operatorOrder = new ()
-    {
-        { '+', 1 },
-        { '-', 1 },
-        { '*', 2 },
-        { '/', 2 },
-        { '^', 3 },
-    };
+    private readonly Dictionary<char, int> operatorOrder;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Parser"/> class.
@@ -38,41 +31,11 @@ public partial class Parser
     {
         this.factory = new NodeFactory();
         this.solver = solver;
-    }
-
-    /// <summary>
-    /// This parses an expression into an Expression Tree.
-    /// </summary>
-    /// <param name="expression">string.</param>
-    /// <returns>INode?.</returns>
-    public INode? ParseExpression(string expression)
-    {
-        var node = this.factory.Create(expression, this.solver);
-        if (node != null)
-        { // If the expression is empty or invalid
-            return node;
-        }
-
-        var symbols = NodeFactory.GetSymbols();
-
-        // For each of the operation characters listed in symbol
-        foreach (var symbol in symbols)
+        this.operatorOrder = new Dictionary<char, int>();
+        foreach (var op in ReflectiveEnumerator.GetEnumerableOfType<BinaryOperatorNode>())
         {
-            var index = expression.LastIndexOf(symbol); // Finds the last occurrence of a symbol
-            if (index == -1)
-            {
-                continue;
-            }
-
-            var left = expression[..index]; // Gets the left hand side
-            var right = expression[(index + 1)..]; // Gets the right hand side
-            node = this.factory.Create(symbol.ToString(), this.solver); // Makes the BinaryOperatorNode
-            ((BinaryOperatorNode)node).Left = this.ParseExpression(left.Trim()); // Parses the left hand side
-            ((BinaryOperatorNode)node).Right = this.ParseExpression(right.Trim()); // Parses the right hand side
-            return node;
+            this.operatorOrder.Add(op.Symbol, op.Precedence);
         }
-
-        return node;
     }
 
     /// <summary>
@@ -87,7 +50,7 @@ public partial class Parser
         var sb = new StringBuilder();
         foreach (var c in line)
         {
-            if (NodeFactory.GetSymbols().Contains(c))
+            if (this.operatorOrder.ContainsKey(c))
             { // If char c is one of the symbols, it adds sb to the list and c itself to the list
                 pieces.Add(sb.ToString());
                 pieces.Add(c.ToString());
@@ -244,6 +207,7 @@ public partial class Parser
         return nodesStack.Count == 1 ? nodesStack.Pop() : null;
     }
 
+    // TODO: Build the pattern dynamically from the constructor
     [GeneratedRegex(@"([*+/\-\^)(])|(([0-9]*[.])?[0-9]+|[a-zA-Z]+[a-zA-Z0-9]*)")]
     private static partial Regex MyRegex();
 }

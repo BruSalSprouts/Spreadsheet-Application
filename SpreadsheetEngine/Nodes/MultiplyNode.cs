@@ -10,6 +10,12 @@ namespace SpreadsheetEngine.Nodes;
 /// </summary>
 public class MultiplyNode : BinaryOperatorNode
 {
+    /// <inheritdoc/>
+    public override int Precedence => 2;
+
+    /// <inheritdoc/>
+    public override char Symbol => '*';
+
     /// <summary>
     /// Multiplies together the left-side node to the right-side node.
     /// </summary>
