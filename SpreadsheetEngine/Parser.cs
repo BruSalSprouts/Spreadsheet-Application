@@ -207,7 +207,6 @@ public partial class Parser
         return nodesStack.Count == 1 ? nodesStack.Pop() : null;
     }
 
-    // TODO: Build the pattern dynamically from the constructor
     [GeneratedRegex(@"([*+/\-\^)(])|(([0-9]*[.])?[0-9]+|[a-zA-Z]+[a-zA-Z0-9]*)")]
     private static partial Regex MyRegex();
 }
