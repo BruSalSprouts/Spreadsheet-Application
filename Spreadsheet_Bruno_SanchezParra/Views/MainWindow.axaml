@@ -29,12 +29,16 @@
                       AutoGenerateColumns="False" RowHeaderWidth="40"
                       HeadersVisibility="All" GridLinesVisibility="All"
                       HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
-                      CellPointerPressed="MainGridOnCellPointerPressed"
                       IsReadOnly="False"
+                      BorderThickness="1" BorderBrush="Gray"
                       PreparingCellForEdit="SpreadsheetDataGrid_OnPreparingCellForEdit"
                       CellEditEnding="SpreadsheetDataGrid_OnCellEditEnding"
-                      BorderThickness="1" BorderBrush="Gray">
-                <!-- CellPointerPressed="MainGrid_OnCellPointerPressed" -->
+                      CellPointerPressed="SpreadsheetDataGridOnCellPointerPressed"
+                      
+                      >
+            
+            <!-- BeginningEdit="GridOnBeginningEdit" -->
+            <!-- CellPointerPressed="MainGridOnCellPointerPressed" -->
             <DataGrid.Styles>
                 <Style Selector="DataGridColumnHeader">
                     <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>

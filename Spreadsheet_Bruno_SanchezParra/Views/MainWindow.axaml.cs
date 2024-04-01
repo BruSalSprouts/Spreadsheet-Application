@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Drawing.Printing;
 using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -124,7 +125,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
                 {
                     TextAlignment = TextAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Center,
-                    Text = value[name - 'A'].Text, // Change the text in spreadsheet, updates cell here.
+                    // Text = value[name - 'A'].Text, // Change the text in spreadsheet, updates cell here.
                     Padding = Thickness.Parse("5,0,5,0"),
                     IsVisible = true,
                 }),
@@ -137,11 +138,11 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
                 continue;
             }
 
-            // When a cell is selected
-            grid.CellPointerPressed += this.GridOnCellPointerPressed;
-
-            // Preparing for edits
-            grid.BeginningEdit += this.GridOnBeginningEdit;
+            // // When a cell is selected
+            // grid.CellPointerPressed += this.GridOnCellPointerPressed;
+            //
+            // // Preparing for edits
+            // grid.BeginningEdit += this.GridOnBeginningEdit;
         }
 
         if (grid != null)
@@ -153,7 +154,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         this.isInitialized = true;
     }
 
-    private void GridOnCellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs args)
+    private void SpreadsheetDataGridOnCellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs args)
     {
         // get the pressed cell
         var rowIndex = args.Row.GetIndex();
@@ -170,6 +171,9 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         {
             this.ViewModel?.ToggleCellSelection(rowIndex, columnIndex);
         }
+
+        var cell = this.ViewModel?.GetCell(rowIndex, columnIndex);
+        this.MyText.Text = $"[{args.Column.Header}{rowIndex + 1}] : {cell?.Text}";
     }
 
     /// <summary>
@@ -212,6 +216,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         textInput.Text = this.ViewModel?.GetCellText(rowIndex, columnIndex);
     }
 
+    // TODO: Fix this event method so when it's called, cells can still be edited
     private void GridOnBeginningEdit(object? sender, DataGridBeginningEditEventArgs e)
     {
         // get the pressed cell
@@ -219,7 +224,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         var rowIndex = e.Row.GetIndex();
         var columnIndex = e.Column.DisplayIndex;
         var cell = vm?.GetCellModel(rowIndex, columnIndex);
-        if (cell is { CanEdit: false })
+        if (false == cell.CanEdit)
         {
             e.Cancel = true;
         }
@@ -236,19 +241,29 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     /// <param name="e">DataGridCellEditEndingEventArgs.</param>
     private void SpreadsheetDataGrid_OnCellEditEnding(object? sender, DataGridCellEditEndingEventArgs e)
     {
+        Console.WriteLine("Editing");
         var vm = this.ViewModel;
         var block = (TextBox)e.EditingElement;
         var dg = (DataGrid)sender!;
-        var row = e.Row.GetIndex();
-        if (vm == null || e.Column == null || block.Text == null)
+
+        // if (vm == null || e.Column == null || block.Text == null)
+        if (e.EditingElement is not TextBox textInput)
         {
             return;
         }
 
-        var col = e.Column?.Header?.ToString()?[0] - 'A';
-        if (col.HasValue && row < vm.SpreadsheetData.Count && col < vm.SpreadsheetData.Count)
+        var row = e.Row.GetIndex();
+
+        // var col = e.Column?.Header?.ToString()?[0] - 'A';
+        var col = e.Column.DisplayIndex;
+        if (textInput.Text != null)
         {
-            vm.SetCellText(row, (int)col, block.Text);
+            vm?.SetCellText(row, col, textInput.Text);
         }
+
+        // if (col.HasValue && row < vm.SpreadsheetData.Count && col < vm.SpreadsheetData.Count)
+        // {
+        //     vm.SetCellText(row, (int)col, block.Text);
+        // }
     }
 }

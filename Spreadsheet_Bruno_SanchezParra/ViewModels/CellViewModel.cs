@@ -20,7 +20,7 @@ public class CellViewModel : ViewModelBase
     {
         this.cell = cell;
         this.isSelected = false;
-        this.canEdit = false;
+        this.canEdit = true;
         // We forward the notifications from the cell model to the view model
         // note that we forward using args.PropertyName because Cell and CellViewModel properties have the same
         // names to simplify the procedure. If they had different names, we would have a more complex implementation to
