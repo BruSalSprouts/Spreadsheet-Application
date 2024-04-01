@@ -17,6 +17,8 @@ public abstract class Cell : INotifyPropertyChanged
     // ReSharper disable once InconsistentNaming
     internal string text;
 
+    internal uint bgColor;
+
     // ReSharper disable once InconsistentNaming
     protected string value;
 #pragma warning restore SA1600
@@ -31,6 +33,16 @@ public abstract class Cell : INotifyPropertyChanged
     {
         this.text = string.Empty;
         this.value = string.Empty;
+        this.bgColor = 0xFFFFFFFF;
+    }
+
+    /// <summary>
+    /// Gets or sets makes BGColor property.
+    /// </summary>
+    protected virtual uint BGColor
+    {
+        get => this.bgColor;
+        set => this.bgColor = value;
     }
 
     /// <summary>

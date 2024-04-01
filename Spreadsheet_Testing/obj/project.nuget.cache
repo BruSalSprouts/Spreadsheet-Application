@@ -1,10 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "Z2dj6ydArGqWgJkW/5WTVL74BDlBPeUXoa3JBfmyi5IegQSSa8E+D3IL17kgeGjWtyClkxJN0WnQkFtJhftAzQ==",
+  "dgSpecHash": "fn0zeI4VzLwSpaxDIJk2xDXRkadhm6LWGYcWqh7o/WQIEpRESoUl11WtVc3MbPvTy9mvddme49HrGSClb85arQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\Spreadsheet_Testing\\Spreadsheet_Testing.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\bruno\\.nuget\\packages\\avalonia\\11.0.6\\avalonia.11.0.6.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\avalonia.buildservices\\0.0.29\\avalonia.buildservices.0.0.29.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\avalonia.controls.colorpicker\\11.0.6\\avalonia.controls.colorpicker.11.0.6.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\avalonia.remote.protocol\\11.0.6\\avalonia.remote.protocol.11.0.6.nupkg.sha512",
     "C:\\Users\\bruno\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\microcom.runtime\\0.11.0\\microcom.runtime.0.11.0.nupkg.sha512",
     "C:\\Users\\bruno\\.nuget\\packages\\microsoft.codecoverage\\17.6.0\\microsoft.codecoverage.17.6.0.nupkg.sha512",
     "C:\\Users\\bruno\\.nuget\\packages\\microsoft.net.test.sdk\\17.6.0\\microsoft.net.test.sdk.17.6.0.nupkg.sha512",
     "C:\\Users\\bruno\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
@@ -17,6 +22,7 @@
     "C:\\Users\\bruno\\.nuget\\packages\\nunit.analyzers\\3.6.1\\nunit.analyzers.3.6.1.nupkg.sha512",
     "C:\\Users\\bruno\\.nuget\\packages\\nunit3testadapter\\4.2.1\\nunit3testadapter.4.2.1.nupkg.sha512",
     "C:\\Users\\bruno\\.nuget\\packages\\stylecop.analyzers\\1.1.118\\stylecop.analyzers.1.1.118.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\system.componentmodel.annotations\\4.5.0\\system.componentmodel.annotations.4.5.0.nupkg.sha512",
     "C:\\Users\\bruno\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512"
   ],
   "logs": []
