@@ -100,3 +100,17 @@ C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\obj\Debug\net8.0\re
 C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\obj\Debug\net8.0\Spreadsheet_Testing.pdb
 C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\obj\Debug\net8.0\Spreadsheet_Testing.genruntimeconfig.cache
 C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\obj\Debug\net8.0\ref\Spreadsheet_Testing.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\bin\Debug\net8.0\Avalonia.Base.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\bin\Debug\net8.0\Avalonia.Controls.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\bin\Debug\net8.0\Avalonia.DesignerSupport.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\bin\Debug\net8.0\Avalonia.Dialogs.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\bin\Debug\net8.0\Avalonia.Markup.Xaml.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\bin\Debug\net8.0\Avalonia.Markup.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\bin\Debug\net8.0\Avalonia.Metal.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\bin\Debug\net8.0\Avalonia.MicroCom.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\bin\Debug\net8.0\Avalonia.OpenGL.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\bin\Debug\net8.0\Avalonia.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\bin\Debug\net8.0\Avalonia.Controls.ColorPicker.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\bin\Debug\net8.0\Avalonia.Remote.Protocol.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\bin\Debug\net8.0\MicroCom.Runtime.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\Spreadsheet_Testing\obj\Debug\net8.0\Avalonia\Resources.Inputs.cache

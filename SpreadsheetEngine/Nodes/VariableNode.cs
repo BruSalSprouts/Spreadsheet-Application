@@ -3,6 +3,8 @@
 // </copyright>
 // Name: Bruno Sanchez
 // WSU ID: 11714424
+
+using SpreadsheetEngine.Exceptions;
 #pragma warning disable SA1200
 using SpreadsheetEngine.Variables;
 #pragma warning restore SA1200
@@ -43,7 +45,13 @@ public class VariableNode : INode, ILeafNode
     /// <returns>double.</returns>
     public double GetValue()
     {
-        return this.resolver.GetValue(this.varName);
+        double val = this.resolver.GetValue(this.varName);
+        if (!(double.IsNaN(val)))
+        {
+            return val;
+        }
+
+        throw new InvalidValueException($@"{this.varName} does not have a value");
     }
 
     /// <summary>

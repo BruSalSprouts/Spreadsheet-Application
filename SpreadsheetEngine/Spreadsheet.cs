@@ -5,6 +5,7 @@
 // WSU ID: 11714424
 
 using System.Globalization;
+using SpreadsheetEngine.Exceptions;
 #pragma warning disable SA1200
 using System.ComponentModel;
 #pragma warning restore SA1200
@@ -151,21 +152,30 @@ public class Spreadsheet
                     sender.Bind(otherCell);
                 }
 
+                var possibleValue = double.NaN;
+
                 // Evaluate the tree
-                var possibleValue = tree.Evaluate();
-                if (tree.IsExpression())
+                try
                 {
-                    // It's a number.
-                    // nextValue will be the number.
-                    nextValue = !double.IsNaN(possibleValue) ?
-                        possibleValue.ToString(CultureInfo.InvariantCulture) : "#ERROR!";
+                    possibleValue = tree.Evaluate();
+                    nextValue = possibleValue.ToString(CultureInfo.InvariantCulture);
                 }
-                else
+                catch (InvalidValueException e)
                 {
-                    if (!double.IsNaN(possibleValue))
-                    { // It's a number.
+                    if (tree.IsExpression())
+                    {
+                        // It's a number.
                         // nextValue will be the number.
-                        nextValue = possibleValue.ToString(CultureInfo.InvariantCulture);
+                        nextValue = !double.IsNaN(possibleValue) ?
+                            possibleValue.ToString(CultureInfo.InvariantCulture) : "#ERROR!";
+                    }
+                    else
+                    {
+                        if (!double.IsNaN(possibleValue))
+                        { // It's a number.
+                            // nextValue will be the number.
+                            nextValue = possibleValue.ToString(CultureInfo.InvariantCulture);
+                        }
                     }
                 }
             }

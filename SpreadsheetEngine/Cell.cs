@@ -15,9 +15,9 @@ public abstract class Cell : INotifyPropertyChanged
 {
 #pragma warning disable SA1600
     // ReSharper disable once InconsistentNaming
-    internal string text;
+    private string text;
 
-    internal uint bgColor;
+    private uint bgColor;
 
     // ReSharper disable once InconsistentNaming
     protected string value;
@@ -39,10 +39,23 @@ public abstract class Cell : INotifyPropertyChanged
     /// <summary>
     /// Gets or sets makes BGColor property.
     /// </summary>
-    protected virtual uint BGColor
+    public uint BgColor
     {
         get => this.bgColor;
-        set => this.bgColor = value;
+        set
+        {
+            // Conditional to ignore if new value is same as old value
+            if (this.BgColor == value)
+            {
+                return;
+            }
+
+            this.bgColor = value;
+
+            // Event handler for if text changes
+            // this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
+            this.OnPropertyChanged();
+        }
     }
 
     /// <summary>
@@ -80,16 +93,4 @@ public abstract class Cell : INotifyPropertyChanged
     {
         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
-    // protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-    // {
-    //     if (EqualityComparer<T>.Default.Equals(field, value))
-    //     {
-    //         return false;
-    //     }
-    //
-    //     field = value;
-    //     this.OnPropertyChanged(propertyName);
-    //     return true;
-    // }
 }

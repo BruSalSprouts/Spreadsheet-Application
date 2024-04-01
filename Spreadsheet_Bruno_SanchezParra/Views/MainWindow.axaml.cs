@@ -59,11 +59,11 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         var row = e.Row;
         row.Header = (row.GetIndex() + 1).ToString();
-        var color1 = new SolidColorBrush(Colors.CornflowerBlue); // First color for Spreadsheet
-        var color2 = new SolidColorBrush(Colors.DarkSlateBlue); // Second color for Spreadsheet
-
+        // var color1 = new SolidColorBrush(Colors.CornflowerBlue); // First color for Spreadsheet
+        // var color2 = new SolidColorBrush(Colors.DarkSlateBlue); // Second color for Spreadsheet
+        //
         // row.Background = (row.GetIndex() % 2 == 0) ? new SolidColorBrush(0xffe0e0e0) : new SolidColorBrush(0xffd0d0d0);
-        row.Background = row.GetIndex() % 2 == 0 ? color1 : color2;
+        // row.Background = row.GetIndex() % 2 == 0 ? color1 : color2;
     }
 
     /// <summary>
@@ -105,6 +105,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
                         VerticalAlignment = VerticalAlignment.Center,
                         Text = value[name - 'A'].Value,
                         Padding = Thickness.Parse("5,0,5,0"),
+                        Background = new SolidColorBrush(new Color(255, 128, 128, 128), 1.0),
                         IsVisible = true,
                     }),
                 CellEditingTemplate = new FuncDataTemplate<List<Cell>>(

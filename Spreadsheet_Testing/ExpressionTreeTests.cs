@@ -3,6 +3,8 @@
 // </copyright>
 // Name: Bruno Sanchez
 // WSU ID: 11714424
+
+using SpreadsheetEngine.Exceptions;
 using SpreadsheetEngine.Nodes;
 #pragma warning disable SA1200
 using SpreadsheetEngine;
@@ -87,7 +89,7 @@ public class ExpressionTreeTests
     public void SolveWithoutDefiningVariableTest()
     {
         var tree = new ExpressionTree("B+A+99/C");
-        Assert.That(tree.Evaluate(), Is.EqualTo(double.NaN));
+        Assert.Throws<InvalidValueException>(() => tree.Evaluate());
         var temp = tree.GetVariableNames();
         List<string> names = [..temp];
         Assert.That(names.Count, Is.EqualTo(3));
@@ -170,7 +172,7 @@ public class ExpressionTreeTests
     {
         var tree = new ExpressionTree("A+B*C");
         tree.SetVariable("C", 542);
-        Assert.That(tree.Evaluate(), Is.EqualTo(double.NaN));
+        Assert.Throws<InvalidValueException>(() => tree.Evaluate());
     }
 
     /// <summary>

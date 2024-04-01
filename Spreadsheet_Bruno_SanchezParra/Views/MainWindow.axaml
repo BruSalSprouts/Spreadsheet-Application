@@ -50,9 +50,15 @@
                     <Setter Property="IsEnabled" Value="True"/>
                     <!-- <Setter Property="FontSize" Value="12"></Setter> -->
                 </Style>
-                <Style Selector="DataGridRow">
-                    <Setter Property="Background" Value="Blue"></Setter>
-                </Style>    
+                <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
+                    <Setter Property="Fill" Value="Transparent" />
+                </Style>
+                <Style Selector="DataGridRowHeader:selected">
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+                <Style Selector="DataGridRowHeader:selected /template/ Rectangle#BackgroundRectangle">
+                    <Setter Property="Fill" Value="Transparent" />
+                </Style>
             </DataGrid.Styles>
         </DataGrid>
     </DockPanel>
