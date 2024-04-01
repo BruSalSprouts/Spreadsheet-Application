@@ -18,8 +18,10 @@ public class MainWindowViewModel : ViewModelBase
     private const int RowCount = 50;
     private const int ColumnCount = 'Z' - 'A' + 1;
 
-    // So since we don't yet have the Spreadsheet or Cell classes done,// we'll just make the spreadsheets
-    // using lists for now.
+    // CellViewModel related stuff.
+    private readonly List<CellViewModel> selectedCells = [];
+
+    // The Spreadsheet itself.
     private Spreadsheet spreadsheet;
 
     /// <summary>
@@ -36,7 +38,7 @@ public class MainWindowViewModel : ViewModelBase
     /// </summary>
     /// <param name="spreadsheetData">list of list of Cells.</param>
     // ReSharper disable once UnusedMember.Global
-    public MainWindowViewModel(List<List<Cell>> spreadsheetData)
+    public MainWindowViewModel(List<RowViewModel> spreadsheetData)
     {
         this.SpreadsheetData = spreadsheetData;
     }
@@ -44,7 +46,7 @@ public class MainWindowViewModel : ViewModelBase
     /// <summary>
     /// Gets or sets spreadsheetData.
     /// </summary>
-    public List<List<Cell>> SpreadsheetData { get; set; }
+    public List<RowViewModel> SpreadsheetData { get; set; }
 
     /// <summary>
     /// Gets the Rows Property.
@@ -91,25 +93,25 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Initializes the spreadsheet by making rows of Cell class.
-    /// (Temporary fix until then is a List of List of char and string).
+    /// Gets the cell from SpreadsheetData's ViewModels.
     /// </summary>
-    private void InitializeSpreadsheet()
+    /// <param name="row">int.</param>
+    /// <param name="col">integer.</param>
+    /// <returns>Cell.</returns>
+    public Cell GetCell(int row, int col)
     {
-        this.SpreadsheetData = [];
-        this.spreadsheet = new Spreadsheet(RowCount, ColumnCount);
-        foreach (var rowInd in Enumerable.Range(0, RowCount))
-        {
-            var columns = new List<Cell>(ColumnCount);
-            foreach (var columnInd in Enumerable.Range(0, ColumnCount))
-            {
-                // var cellTemp = this.spreadsheet.GetCell(rowInd, columnInd);
-                // cellTemp.Text = "test";
-                columns.Add(this.spreadsheet.GetCell(rowInd, columnInd));
-            }
+        return this.SpreadsheetData[row][col].Cell;
+    }
 
-            this.SpreadsheetData.Add(columns);
-        }
+    /// <summary>
+    /// Gets the CellViewModel from SpreadsheetData's ViewModels.
+    /// </summary>
+    /// <param name="row">int.</param>
+    /// <param name="col">integer.</param>
+    /// <returns>CellViewModel.</returns>
+    public CellViewModel GetCellModel(int row, int col)
+    {
+        return this.SpreadsheetData[row][col];
     }
 
     /// <summary>
@@ -120,6 +122,78 @@ public class MainWindowViewModel : ViewModelBase
     /// <param name="value">string.</param>
     public void SetCellText(int row, int col, string value)
     {
-        this.spreadsheet[row, col].Text = value;
+        this.SpreadsheetData[row][col].Cell.Text = value;
+    }
+
+    public void SelectCell(int rowIndex, int colIndex)
+    {
+        var clickedCell = this.GetCellModel(rowIndex, colIndex);
+        var shouldEditCell = clickedCell.IsSelected;
+        this.ResetSelection();
+
+        // Add the pressed cell back to the list
+        this.selectedCells.Add(clickedCell);
+    }
+
+    public void ResetSelection()
+    {
+        // Clear currents election
+        foreach (var cell in this.selectedCells)
+        {
+            cell.IsSelected = false;
+            cell.CanEdit = false;
+        }
+
+        this.selectedCells.Clear();
+    }
+
+    public void ToggleCellSelection(int rowIndex, int colIndex)
+    {
+        var clickedCell = this.GetCellModel(rowIndex, colIndex);
+        if (clickedCell.IsSelected == false)
+        {
+            this.selectedCells.Add(clickedCell);
+            clickedCell.IsSelected = true;
+        }
+        else
+        {
+            this.selectedCells.Remove(clickedCell);
+            clickedCell.IsSelected = false;
+        }
+    }
+
+    /// <summary>
+    /// Gets a cell's text.
+    /// </summary>
+    /// <param name="row">int.</param>
+    /// <param name="col">integer.</param>
+    /// <returns>string.</returns>
+    public string GetCellText(int row, int col)
+    {
+        return this.SpreadsheetData[row][col].Cell.Text;
+    }
+
+    /// <summary>
+    /// Initializes the spreadsheet by making rows of Cell class.
+    /// (Temporary fix until then is a List of List of char and string).
+    /// </summary>
+    private void InitializeSpreadsheet()
+    {
+        this.SpreadsheetData = [];
+        this.spreadsheet = new Spreadsheet(RowCount, ColumnCount);
+        foreach (var rowInd in Enumerable.Range(0, RowCount))
+        {
+            var column = new List<CellViewModel>();
+            foreach (var columnInd in Enumerable.Range(0, ColumnCount))
+            {
+                // var cellTemp = this.spreadsheet.GetCell(rowInd, columnInd);
+                // cellTemp.Text = "test";
+                var cell = this.spreadsheet.GetCell(rowInd, columnInd);
+                column.Add(new CellViewModel(cell));
+            }
+
+            var newColumn = new RowViewModel(column);
+            this.SpreadsheetData.Add(newColumn);
+        }
     }
 }

@@ -10,14 +10,11 @@ public class CellViewModel : ViewModelBase
     private bool canEdit;
 
     /// <summary>
-    ///   Indicates if a cell is selected
+    ///   Indicates if a cell is selected.
     /// </summary>
     private bool isSelected;
 
-    public Cell Cell
-    {
-        get => this.cell;
-    }
+    public Cell Cell => this.cell;
 
     public CellViewModel(Cell cell)
     {

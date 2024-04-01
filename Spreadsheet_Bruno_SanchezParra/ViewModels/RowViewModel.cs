@@ -13,6 +13,7 @@ public class RowViewModel : ViewModelBase
         {
             cell.PropertyChanged += this.CellOnPropertyChanged;
         }
+
         this.SelfReference = this;
     }
 

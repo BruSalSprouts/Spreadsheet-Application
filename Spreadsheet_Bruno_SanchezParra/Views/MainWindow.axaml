@@ -59,6 +59,13 @@
                 <Style Selector="DataGridRowHeader:selected /template/ Rectangle#BackgroundRectangle">
                     <Setter Property="Fill" Value="Transparent" />
                 </Style>
+                <!-- Bind DataGridCell background to a Property on the Row view model -->
+                <!-- since we can't bind directly to a cell view model -->
+                <!-- <Style Selector="DataGridCell.SpreadsheetCellClass" -->
+                <!--        x:DataType="vm:RowViewModel"> -->
+                <!--     <Setter Property="Background" Value="{Binding SelfReference, -->
+                <!--             Converter={StaticResource RowBrushConverter}}" /> -->
+                <!-- </Style> -->
             </DataGrid.Styles>
         </DataGrid>
     </DockPanel>

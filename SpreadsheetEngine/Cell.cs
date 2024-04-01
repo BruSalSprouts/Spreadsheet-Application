@@ -15,12 +15,13 @@ public abstract class Cell : INotifyPropertyChanged
 {
 #pragma warning disable SA1600
     // ReSharper disable once InconsistentNaming
+    protected string value;
+
+    // ReSharper disable once InconsistentNaming
     private string text;
 
     private uint bgColor;
 
-    // ReSharper disable once InconsistentNaming
-    protected string value;
 #pragma warning restore SA1600
 
     /// <inheritdoc/>
