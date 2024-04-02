@@ -2,9 +2,6 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using System;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
@@ -12,13 +9,18 @@ using Spreadsheet_Bruno_SanchezParra.ViewModels;
 
 namespace Spreadsheet_Bruno_SanchezParra.Views;
 
+/// <summary>
+/// ColorChooserWindow class.
+/// </summary>
 public partial class ColorChooserWindow : ReactiveWindow<ColorChooserViewModel>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ColorChooserWindow"/> class.
+    /// </summary>
     public ColorChooserWindow()
     {
         this.InitializeComponent();
-        this.WhenActivated(action => action(this.ViewModel!.OKButtonCommand.Subscribe(this.Close)));
+        this.WhenActivated(action => action(this.ViewModel!.OkButtonCommand.Subscribe(this.Close)));
         this.WhenActivated(action => action(this.ViewModel!.CancelButtonCommand.Subscribe(this.Close)));
-
     }
 }

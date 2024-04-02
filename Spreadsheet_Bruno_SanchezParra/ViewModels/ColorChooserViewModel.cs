@@ -4,24 +4,27 @@
 
 using System;
 using System.Reactive;
-using System.Windows.Input;
-using Avalonia.Controls;
 using Avalonia.Media;
 using ReactiveUI;
 
 namespace Spreadsheet_Bruno_SanchezParra.ViewModels;
 
+/// <summary>
+/// ColorChooserViewModel class.
+/// </summary>
 public class ColorChooserViewModel : ViewModelBase
 {
     private Color color;
-    private string? dummyText;
     private ChooserViewModel? selectedColor;
 
-    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ColorChooserViewModel"/> class.
+    /// </summary>
+    /// <param name="color">Color.</param>
     public ColorChooserViewModel(Color color)
     {
         this.color = color;
-        this.OKButtonCommand = ReactiveCommand.Create(
+        this.OkButtonCommand = ReactiveCommand.Create(
             () => this.SelectedColor);
         this.CancelButtonCommand = ReactiveCommand.Create(
             () =>
@@ -32,10 +35,19 @@ public class ColorChooserViewModel : ViewModelBase
         this.SelectedColor = new ChooserViewModel(this.color);
     }
 
-    public ReactiveCommand<Unit, ChooserViewModel?> OKButtonCommand { get; }
+    /// <summary>
+    /// Gets OKButtonCommand property.
+    /// </summary>
+    public ReactiveCommand<Unit, ChooserViewModel?> OkButtonCommand { get; }
 
+    /// <summary>
+    /// Gets CancelButtonCommand property.
+    /// </summary>
     public ReactiveCommand<Unit, ChooserViewModel?> CancelButtonCommand { get; }
 
+    /// <summary>
+    /// Gets or sets Color property. Setter checks to see if there's selected values before setting their colors too.
+    /// </summary>
     public Color Color
     {
         get => this.color;
@@ -51,12 +63,9 @@ public class ColorChooserViewModel : ViewModelBase
         }
     }
 
-    public string? DummyText
-    {
-        get => this.dummyText;
-        set => this.RaiseAndSetIfChanged(ref this.dummyText, value);
-    }
-
+    /// <summary>
+    /// Gets or sets SelectedColor property.
+    /// </summary>
     private ChooserViewModel? SelectedColor
     {
         get => this.selectedColor;

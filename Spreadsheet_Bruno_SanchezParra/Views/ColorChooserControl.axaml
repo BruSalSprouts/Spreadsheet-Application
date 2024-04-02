@@ -12,7 +12,7 @@
         </StackPanel>
         <!-- <DockPanel> -->
             <Button Content="OK" 
-                    Command="{Binding OKButtonCommand}"
+                    Command="{Binding OkButtonCommand}"
                     DockPanel.Dock="Left" 
                     HorizontalAlignment="Center" />
             <Button Content="Cancel" 

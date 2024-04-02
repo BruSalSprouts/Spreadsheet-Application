@@ -69,11 +69,6 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         var row = e.Row;
         row.Header = (row.GetIndex() + 1).ToString();
-        // var color1 = new SolidColorBrush(Colors.CornflowerBlue); // First color for Spreadsheet
-        // var color2 = new SolidColorBrush(Colors.DarkSlateBlue); // Second color for Spreadsheet
-        //
-        // row.Background = (row.GetIndex() % 2 == 0) ? new SolidColorBrush(0xffe0e0e0) : new SolidColorBrush(0xffd0d0d0);
-        // row.Background = row.GetIndex() % 2 == 0 ? color1 : color2;
     }
 
     /// <summary>
@@ -132,7 +127,6 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
                 {
                     TextAlignment = TextAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Center,
-                    // Text = value[name - 'A'].Text, // Change the text in spreadsheet, updates cell here.
                     Padding = Thickness.Parse("5,0,5,0"),
                     IsVisible = true,
                 }),
@@ -140,16 +134,6 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
             };
             columnTemplate.IsReadOnly = false;
             grid?.Columns.Add(columnTemplate);
-            if (grid == null)
-            {
-                continue;
-            }
-
-            // // When a cell is selected
-            // grid.CellPointerPressed += this.GridOnCellPointerPressed;
-            //
-            // // Preparing for edits
-            // grid.BeginningEdit += this.GridOnBeginningEdit;
         }
 
         if (grid != null)
@@ -189,29 +173,6 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     }
 
     /// <summary>
-    /// Event handler so every time a Cell is clicked on, the row is highlighted and ultimately the cell's Text
-    /// contents are copied to MyText.Text.
-    /// </summary>
-    /// <param name="sender">nullable object.</param>
-    /// <param name="e">DataGridCellPointerPressedEventArgs.</param>
-    private void MainGridOnCellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
-    {
-        if (sender == null)
-        {
-            return;
-        }
-
-        var dg = (DataGrid)sender;
-        var row = e.Row.GetIndex();
-
-        // ReSharper disable once NullableWarningSuppressionIsUsed
-        var col = e.Column.Header.ToString() ![0] - 'A';
-        var cells = (List<RowViewModel>)dg.ItemsSource;
-        var cell = cells[row].Cells[col];
-        this.MyText.Text = $"[{e.Column.Header}{row + 1}] : {cell.Text}";
-    }
-
-    /// <summary>
     /// Event handler for when a cell is preparing to edit it's contents.
     /// </summary>
     /// <param name="sender">object.</param>
@@ -232,6 +193,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     private void GridOnBeginningEdit(object? sender, DataGridBeginningEditEventArgs e)
     {
         Console.WriteLine("Beginning To Edit");
+
         // get the pressed cell
         var vm = this.ViewModel;
         var rowIndex = e.Row.GetIndex();
@@ -285,8 +247,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         this.Close();
     }
 
-    private async Task DoShowDialogAsync(InteractionContext<ColorChooserViewModel,
-                                        ChooserViewModel?> interaction)
+    private async Task DoShowDialogAsync(InteractionContext<ColorChooserViewModel, ChooserViewModel?> interaction)
 {
      var dialog = new ColorChooserWindow
      {

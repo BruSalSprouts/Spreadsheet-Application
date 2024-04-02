@@ -1,12 +1,17 @@
+// <copyright file="CellViewModel.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 using ReactiveUI;
 using SpreadsheetEngine;
 
 namespace Spreadsheet_Bruno_SanchezParra.ViewModels;
 
-public class CellViewModel : ViewModelBase
+/// <summary>
+/// CellViewModel class. It's the ViewModel version of Cell class.
+/// </summary>
+public sealed class CellViewModel : ViewModelBase
 {
-    protected readonly Cell cell;
-
     private bool canEdit;
 
     /// <summary>
@@ -14,43 +19,72 @@ public class CellViewModel : ViewModelBase
     /// </summary>
     private bool isSelected;
 
-    public Cell Cell => this.cell;
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CellViewModel"/> class.
+    /// </summary>
+    /// <param name="cell">Cell.</param>
     public CellViewModel(Cell cell)
     {
-        this.cell = cell;
+        this.Cell = cell;
         this.isSelected = false;
-        this.canEdit = true; // Starts off false, needs to be this later
+        this.canEdit = false; // Starts off false, needs to be this later
+
         // We forward the notifications from the cell model to the view model
         // note that we forward using args.PropertyName because Cell and CellViewModel properties have the same
         // names to simplify the procedure. If they had different names, we would have a more complex implementation to
         // do the property names matching
-        this.cell.PropertyChanged += (sender, args) => { this.RaisePropertyChanged(args.PropertyName); };
+        this.Cell.PropertyChanged += (sender, args) => { this.RaisePropertyChanged(args.PropertyName); };
     }
 
+    /// <summary>
+    /// Gets the cell property.
+    /// </summary>
+    public Cell Cell { get; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether it can set the value or not.
+    /// </summary>
     public bool IsSelected
     {
         get => this.isSelected;
         set => this.RaiseAndSetIfChanged(ref this.isSelected, value);
     }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether it can set the value or not.
+    /// </summary>
     public bool CanEdit
     {
         get => this.canEdit;
         set => this.RaiseAndSetIfChanged(ref this.canEdit, value);
     }
 
-    public virtual string? Text
+    /// <summary>
+    /// Gets or sets Text property.
+    /// </summary>
+    public string? Text
     {
-        get => this.cell.Text;
-        set => this.cell.Text = value;
+        get => this.Cell.Text;
+        set
+        {
+            if (value != null)
+            {
+                this.Cell.Text = value;
+            }
+        }
     }
 
-    public virtual string? Value => this.cell.Value;
+    /// <summary>
+    /// Gets Value property.
+    /// </summary>
+    public string Value => this.Cell.Value;
 
-    public virtual uint BackgroundColor
+    /// <summary>
+    /// Gets or sets BackgroundColor property.
+    /// </summary>
+    public uint BackgroundColor
     {
-        get => this.cell.BgColor;
-        set => this.cell.BgColor = value;
+        get => this.Cell.BgColor;
+        set => this.Cell.BgColor = value;
     }
 }

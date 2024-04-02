@@ -10,9 +10,20 @@ using Avalonia.Media;
 
 namespace Spreadsheet_Bruno_SanchezParra.Converters;
 
+/// <summary>
+/// Basic ColorConverter class. Was in use for a bit.
+/// </summary>
 public class ColorConverter : IValueConverter
 {
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    /// <summary>
+    /// Converts an object of RowViewModel to another type.
+    /// </summary>
+    /// <param name="value">object.</param>
+    /// <param name="targetType">Type.</param>
+    /// <param name="parameter">object?.</param>
+    /// <param name="culture">CultureInfo.</param>
+    /// <returns>potentially null object.</returns>
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is uint sourceColor && targetType.IsAssignableTo(typeof(IBrush)))
         {
@@ -23,7 +34,16 @@ public class ColorConverter : IValueConverter
         return new BindingNotification(new InvalidCastException(), BindingErrorType.Error);
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    /// <summary>
+    /// Method to convert from the new type back to list of RowViewModels.
+    /// </summary>
+    /// <param name="value">object.</param>
+    /// <param name="targetType">Type.</param>
+    /// <param name="parameter">object?.</param>
+    /// <param name="culture">CultureInfo.</param>
+    /// <returns>potentially null object.</returns>
+    /// <exception cref="NotImplementedException">It's not needed here.</exception>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotImplementedException();
     }

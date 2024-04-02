@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Input;
-using Avalonia;
 using Avalonia.Media;
 using ReactiveUI;
 using SpreadsheetEngine;
@@ -29,9 +28,14 @@ public class MainWindowViewModel : ViewModelBase
     // The Spreadsheet itself.
     private Spreadsheet spreadsheet;
 
-    // Command for choosing colors
+    /// <summary>
+    /// Gets ChooseColorCommand property.
+    /// </summary>
     public ICommand ChooseColorCommand { get; }
 
+    /// <summary>
+    /// Gets ShowDialog property.
+    /// </summary>
     public Interaction<ColorChooserViewModel, ChooserViewModel?> ShowDialog { get; }
 
     /// <summary>
@@ -86,12 +90,6 @@ public class MainWindowViewModel : ViewModelBase
     /// </summary>
     // ReSharper disable once UnassignedGetOnlyAutoProperty - Asked for from Assignment.
     public Cell[][] Rows { get; }
-
-    // public object OnClose { get; }
-    public void OnClose()
-    {
-        
-    }
 
     /// <summary>
     /// The Event handler for the HW Demo Button. For each cell it clears text, if it's column A it sets the Value to
@@ -165,7 +163,7 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Selects a Cell
+    /// Selects a Cell.
     /// </summary>
     /// <param name="rowIndex">int.</param>
     /// <param name="colIndex">integer.</param>
