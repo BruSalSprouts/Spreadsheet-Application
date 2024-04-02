@@ -2,6 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+using System.ComponentModel.DataAnnotations;
 using ReactiveUI;
 using SpreadsheetEngine;
 
@@ -86,5 +87,14 @@ public sealed class CellViewModel : ViewModelBase
     {
         get => this.Cell.BgColor;
         set => this.Cell.BgColor = value;
+    }
+
+    /// <summary>
+    /// Gets or sets TextColor property.
+    /// </summary>
+    public uint TextColor
+    {
+        get => this.Cell.TextColor;
+        set => this.Cell.TextColor = value;
     }
 }

@@ -52,6 +52,7 @@
                       HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                       IsReadOnly="False"
                       BorderThickness="1" BorderBrush="Gray"
+                      Foreground="{Binding TextColor}"
                       PreparingCellForEdit="SpreadsheetDataGrid_OnPreparingCellForEdit"
                       CellEditEnding="SpreadsheetDataGrid_OnCellEditEnding"
                       CellPointerPressed="SpreadsheetDataGridOnCellPointerPressed"
@@ -66,6 +67,8 @@
                 <!-- Add bottom lines to row headers -->
                 <Style Selector="DataGridRowHeader">
                     <Setter Property="AreSeparatorsVisible" Value="True" />
+                    <Setter Property="Background" Value="Black" />
+                    <Setter Property="Foreground" Value="LightGray"/>
                 </Style>
                 <!-- Add bottom and right lines to grid cells-->
                 <Style Selector="DataGridCell /template/ ContentPresenter">
@@ -78,7 +81,8 @@
                     <Setter Property="Fill" Value="Transparent" />
                 </Style>
                 <Style Selector="DataGridRowHeader:selected">
-                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Background" Value="Black" />
+                    <Setter Property="Foreground" Value="LightBlue"/>
                 </Style>
                 <Style Selector="DataGridRowHeader:selected /template/ Rectangle#BackgroundRectangle">
                     <Setter Property="Fill" Value="Transparent" />

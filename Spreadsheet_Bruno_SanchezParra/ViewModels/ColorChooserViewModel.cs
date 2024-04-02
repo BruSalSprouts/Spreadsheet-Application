@@ -54,7 +54,6 @@ public class ColorChooserViewModel : ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref this.color, value);
-            Console.WriteLine(value);
             var chooserViewModel = this.selectedColor;
             if (chooserViewModel != null)
             {

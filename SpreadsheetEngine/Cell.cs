@@ -21,6 +21,7 @@ public abstract class Cell : INotifyPropertyChanged
     private string text;
 
     private uint bgColor;
+    private uint textColor;
 
 #pragma warning restore SA1600
 
@@ -35,6 +36,7 @@ public abstract class Cell : INotifyPropertyChanged
         this.text = string.Empty;
         this.value = string.Empty;
         this.bgColor = 0xFFFFFFFF;
+        this.textColor = 0xFF000000;
     }
 
     /// <summary>
@@ -52,6 +54,28 @@ public abstract class Cell : INotifyPropertyChanged
             }
 
             this.bgColor = value;
+
+            // Event handler for if text changes
+            // this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
+            this.OnPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets TextColor property.
+    /// </summary>
+    public uint TextColor
+    {
+        get => this.textColor;
+        set
+        {
+            // Conditonal to ignore if new value is same as old value
+            if (this.textColor == value)
+            {
+                return;
+            }
+
+            this.textColor = value;
 
             // Event handler for if text changes
             // this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));

@@ -64,7 +64,10 @@ public class MainWindowViewModel : ViewModelBase
                 {
                     foreach (var cell in this.selectedCells)
                     {
-                        cell.BackgroundColor = result.Colour.ToUInt32();
+                        var colorHolder = result.Colour;
+                        cell.BackgroundColor = colorHolder.ToUInt32();
+                        cell.TextColor = this.NeedBlackOrWhite(colorHolder) ?
+                            Colors.Black.ToUInt32() : Colors.White.ToUInt32();
                     }
                 }
             });
@@ -90,6 +93,26 @@ public class MainWindowViewModel : ViewModelBase
     /// </summary>
     // ReSharper disable once UnassignedGetOnlyAutoProperty - Asked for from Assignment.
     public Cell[][] Rows { get; }
+
+    /// <summary>
+    /// Gets or sets the TextColor property.
+    /// </summary>
+    public IBrush TextColor { get; set; }
+
+    /// <summary>
+    /// Determines if the text for the given color needs to be black or white.
+    /// Ideal usage: White if true, Black if false.
+    /// </summary>
+    /// <param name="colour">Color.</param>
+    /// <returns>bool.</returns>
+    private bool NeedBlackOrWhite(Color colour)
+    {
+        var value = colour.ToUInt32();
+        var r = colour.R;
+        var g = colour.G;
+        var b = colour.B;
+        return (r * 0.299) + (g * 0.587) + (b * 0.114) < 183;
+    }
 
     /// <summary>
     /// The Event handler for the HW Demo Button. For each cell it clears text, if it's column A it sets the Value to

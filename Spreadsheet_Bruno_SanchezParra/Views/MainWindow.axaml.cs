@@ -96,7 +96,11 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
             // col.Binding = new Binding($"[{colName - 'A'}].Value");
             // grid?.Columns.Add(col);
             var name = colName;
-            var binding = new Binding($"[{name - 'A'}].BgColor")
+            var bindingBG = new Binding($"[{name - 'A'}].BgColor")
+            {
+                Converter = new ColorConverter(),
+            };
+            var bindingFG = new Binding($"[{name - 'A'}].TextColor")
             {
                 Converter = new ColorConverter(),
             };
@@ -115,7 +119,8 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
                         VerticalAlignment = VerticalAlignment.Center,
                         Text = value[name - 'A'].Value,
                         Padding = Thickness.Parse("5,0,5,0"),
-                        [!TextBlock.BackgroundProperty] = binding,
+                        [!TextBlock.BackgroundProperty] = bindingBG,
+                        [!TextBlock.ForegroundProperty] = bindingFG,
                         IsVisible = true,
                     }),
                 CellEditingTemplate = new FuncDataTemplate<RowViewModel>(
@@ -179,7 +184,6 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     /// <param name="e">DataGridCellEditEndingEventArgs.</param>
     private void SpreadsheetDataGrid_OnPreparingCellForEdit(object? sender, DataGridPreparingCellForEditEventArgs e)
     {
-        Console.WriteLine("Preparing to Edit");
         if (e.EditingElement is not TextBox textInput)
         {
             return;
@@ -190,10 +194,13 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         textInput.Text = this.ViewModel?.GetCellText(rowIndex, columnIndex);
     }
 
+    /// <summary>
+    /// Event handler for when a cell has begun to be edited.
+    /// </summary>
+    /// <param name="sender">object.</param>
+    /// <param name="e">DataGridBeginningEditEventArgs.</param>
     private void GridOnBeginningEdit(object? sender, DataGridBeginningEditEventArgs e)
     {
-        Console.WriteLine("Beginning To Edit");
-
         // get the pressed cell
         var vm = this.ViewModel;
         var rowIndex = e.Row.GetIndex();
@@ -216,7 +223,6 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     /// <param name="e">DataGridCellEditEndingEventArgs.</param>
     private void SpreadsheetDataGrid_OnCellEditEnding(object? sender, DataGridCellEditEndingEventArgs e)
     {
-        Console.WriteLine("Finished Edit");
         var vm = this.ViewModel;
         var block = (TextBox)e.EditingElement;
         var dg = (DataGrid)sender!;
@@ -242,6 +248,11 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         // }
     }
 
+    /// <summary>
+    /// Method that is the close command.
+    /// </summary>
+    /// <param name="sender">object.</param>
+    /// <param name="e">RoutedEventArgs.</param>
     private void MenuItem_OnClose(object? sender, RoutedEventArgs e)
     {
         this.Close();

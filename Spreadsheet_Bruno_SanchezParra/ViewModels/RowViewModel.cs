@@ -64,6 +64,7 @@ public class RowViewModel : ViewModelBase
                 nameof(CellViewModel.IsSelected),
                 nameof(CellViewModel.CanEdit),
                 nameof(CellViewModel.BackgroundColor),
+                nameof(CellViewModel.TextColor),
             };
             if (args.PropertyName != null && styleImpactingProperties.Contains(args.PropertyName))
             {
