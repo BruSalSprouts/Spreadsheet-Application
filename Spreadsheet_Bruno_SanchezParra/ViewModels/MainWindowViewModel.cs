@@ -6,6 +6,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Windows.Input;
+using Avalonia;
+using Avalonia.Media;
+using ReactiveUI;
 using SpreadsheetEngine;
 
 namespace Spreadsheet_Bruno_SanchezParra.ViewModels;
@@ -24,13 +29,41 @@ public class MainWindowViewModel : ViewModelBase
     // The Spreadsheet itself.
     private Spreadsheet spreadsheet;
 
+    // Command for choosing colors
+    public ICommand ChooseColorCommand { get; }
+
+    public Interaction<ColorChooserViewModel, ChooserViewModel?> ShowDialog { get; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class with InitializeSpreadsheet.
     /// </summary>
     public MainWindowViewModel()
     {
+        // Spreadsheet data initialization
         this.SpreadsheetData = [];
         this.InitializeSpreadsheet();
+
+        // Color Picker Initialization
+        this.ShowDialog = new Interaction<ColorChooserViewModel, ChooserViewModel?>();
+        var defaultColor = Colors.White;
+        this.ChooseColorCommand = ReactiveCommand.Create(
+            async () =>
+            {
+                if (this.selectedCells.Count > 0)
+                {
+                    defaultColor = Color.FromUInt32(this.selectedCells[0].BackgroundColor);
+                }
+
+                var chooser = new ColorChooserViewModel(defaultColor);
+                var result = await this.ShowDialog.Handle(chooser);
+                if (result != null)
+                {
+                    foreach (var cell in this.selectedCells)
+                    {
+                        cell.BackgroundColor = result.Colour.ToUInt32();
+                    }
+                }
+            });
     }
 
     /// <summary>
@@ -53,6 +86,12 @@ public class MainWindowViewModel : ViewModelBase
     /// </summary>
     // ReSharper disable once UnassignedGetOnlyAutoProperty - Asked for from Assignment.
     public Cell[][] Rows { get; }
+
+    // public object OnClose { get; }
+    public void OnClose()
+    {
+        
+    }
 
     /// <summary>
     /// The Event handler for the HW Demo Button. For each cell it clears text, if it's column A it sets the Value to
@@ -125,6 +164,11 @@ public class MainWindowViewModel : ViewModelBase
         this.SpreadsheetData[row][col].Cell.Text = value;
     }
 
+    /// <summary>
+    /// Selects a Cell
+    /// </summary>
+    /// <param name="rowIndex">int.</param>
+    /// <param name="colIndex">integer.</param>
     public void SelectCell(int rowIndex, int colIndex)
     {
         var clickedCell = this.GetCellModel(rowIndex, colIndex);
@@ -133,20 +177,34 @@ public class MainWindowViewModel : ViewModelBase
 
         // Add the pressed cell back to the list
         this.selectedCells.Add(clickedCell);
+
+        clickedCell.IsSelected = true;
+        if (shouldEditCell)
+        {
+            clickedCell.CanEdit = true;
+        }
     }
 
+    /// <summary>
+    /// Resets all selected cells to false.
+    /// </summary>
     public void ResetSelection()
     {
         // Clear currents election
         foreach (var cell in this.selectedCells)
         {
             cell.IsSelected = false;
-            cell.CanEdit = false;
+            cell.CanEdit = false; // Needs to be set to false for something later.
         }
 
         this.selectedCells.Clear();
     }
 
+    /// <summary>
+    /// Toggles whether a cell is selected or not.
+    /// </summary>
+    /// <param name="rowIndex">int.</param>
+    /// <param name="colIndex">integer.</param>
     public void ToggleCellSelection(int rowIndex, int colIndex)
     {
         var clickedCell = this.GetCellModel(rowIndex, colIndex);

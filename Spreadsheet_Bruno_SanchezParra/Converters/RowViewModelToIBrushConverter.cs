@@ -3,8 +3,9 @@ using System.Globalization;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
+using Spreadsheet_Bruno_SanchezParra.ViewModels;
 
-namespace Spreadsheet_Bruno_SanchezParra.ViewModels;
+namespace Spreadsheet_Bruno_SanchezParra.Converters;
 
 public class RowViewModelToIBrushConverter : IValueConverter
 {

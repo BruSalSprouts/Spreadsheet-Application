@@ -9,11 +9,13 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Drawing.Printing;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
@@ -51,6 +53,11 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
                     this.InitializeDataGrid();
                 }
             });
+
+        // Color chooser parts
+        this.WhenActivated(
+            action =>
+            action(this.ViewModel!.ShowDialog.RegisterHandler(this.DoShowDialogAsync)));
     }
 
     /// <summary>
@@ -101,7 +108,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
             var columnTemplate = new DataGridTemplateColumn
             {
                 Header = colName.ToString(),
-                // CellStyleClasses = new Classes { "SpreadsheetCellClass" },
+                CellStyleClasses = { "SpreadsheetCellClass" },
                 CellTemplate = new FuncDataTemplate<RowViewModel>(
                     (
                         value,
@@ -154,6 +161,11 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         this.isInitialized = true;
     }
 
+    /// <summary>
+    /// Event handler for when cell is pressed on by the mouse.
+    /// </summary>
+    /// <param name="sender">object.</param>
+    /// <param name="args">DataGridCellPointerPressedEventArgs.</param>
     private void SpreadsheetDataGridOnCellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs args)
     {
         // get the pressed cell
@@ -206,6 +218,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     /// <param name="e">DataGridCellEditEndingEventArgs.</param>
     private void SpreadsheetDataGrid_OnPreparingCellForEdit(object? sender, DataGridPreparingCellForEditEventArgs e)
     {
+        Console.WriteLine("Preparing to Edit");
         if (e.EditingElement is not TextBox textInput)
         {
             return;
@@ -216,15 +229,15 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         textInput.Text = this.ViewModel?.GetCellText(rowIndex, columnIndex);
     }
 
-    // TODO: Fix this event method so when it's called, cells can still be edited
     private void GridOnBeginningEdit(object? sender, DataGridBeginningEditEventArgs e)
     {
+        Console.WriteLine("Beginning To Edit");
         // get the pressed cell
         var vm = this.ViewModel;
         var rowIndex = e.Row.GetIndex();
         var columnIndex = e.Column.DisplayIndex;
         var cell = vm?.GetCellModel(rowIndex, columnIndex);
-        if (false == cell.CanEdit)
+        if (cell is { CanEdit: false })
         {
             e.Cancel = true;
         }
@@ -241,7 +254,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     /// <param name="e">DataGridCellEditEndingEventArgs.</param>
     private void SpreadsheetDataGrid_OnCellEditEnding(object? sender, DataGridCellEditEndingEventArgs e)
     {
-        Console.WriteLine("Editing");
+        Console.WriteLine("Finished Edit");
         var vm = this.ViewModel;
         var block = (TextBox)e.EditingElement;
         var dg = (DataGrid)sender!;
@@ -266,4 +279,21 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         //     vm.SetCellText(row, (int)col, block.Text);
         // }
     }
+
+    private void MenuItem_OnClose(object? sender, RoutedEventArgs e)
+    {
+        this.Close();
+    }
+
+    private async Task DoShowDialogAsync(InteractionContext<ColorChooserViewModel,
+                                        ChooserViewModel?> interaction)
+{
+     var dialog = new ColorChooserWindow
+     {
+         DataContext = interaction.Input,
+     };
+
+     var result = await dialog.ShowDialog<ChooserViewModel?>(this);
+     interaction.SetOutput(result);
+}
 }

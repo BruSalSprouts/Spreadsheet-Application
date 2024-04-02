@@ -3,20 +3,41 @@
         xmlns:vm="using:Spreadsheet_Bruno_SanchezParra.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:utils="using:Spreadsheet_Bruno_SanchezParra.Converters"
         xmlns:views="clr-namespace:Spreadsheet_Bruno_SanchezParra.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Spreadsheet_Bruno_SanchezParra.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
+        WindowStartupLocation="CenterScreen"
         Title="Spreadsheet_Bruno_SanchezParra">
-
+    
+    <Window.Resources>
+        <utils:RowViewModelToIBrushConverter x:Key="RowBrushConverter" />
+    </Window.Resources>
+    
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
     <DockPanel LastChildFill="True">
-        <DockPanel LastChildFill="True" DockPanel.Dock="Top">
+        <StackPanel>
+            <Menu DockPanel.Dock="Top" >
+                <MenuItem Header="_File">
+                    <Separator/>
+                    <MenuItem Header="Cl_ose" Click="MenuItem_OnClose"/>
+                </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="Redo"/>
+                    <MenuItem Header="Undo"/>
+                </MenuItem>
+                <MenuItem Header="_Cell">
+                    <MenuItem Header="Change Background Color" 
+                              Command="{Binding ChooseColorCommand}"/>
+                </MenuItem>
+            </Menu>
+            <DockPanel LastChildFill="True" DockPanel.Dock="Top">
             <Button Name="DemoClick"
                     Content="Demo HWS" 
                     Margin="12" 
@@ -34,9 +55,8 @@
                       PreparingCellForEdit="SpreadsheetDataGrid_OnPreparingCellForEdit"
                       CellEditEnding="SpreadsheetDataGrid_OnCellEditEnding"
                       CellPointerPressed="SpreadsheetDataGridOnCellPointerPressed"
-                      
+                      BeginningEdit="GridOnBeginningEdit"
                       >
-            
             <!-- BeginningEdit="GridOnBeginningEdit" -->
             <!-- CellPointerPressed="MainGridOnCellPointerPressed" -->
             <DataGrid.Styles>
@@ -65,13 +85,14 @@
                 </Style>
                 <!-- Bind DataGridCell background to a Property on the Row view model -->
                 <!-- since we can't bind directly to a cell view model -->
-                <!-- <Style Selector="DataGridCell.SpreadsheetCellClass" -->
-                <!--        x:DataType="vm:RowViewModel"> -->
-                <!--     <Setter Property="Background" Value="{Binding SelfReference, -->
-                <!--             Converter={StaticResource RowBrushConverter}}" /> -->
-                <!-- </Style> -->
+                <Style Selector="DataGridCell.SpreadsheetCellClass"
+                       x:DataType="vm:RowViewModel">
+                    <Setter Property="Background" Value="{Binding SelfReference,
+                            Converter={StaticResource RowBrushConverter}}" />
+                </Style>
             </DataGrid.Styles>
         </DataGrid>
+        </StackPanel>
     </DockPanel>
                
     
