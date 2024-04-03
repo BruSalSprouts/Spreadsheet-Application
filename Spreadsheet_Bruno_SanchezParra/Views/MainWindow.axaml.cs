@@ -241,6 +241,11 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         if (textInput.Text != null)
         {
             CommandController.GetInstance().InvokeTextChange(vm?.GetCellModel(row, col)!, textInput.Text);
+            var mainWindowViewModel = this.ViewModel;
+            if (mainWindowViewModel != null)
+            {
+                mainWindowViewModel.UndoEnabled = CommandController.GetInstance().UndoStackEnabled();
+            }
         }
 
         // if (col.HasValue && row < vm.SpreadsheetData.Count && col < vm.SpreadsheetData.Count)

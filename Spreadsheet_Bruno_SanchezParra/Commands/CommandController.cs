@@ -67,4 +67,14 @@ public class CommandController
             this.undoStack.Push(command);
         }
     }
+
+    public bool UndoStackEnabled()
+    {
+        return this.undoStack.Count > 0;
+    }
+
+    public bool RedoStackEnabled()
+    {
+        return this.redoStack.Count > 0;
+    }
 }

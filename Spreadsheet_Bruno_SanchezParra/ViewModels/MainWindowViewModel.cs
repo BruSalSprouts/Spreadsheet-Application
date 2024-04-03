@@ -28,6 +28,21 @@ public class MainWindowViewModel : ViewModelBase
 
     // The Spreadsheet itself.
     private Spreadsheet spreadsheet;
+    private bool redoEnabled;
+    private bool undoEnabled;
+
+    public bool RedoEnabled
+    {
+        get => this.redoEnabled;
+        set => this.RaiseAndSetIfChanged(ref this.redoEnabled, value);
+    }
+    
+    public bool UndoEnabled 
+    {
+        get => this.undoEnabled;
+        set => this.RaiseAndSetIfChanged(ref this.undoEnabled, value);
+    }
+    
     public ICommand UndoCommand { get; }
     public ICommand RedoCommand { get; }
 
@@ -50,18 +65,26 @@ public class MainWindowViewModel : ViewModelBase
         this.SpreadsheetData = [];
         this.InitializeSpreadsheet();
 
-        // Color Picker Initialization
-        this.ShowDialog = new Interaction<ColorChooserViewModel, ChooserViewModel?>();
+        // Undo and Redo command Initialization
+        this.RedoEnabled = false;
+        this.UndoEnabled = false;
         this.UndoCommand = ReactiveCommand.Create(
             () =>
             {
                 CommandController.GetInstance().Undo();
+                this.UndoEnabled = CommandController.GetInstance().UndoStackEnabled();
+                this.RedoEnabled = CommandController.GetInstance().RedoStackEnabled();
             });
         this.RedoCommand = ReactiveCommand.Create(
             () =>
             {
                 CommandController.GetInstance().Redo();
+                this.UndoEnabled = CommandController.GetInstance().UndoStackEnabled();
+                this.RedoEnabled = CommandController.GetInstance().RedoStackEnabled();
             });
+
+        // Color Picker Initialization
+        this.ShowDialog = new Interaction<ColorChooserViewModel, ChooserViewModel?>();
         var defaultColor = Colors.White;
         this.ChooseColorCommand = ReactiveCommand.Create(
             async () =>
@@ -81,6 +104,8 @@ public class MainWindowViewModel : ViewModelBase
                         CommandController.GetInstance().InvokeColorChange(
                             cell,
                             colorHolder.ToUInt32() | 0xFF000000);
+                        this.RedoEnabled = CommandController.GetInstance().RedoStackEnabled();
+
                         // Make sure alpha channel is ignored by masking it with 0xFF000000
                     }
                 }

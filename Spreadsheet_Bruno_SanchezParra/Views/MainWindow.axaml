@@ -26,15 +26,35 @@
             <Menu DockPanel.Dock="Top" >
                 <MenuItem Header="_File">
                     <Separator/>
-                    <MenuItem Header="Cl_ose" Click="MenuItem_OnClose"/>
+                    <MenuItem Header="Cl_ose" Click="MenuItem_OnClose">
+                        <MenuItem.Icon>
+                            <PathIcon Data="{StaticResource pane_close_regular}"></PathIcon>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="_Edit">
-                    <MenuItem Header="Redo" Command="{Binding RedoCommand}" />
-                    <MenuItem Header="Undo" Command="{Binding UndoCommand}" />
+                    <MenuItem Header="Redo" 
+                              IsEnabled="{Binding RedoEnabled}"
+                              Command="{Binding RedoCommand}" >
+                        <MenuItem.Icon>
+                            <PathIcon Data="{StaticResource arrow_redo_regular}"></PathIcon>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Undo" 
+                              IsEnabled="{Binding UndoEnabled}"
+                              Command="{Binding UndoCommand}" >
+                        <MenuItem.Icon>
+                            <PathIcon Data="{StaticResource arrow_undo_regular}"></PathIcon>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="_Cell">
                     <MenuItem Header="Change Background Color" 
-                              Command="{Binding ChooseColorCommand}"/>
+                              Command="{Binding ChooseColorCommand}">
+                        <MenuItem.Icon>
+                            <PathIcon Data="{StaticResource color_regular}"></PathIcon>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
             </Menu>
             <DockPanel LastChildFill="True" DockPanel.Dock="Top">
