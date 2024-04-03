@@ -1,4 +1,4 @@
-// <copyright file="IUndoRedoCommands.cs" company="PlaceholderCompany">
+// <copyright file="IUndoRedoCommand.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 

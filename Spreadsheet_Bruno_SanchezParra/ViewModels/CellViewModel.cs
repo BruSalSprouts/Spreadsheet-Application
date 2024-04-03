@@ -95,7 +95,7 @@ public sealed class CellViewModel : ViewModelBase
         {
             this.Cell.BgColor = value;
             this.Cell.TextColor = NeedBlackOrWhite(value);
-        } 
+        }
     }
 
     /// <summary>

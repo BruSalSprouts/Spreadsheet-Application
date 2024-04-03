@@ -2,9 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using System;
 using Spreadsheet_Bruno_SanchezParra.ViewModels;
-using SpreadsheetEngine;
 
 namespace Spreadsheet_Bruno_SanchezParra.Commands;
 

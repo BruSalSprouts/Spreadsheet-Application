@@ -240,7 +240,10 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         var col = e.Column.DisplayIndex;
         if (textInput.Text != null)
         {
-            CommandController.GetInstance().InvokeTextChange(vm?.GetCellModel(row, col)!, textInput.Text);
+            CommandController.GetInstance().InvokeChange(
+                vm?.GetCellModel(row, col)!,
+                nameof(CellViewModel.Text),
+                textInput.Text);
             var mainWindowViewModel = this.ViewModel;
             if (mainWindowViewModel != null)
             {

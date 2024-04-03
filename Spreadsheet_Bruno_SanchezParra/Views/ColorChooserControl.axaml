@@ -8,7 +8,8 @@
              x:Class="Spreadsheet_Bruno_SanchezParra.Views.ColorChooserControl">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
-            <ColorView Color="{Binding Color}"></ColorView>
+            <ColorView Color="{Binding Color}"
+                       IsAlphaEnabled="False" IsAlphaVisible="False"/>
         </StackPanel>
         <!-- <DockPanel> -->
             <Button Content="OK" 

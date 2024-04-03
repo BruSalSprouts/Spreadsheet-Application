@@ -120,36 +120,47 @@ public class Spreadsheet
 
                 // The above commend out code is the previous implementation of an Expression before HW 7
                 var tree = new ExpressionTree(expression);
-                foreach (var name in tree.GetVariableNames())
+                try
                 {
-                    if (name.Length < 2)
-                    {
-                        nextValue = "#ERROR!";
-                        continue;
-                    }
 
-                    var colInd = name[0] - 'A';
-                    var rowInd = int.Parse(name[1..]) - 1;
 
-                    if (rowInd < 0 || rowInd >= this.Rows || colInd < 0 || colInd >= this.Columns)
+                    foreach (var name in tree.GetVariableNames())
                     {
-                        nextValue = "#ERROR!";
-                        continue;
-                    }
+                        if (name.Length < 2)
+                        {
+                            nextValue = "#ERROR!";
+                            continue;
+                        }
 
-                    var otherCell = this.GetCell(rowInd, colInd);
-                    var dValue = double.TryParse(otherCell.Value, out var value);
-                    if (dValue)
-                    {
-                        tree.SetVariable(name, value);
-                    }
-                    else
-                    {
-                        tree.SetVariable(name, double.NaN);
-                        nextValue = otherCell.Value;
-                    }
+                        var colInd = name[0] - 'A';
+                        var rowInd = int.Parse(name[1..]) - 1;
 
-                    sender.Bind(otherCell);
+                        if (rowInd < 0 || rowInd >= this.Rows || colInd < 0 || colInd >= this.Columns)
+                        {
+                            nextValue = "#ERROR!";
+                            continue;
+                        }
+
+                        var otherCell = this.GetCell(rowInd, colInd);
+                        var dValue = double.TryParse(otherCell.Value, out var value);
+                        if (dValue)
+                        {
+                            tree.SetVariable(name, value);
+                        }
+                        else
+                        {
+                            tree.SetVariable(name, double.NaN);
+                            nextValue = otherCell.Value;
+                        }
+
+                        sender.Bind(otherCell);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    sender.SetValue("#ERROR!");
+                    return;
                 }
 
                 var possibleValue = double.NaN;

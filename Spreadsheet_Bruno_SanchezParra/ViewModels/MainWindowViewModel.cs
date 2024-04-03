@@ -31,19 +31,32 @@ public class MainWindowViewModel : ViewModelBase
     private bool redoEnabled;
     private bool undoEnabled;
 
+    /// <summary>
+    /// Gets or sets a value indicating whether it gets or sets the RedoEnabled property.
+    /// </summary>
     public bool RedoEnabled
     {
         get => this.redoEnabled;
         set => this.RaiseAndSetIfChanged(ref this.redoEnabled, value);
     }
-    
-    public bool UndoEnabled 
+
+    /// <summary>
+    /// Gets or sets a value indicating whether it gets or sets the UndoEnabled property.
+    /// </summary>
+    public bool UndoEnabled
     {
         get => this.undoEnabled;
         set => this.RaiseAndSetIfChanged(ref this.undoEnabled, value);
     }
-    
+
+    /// <summary>
+    /// Gets UndoCommand property.
+    /// </summary>
     public ICommand UndoCommand { get; }
+
+    /// <summary>
+    /// Gets RedoCommand property.
+    /// </summary>
     public ICommand RedoCommand { get; }
 
     /// <summary>
@@ -65,13 +78,17 @@ public class MainWindowViewModel : ViewModelBase
         this.SpreadsheetData = [];
         this.InitializeSpreadsheet();
 
-        // Undo and Redo command Initialization
+        // Undo and Redo Enabling fields
         this.RedoEnabled = false;
         this.UndoEnabled = false;
+
+        // Undo and Redo command Initialization
         this.UndoCommand = ReactiveCommand.Create(
             () =>
             {
                 CommandController.GetInstance().Undo();
+
+                // Gets redo and undo commands set up here.
                 this.UndoEnabled = CommandController.GetInstance().UndoStackEnabled();
                 this.RedoEnabled = CommandController.GetInstance().RedoStackEnabled();
             });
@@ -79,6 +96,8 @@ public class MainWindowViewModel : ViewModelBase
             () =>
             {
                 CommandController.GetInstance().Redo();
+
+                // Gets redo and undo commands set up here.
                 this.UndoEnabled = CommandController.GetInstance().UndoStackEnabled();
                 this.RedoEnabled = CommandController.GetInstance().RedoStackEnabled();
             });
@@ -101,12 +120,16 @@ public class MainWindowViewModel : ViewModelBase
                     foreach (var cell in this.selectedCells)
                     {
                         var colorHolder = result.Colour;
-                        CommandController.GetInstance().InvokeColorChange(
-                            cell,
-                            colorHolder.ToUInt32() | 0xFF000000);
-                        this.RedoEnabled = CommandController.GetInstance().RedoStackEnabled();
 
                         // Make sure alpha channel is ignored by masking it with 0xFF000000
+                        CommandController.GetInstance().InvokeChange(
+                            cell,
+                            nameof(CellViewModel.BackgroundColor),
+                            colorHolder.ToUInt32() | 0xFF000000);
+
+                        // Gets redo and undo commands set up here.
+                        this.UndoEnabled = CommandController.GetInstance().UndoStackEnabled();
+                        this.RedoEnabled = CommandController.GetInstance().RedoStackEnabled();
                     }
                 }
             });

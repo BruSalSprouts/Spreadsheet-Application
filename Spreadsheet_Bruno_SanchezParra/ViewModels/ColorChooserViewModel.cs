@@ -2,7 +2,6 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using System;
 using System.Reactive;
 using Avalonia.Media;
 using ReactiveUI;

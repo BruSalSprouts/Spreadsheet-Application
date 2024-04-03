@@ -3,7 +3,6 @@
 // </copyright>
 
 using Spreadsheet_Bruno_SanchezParra.ViewModels;
-using SpreadsheetEngine;
 
 namespace Spreadsheet_Bruno_SanchezParra.Commands;
 
@@ -21,6 +20,9 @@ public abstract class CellChangeCommand : IUndoRedoCommand
         this.Cell = cell;
     }
 
+    /// <summary>
+    /// Gets or sets Cell property.
+    /// </summary>
     protected CellViewModel Cell
     {
         get;

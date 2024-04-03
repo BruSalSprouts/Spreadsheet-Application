@@ -3,7 +3,6 @@
 // </copyright>
 
 using Spreadsheet_Bruno_SanchezParra.ViewModels;
-using SpreadsheetEngine;
 
 namespace Spreadsheet_Bruno_SanchezParra.Commands;
 
@@ -40,6 +39,10 @@ public class TextChangeCommand : CellChangeCommand
         this.Cell.Text = this.oldText;
     }
 
+    /// <summary>
+    /// Returns a string that contains the old Text contents and the new Text contents.
+    /// </summary>
+    /// <returns>string.</returns>
     public override string ToString()
     {
         return $"{this.oldText} >= {this.newText}";
