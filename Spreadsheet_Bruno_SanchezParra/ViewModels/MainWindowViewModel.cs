@@ -10,6 +10,7 @@ using System.Reactive.Linq;
 using System.Windows.Input;
 using Avalonia.Media;
 using ReactiveUI;
+using Spreadsheet_Bruno_SanchezParra.Commands;
 using SpreadsheetEngine;
 
 namespace Spreadsheet_Bruno_SanchezParra.ViewModels;
@@ -27,6 +28,8 @@ public class MainWindowViewModel : ViewModelBase
 
     // The Spreadsheet itself.
     private Spreadsheet spreadsheet;
+    public ICommand UndoCommand { get; }
+    public ICommand RedoCommand { get; }
 
     /// <summary>
     /// Gets ChooseColorCommand property.
@@ -49,6 +52,16 @@ public class MainWindowViewModel : ViewModelBase
 
         // Color Picker Initialization
         this.ShowDialog = new Interaction<ColorChooserViewModel, ChooserViewModel?>();
+        this.UndoCommand = ReactiveCommand.Create(
+            () =>
+            {
+                CommandController.GetInstance().Undo();
+            });
+        this.RedoCommand = ReactiveCommand.Create(
+            () =>
+            {
+                CommandController.GetInstance().Redo();
+            });
         var defaultColor = Colors.White;
         this.ChooseColorCommand = ReactiveCommand.Create(
             async () =>
@@ -65,23 +78,24 @@ public class MainWindowViewModel : ViewModelBase
                     foreach (var cell in this.selectedCells)
                     {
                         var colorHolder = result.Colour;
-                        cell.BackgroundColor = colorHolder.ToUInt32();
-                        cell.TextColor = this.NeedBlackOrWhite(colorHolder) ?
-                            Colors.Black.ToUInt32() : Colors.White.ToUInt32();
+                        CommandController.GetInstance().InvokeColorChange(
+                            cell,
+                            colorHolder.ToUInt32() | 0xFF000000);
+                        // Make sure alpha channel is ignored by masking it with 0xFF000000
                     }
                 }
             });
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
-    /// </summary>
-    /// <param name="spreadsheetData">list of list of Cells.</param>
-    // ReSharper disable once UnusedMember.Global
-    public MainWindowViewModel(List<RowViewModel> spreadsheetData)
-    {
-        this.SpreadsheetData = spreadsheetData;
-    }
+    // /// <summary>
+    // /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
+    // /// </summary>
+    // /// <param name="spreadsheetData">list of list of Cells.</param>
+    // // ReSharper disable once UnusedMember.Global
+    // public MainWindowViewModel(List<RowViewModel> spreadsheetData)
+    // {
+    //     this.SpreadsheetData = spreadsheetData;
+    // }
 
     /// <summary>
     /// Gets or sets spreadsheetData.
@@ -93,26 +107,6 @@ public class MainWindowViewModel : ViewModelBase
     /// </summary>
     // ReSharper disable once UnassignedGetOnlyAutoProperty - Asked for from Assignment.
     public Cell[][] Rows { get; }
-
-    /// <summary>
-    /// Gets or sets the TextColor property.
-    /// </summary>
-    public IBrush TextColor { get; set; }
-
-    /// <summary>
-    /// Determines if the text for the given color needs to be black or white.
-    /// Ideal usage: White if true, Black if false.
-    /// </summary>
-    /// <param name="colour">Color.</param>
-    /// <returns>bool.</returns>
-    private bool NeedBlackOrWhite(Color colour)
-    {
-        var value = colour.ToUInt32();
-        var r = colour.R;
-        var g = colour.G;
-        var b = colour.B;
-        return (r * 0.299) + (g * 0.587) + (b * 0.114) < 183;
-    }
 
     /// <summary>
     /// The Event handler for the HW Demo Button. For each cell it clears text, if it's column A it sets the Value to
@@ -182,7 +176,7 @@ public class MainWindowViewModel : ViewModelBase
     /// <param name="value">string.</param>
     public void SetCellText(int row, int col, string value)
     {
-        this.SpreadsheetData[row][col].Cell.Text = value;
+        this.SpreadsheetData[row][col].Text = value;
     }
 
     /// <summary>

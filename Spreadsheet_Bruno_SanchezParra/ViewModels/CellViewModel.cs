@@ -2,7 +2,8 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using System.ComponentModel.DataAnnotations;
+using System;
+using Avalonia.Media;
 using ReactiveUI;
 using SpreadsheetEngine;
 
@@ -34,7 +35,11 @@ public sealed class CellViewModel : ViewModelBase
         // note that we forward using args.PropertyName because Cell and CellViewModel properties have the same
         // names to simplify the procedure. If they had different names, we would have a more complex implementation to
         // do the property names matching
-        this.Cell.PropertyChanged += (sender, args) => { this.RaisePropertyChanged(args.PropertyName); };
+        this.Cell.PropertyChanged += (sender, args) =>
+        {
+            Console.WriteLine(args.PropertyName + "," + sender?.GetType());
+            this.RaisePropertyChanged(args.PropertyName);
+        };
     }
 
     /// <summary>
@@ -86,7 +91,11 @@ public sealed class CellViewModel : ViewModelBase
     public uint BackgroundColor
     {
         get => this.Cell.BgColor;
-        set => this.Cell.BgColor = value;
+        set
+        {
+            this.Cell.BgColor = value;
+            this.Cell.TextColor = NeedBlackOrWhite(value);
+        } 
     }
 
     /// <summary>
@@ -96,5 +105,24 @@ public sealed class CellViewModel : ViewModelBase
     {
         get => this.Cell.TextColor;
         set => this.Cell.TextColor = value;
+    }
+
+    /// <summary>
+    /// Determines if the text for the given color needs to be black or white.
+    /// Ideal usage: White if true, Black if false.
+    /// </summary>
+    /// <returns>uint.</returns>
+    private static uint NeedBlackOrWhite(uint colour)
+    {
+        var r = (colour & 0x00FF0000) >> 16;
+        var g = (colour & 0x0000FF00) >> 8;
+        var b = colour & 0x000000FF;
+        const double flipYs = 0.342; // based on APCA™ 0.98G middle contrast BG
+
+        var cieY = (Math.Pow(r / 255.0, 2.2) * 0.2126) +
+                   (Math.Pow(g / 255.0, 2.2) * 0.7152) +
+                   (Math.Pow(b / 255.0, 2.2) * 0.0722);
+
+        return cieY < flipYs ? Colors.White.ToUInt32() : Colors.Black.ToUInt32();
     }
 }

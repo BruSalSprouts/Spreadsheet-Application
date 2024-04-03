@@ -21,6 +21,7 @@ using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
+using Spreadsheet_Bruno_SanchezParra.Commands;
 using Spreadsheet_Bruno_SanchezParra.Converters;
 using Spreadsheet_Bruno_SanchezParra.ViewModels;
 using SpreadsheetEngine;
@@ -239,7 +240,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         var col = e.Column.DisplayIndex;
         if (textInput.Text != null)
         {
-            vm?.SetCellText(row, col, textInput.Text);
+            CommandController.GetInstance().InvokeTextChange(vm?.GetCellModel(row, col)!, textInput.Text);
         }
 
         // if (col.HasValue && row < vm.SpreadsheetData.Count && col < vm.SpreadsheetData.Count)
