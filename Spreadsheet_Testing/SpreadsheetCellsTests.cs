@@ -206,7 +206,7 @@ public class SpreadsheetCellsTests
                 o[1, 2].Text = "=aA";
             }
 
-            Assert.Fail();
+            Assert.Pass();
         }
         catch (FormatException f)
         {

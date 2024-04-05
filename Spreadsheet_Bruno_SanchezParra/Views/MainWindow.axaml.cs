@@ -97,14 +97,19 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
             // col.Binding = new Binding($"[{colName - 'A'}].Value");
             // grid?.Columns.Add(col);
             var name = colName;
-            var bindingBG = new Binding($"[{name - 'A'}].BgColor")
+            var bindingBg = new Binding($"[{name - 'A'}].BgColor")
             {
                 Converter = new ColorConverter(),
             };
-            var bindingFG = new Binding($"[{name - 'A'}].TextColor")
+            var bindingFg = new Binding($"[{name - 'A'}].TextColor")
             {
                 Converter = new ColorConverter(),
             };
+            if (bindingFg == null)
+            {
+                throw new ArgumentNullException(nameof(bindingFg));
+            }
+
             var columnTemplate = new DataGridTemplateColumn
             {
                 Header = colName.ToString(),
@@ -120,8 +125,8 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
                         VerticalAlignment = VerticalAlignment.Center,
                         Text = value[name - 'A'].Value,
                         Padding = Thickness.Parse("5,0,5,0"),
-                        [!TextBlock.BackgroundProperty] = bindingBG,
-                        [!TextBlock.ForegroundProperty] = bindingFG,
+                        [!TextBlock.BackgroundProperty] = bindingBg,
+                        [!TextBlock.ForegroundProperty] = bindingFg,
                         IsVisible = true,
                     }),
                 CellEditingTemplate = new FuncDataTemplate<RowViewModel>(
@@ -265,6 +270,16 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     private void MenuItem_OnClose(object? sender, RoutedEventArgs e)
     {
         this.Close();
+    }
+
+    /// <summary>
+    /// Clears all the cells' texts in the spreadsheet.
+    /// </summary>
+    /// <param name="sender">object.</param>
+    /// <param name="e">RoutedEventArgs.</param>
+    private void MenuItem_SpreadsheetClear(object? sender, RoutedEventArgs e)
+    {
+        this.ViewModel?.ClearSpreadsheet();
     }
 
     private async Task DoShowDialogAsync(InteractionContext<ColorChooserViewModel, ChooserViewModel?> interaction)

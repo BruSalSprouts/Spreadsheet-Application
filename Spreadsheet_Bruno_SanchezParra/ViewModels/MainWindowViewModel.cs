@@ -295,6 +295,17 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     /// <summary>
+    /// Clears all the cells in the Spreadsheet by setting all their Texts to string.Empty.
+    /// </summary>
+    public void ClearSpreadsheet()
+    {
+        foreach (var cell in this.SpreadsheetData.SelectMany(column => column.Cells))
+        {
+            cell.Text = string.Empty;
+        }
+    }
+
+    /// <summary>
     /// Initializes the spreadsheet by making rows of Cell class.
     /// (Temporary fix until then is a List of List of char and string).
     /// </summary>

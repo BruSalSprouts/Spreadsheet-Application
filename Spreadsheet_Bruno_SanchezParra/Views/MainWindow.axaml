@@ -28,7 +28,7 @@
                     <Separator/>
                     <MenuItem Header="Cl_ose" Click="MenuItem_OnClose">
                         <MenuItem.Icon>
-                            <PathIcon Data="{StaticResource pane_close_regular}"></PathIcon>
+                            <PathIcon Data="{StaticResource PaneCloseRegular}"></PathIcon>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
@@ -37,14 +37,20 @@
                               IsEnabled="{Binding RedoEnabled}"
                               Command="{Binding RedoCommand}" >
                         <MenuItem.Icon>
-                            <PathIcon Data="{StaticResource arrow_redo_regular}"></PathIcon>
+                            <PathIcon Data="{StaticResource ArrowRedoRegular}"></PathIcon>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Undo" 
                               IsEnabled="{Binding UndoEnabled}"
                               Command="{Binding UndoCommand}" >
                         <MenuItem.Icon>
-                            <PathIcon Data="{StaticResource arrow_undo_regular}"></PathIcon>
+                            <PathIcon Data="{StaticResource ArrowUndoRegular}"></PathIcon>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Clear"
+                              Click="MenuItem_SpreadsheetClear">
+                        <MenuItem.Icon>
+                            <PathIcon Data="{StaticResource EraserToolRegular}"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
@@ -52,7 +58,7 @@
                     <MenuItem Header="Change Background Color" 
                               Command="{Binding ChooseColorCommand}">
                         <MenuItem.Icon>
-                            <PathIcon Data="{StaticResource color_regular}"></PathIcon>
+                            <PathIcon Data="{StaticResource ColorRegular}"></PathIcon>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>

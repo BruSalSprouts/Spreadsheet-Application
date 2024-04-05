@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ExpressionTreeDemo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+106350fdebb57578d12bd66ef5526e2431cd843b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7a69275243f74ed496680a391cdaa36d63dc052d")]
 [assembly: System.Reflection.AssemblyProductAttribute("ExpressionTreeDemo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ExpressionTreeDemo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
