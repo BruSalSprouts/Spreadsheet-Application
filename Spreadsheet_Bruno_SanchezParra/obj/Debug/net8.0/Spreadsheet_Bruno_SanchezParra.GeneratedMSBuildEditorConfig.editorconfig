@@ -20,5 +20,14 @@ build_property.EnableGeneratedComInterfaceComImportInterop =
 [C:/Users/bruno/RiderProjects/cpts321-hws/Spreadsheet_Bruno_SanchezParra/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/bruno/RiderProjects/cpts321-hws/Spreadsheet_Bruno_SanchezParra/Icons.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/bruno/RiderProjects/cpts321-hws/Spreadsheet_Bruno_SanchezParra/Views/ColorChooserControl.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/bruno/RiderProjects/cpts321-hws/Spreadsheet_Bruno_SanchezParra/Views/ColorChooserWindow.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/bruno/RiderProjects/cpts321-hws/Spreadsheet_Bruno_SanchezParra/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

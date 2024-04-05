@@ -76,6 +76,15 @@ public class ExpressionTree
     }
 
     /// <summary>
+    /// Returns the IEnumerable variable of strings.
+    /// </summary>
+    /// <returns>IEnumerable<string/>.</returns>
+    public IEnumerable<string> GetVariableNames()
+    {
+        return this.handler.GetVariableNames();
+    }
+
+    /// <summary>
     /// Returns the root of the tree as a Node.
     /// </summary>
     /// <returns>Node.</returns>
@@ -92,5 +101,14 @@ public class ExpressionTree
     public double Evaluate()
     {
         return this.root?.GetValue() ?? 0.0;
+    }
+
+    /// <summary>
+    /// Returns whether the expression is valid or not.
+    /// </summary>
+    /// <returns>bool.</returns>
+    public bool IsExpression()
+    {
+        return this.root is not ILeafNode;
     }
 }

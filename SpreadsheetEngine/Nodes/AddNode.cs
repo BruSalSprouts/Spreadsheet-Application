@@ -10,6 +10,12 @@ namespace SpreadsheetEngine.Nodes;
 /// </summary>
 public class AddNode : BinaryOperatorNode
 {
+    /// <inheritdoc/>
+    public override int Precedence => 1;
+
+    /// <inheritdoc/>
+    public override char Symbol => '+';
+
     /// <summary>
     /// Adds the left-side node to the right-side node.
     /// </summary>

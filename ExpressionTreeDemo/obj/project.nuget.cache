@@ -1,10 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "BQIHuycWqYYecWUebXGg4cI4aGFFWdeD+5VInBx8pwQ6ZeIhQvKOWZXjgDV1hjkGASn6o1TLhBJYA/obK/28ng==",
+  "dgSpecHash": "TqUsn/LulJONfI6Q9yU6LMhY0MDwk0R9xBttvFLITtKnlNB9bPIXVmBFsXSIEWnEzeq2CmzdNEnQf7f7ItPrDA==",
   "success": true,
   "projectFilePath": "C:\\Users\\bruno\\RiderProjects\\cpts321-hws\\ExpressionTreeDemo\\ExpressionTreeDemo.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\bruno\\.nuget\\packages\\stylecop.analyzers\\1.1.118\\stylecop.analyzers.1.1.118.nupkg.sha512"
+    "C:\\Users\\bruno\\.nuget\\packages\\avalonia\\11.0.6\\avalonia.11.0.6.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\avalonia.buildservices\\0.0.29\\avalonia.buildservices.0.0.29.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\avalonia.controls.colorpicker\\11.0.6\\avalonia.controls.colorpicker.11.0.6.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\avalonia.remote.protocol\\11.0.6\\avalonia.remote.protocol.11.0.6.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\microcom.runtime\\0.11.0\\microcom.runtime.0.11.0.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\stylecop.analyzers\\1.1.118\\stylecop.analyzers.1.1.118.nupkg.sha512",
+    "C:\\Users\\bruno\\.nuget\\packages\\system.componentmodel.annotations\\4.5.0\\system.componentmodel.annotations.4.5.0.nupkg.sha512"
   ],
   "logs": []
 }

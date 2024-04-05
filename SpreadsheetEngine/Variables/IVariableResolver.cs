@@ -30,4 +30,10 @@ public interface IVariableResolver
     /// <param name="varName">string.</param>
     /// <returns>bool.</returns>
     public bool Exists(string varName);
+
+    /// <summary>
+    /// Returns the list of variable names.
+    /// </summary>
+    /// <returns>IEnumerable<string/>.</returns>
+    public IEnumerable<string> GetVariableNames();
 }

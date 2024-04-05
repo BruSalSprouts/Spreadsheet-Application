@@ -10,6 +10,12 @@ namespace SpreadsheetEngine.Nodes;
 /// </summary>
 public class DivideNode : BinaryOperatorNode
 {
+    /// <inheritdoc/>
+    public override int Precedence => 2;
+
+    /// <inheritdoc/>
+    public override char Symbol => '/';
+
     /// <summary>
     /// Divides the left-side node by the right-side node.
     /// </summary>

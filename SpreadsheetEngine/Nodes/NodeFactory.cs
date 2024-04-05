@@ -13,30 +13,21 @@ namespace SpreadsheetEngine.Nodes;
 /// </summary>
 public partial class NodeFactory
 {
-    // The symbols that will be used in the Expression Tree
-    // The order is reverse PEMDAS.
-    // IMPORTANT! PUT THE ORDER OF SYMBOLS IN REVERSE PEMDAS OR THE TREE WILL BREAK
-    private static readonly char[] Symbols = ['+', '-', '*', '/', '^'];
-
     /// <summary>
     /// Dictionary that maps each operation to a specific type of OperatorNode.
     /// </summary>
-    private readonly Dictionary<char, Type> operationMap = new Dictionary<char, Type>()
-    {
-        { Symbols[0], typeof(AddNode) },
-        { Symbols[1], typeof(SubtractNode) },
-        { Symbols[2], typeof(MultiplyNode) },
-        { Symbols[3], typeof(DivideNode) },
-        { Symbols[4], typeof(ExponentNode) },
-    };
+    private readonly Dictionary<char, Type> operationMap;
 
     /// <summary>
-    /// Returns the list of symbols.
+    /// Initializes a new instance of the <see cref="NodeFactory"/> class.
     /// </summary>
-    /// <returns>list of symbols.</returns>
-    public static IEnumerable<char> GetSymbols()
+    public NodeFactory()
     {
-        return Symbols;
+        this.operationMap = new Dictionary<char, Type>();
+        foreach (var op in ReflectiveEnumerator.GetEnumerableOfType<BinaryOperatorNode>())
+        {
+            this.operationMap.Add(op.Symbol, op.GetType());
+        }
     }
 
     /// <summary>
@@ -68,7 +59,13 @@ public partial class NodeFactory
         // Add expression as a VariableNode if a variable is within the regular expression pattern:
         // If the initial character is A-Z (uppercase or lowercase), then if the rest of the characters are
         // alphanumeric
-        return expression != null && MyRegex().IsMatch(expression) ? new VariableNode(expression, solver) : null;
+        if (expression != null && MyRegex().IsMatch(expression))
+        {
+            solver.SetValue(expression, double.NaN);
+            return new VariableNode(expression, solver);
+        }
+
+        return null;
     }
 
     [GeneratedRegex("^[A-Za-z]+[A-Za-z0-9]*$")]

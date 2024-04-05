@@ -3,24 +3,65 @@
         xmlns:vm="using:Spreadsheet_Bruno_SanchezParra.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:utils="using:Spreadsheet_Bruno_SanchezParra.Converters"
         xmlns:views="clr-namespace:Spreadsheet_Bruno_SanchezParra.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Spreadsheet_Bruno_SanchezParra.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
+        WindowStartupLocation="CenterScreen"
         Title="Spreadsheet_Bruno_SanchezParra">
-
+    
+    <Window.Resources>
+        <utils:RowViewModelToIBrushConverter x:Key="RowBrushConverter" />
+    </Window.Resources>
+    
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
     <DockPanel LastChildFill="True">
-        <DockPanel LastChildFill="True" DockPanel.Dock="Top">
-            <Button Name="DemoClick"
-                    Content="Demo HWS" 
-                    Margin="12" 
-                    Command="{Binding DoDemoHw}"/>
+        <StackPanel>
+            <Menu DockPanel.Dock="Top" >
+                <MenuItem Header="_File">
+                    <Separator/>
+                    <MenuItem Header="Cl_ose" Click="MenuItem_OnClose">
+                        <MenuItem.Icon>
+                            <PathIcon Data="{StaticResource pane_close_regular}"></PathIcon>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="Redo" 
+                              IsEnabled="{Binding RedoEnabled}"
+                              Command="{Binding RedoCommand}" >
+                        <MenuItem.Icon>
+                            <PathIcon Data="{StaticResource arrow_redo_regular}"></PathIcon>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Undo" 
+                              IsEnabled="{Binding UndoEnabled}"
+                              Command="{Binding UndoCommand}" >
+                        <MenuItem.Icon>
+                            <PathIcon Data="{StaticResource arrow_undo_regular}"></PathIcon>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="_Cell">
+                    <MenuItem Header="Change Background Color" 
+                              Command="{Binding ChooseColorCommand}">
+                        <MenuItem.Icon>
+                            <PathIcon Data="{StaticResource color_regular}"></PathIcon>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+            <DockPanel LastChildFill="True" DockPanel.Dock="Top">
+            <!-- <Button Name="DemoClick" -->
+            <!--         Content="Demo HWS"  -->
+            <!--         Margin="12"  -->
+            <!--         Command="{Binding DoDemoHw}"/> -->
             <TextBox Name="MyText" Margin="12">...</TextBox>
             
         </DockPanel>
@@ -29,10 +70,16 @@
                       AutoGenerateColumns="False" RowHeaderWidth="40"
                       HeadersVisibility="All" GridLinesVisibility="All"
                       HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
-                      CellPointerPressed="MainGridOnCellPointerPressed"
-                      IsReadOnly="True"
-                      BorderThickness="1" BorderBrush="Gray">
-                <!-- CellPointerPressed="MainGrid_OnCellPointerPressed" -->
+                      IsReadOnly="False"
+                      BorderThickness="1" BorderBrush="Gray"
+                      Foreground="Black"
+                      PreparingCellForEdit="SpreadsheetDataGrid_OnPreparingCellForEdit"
+                      CellEditEnding="SpreadsheetDataGrid_OnCellEditEnding"
+                      CellPointerPressed="SpreadsheetDataGridOnCellPointerPressed"
+                      BeginningEdit="GridOnBeginningEdit"
+                      >
+            <!-- BeginningEdit="GridOnBeginningEdit" -->
+            <!-- CellPointerPressed="MainGridOnCellPointerPressed" -->
             <DataGrid.Styles>
                 <Style Selector="DataGridColumnHeader">
                     <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
@@ -40,18 +87,36 @@
                 <!-- Add bottom lines to row headers -->
                 <Style Selector="DataGridRowHeader">
                     <Setter Property="AreSeparatorsVisible" Value="True" />
+                    <Setter Property="Background" Value="Black" />
+                    <Setter Property="Foreground" Value="LightGray"/>
                 </Style>
                 <!-- Add bottom and right lines to grid cells-->
                 <Style Selector="DataGridCell /template/ ContentPresenter">
                     <Setter Property="BorderThickness" Value="0,0,1,1" />
                     <Setter Property="BorderBrush" Value="#33000000" />
+                    <Setter Property="IsEnabled" Value="True"/>
                     <!-- <Setter Property="FontSize" Value="12"></Setter> -->
                 </Style>
-                <Style Selector="DataGridRow">
-                    <Setter Property="Background" Value="Blue"></Setter>
-                </Style>    
+                <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
+                    <Setter Property="Fill" Value="Transparent" />
+                </Style>
+                <Style Selector="DataGridRowHeader:selected">
+                    <Setter Property="Background" Value="Black" />
+                    <Setter Property="Foreground" Value="LightBlue"/>
+                </Style>
+                <Style Selector="DataGridRowHeader:selected /template/ Rectangle#BackgroundRectangle">
+                    <Setter Property="Fill" Value="Transparent" />
+                </Style>
+                <!-- Bind DataGridCell background to a Property on the Row view model -->
+                <!-- since we can't bind directly to a cell view model -->
+                <Style Selector="DataGridCell.SpreadsheetCellClass"
+                       x:DataType="vm:RowViewModel">
+                    <Setter Property="Background" Value="{Binding SelfReference,
+                            Converter={StaticResource RowBrushConverter}}" />
+                </Style>
             </DataGrid.Styles>
         </DataGrid>
+        </StackPanel>
     </DockPanel>
                
     

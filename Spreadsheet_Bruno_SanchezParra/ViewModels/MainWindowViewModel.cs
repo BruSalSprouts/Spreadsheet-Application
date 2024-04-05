@@ -6,6 +6,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Windows.Input;
+using Avalonia.Media;
+using ReactiveUI;
+using Spreadsheet_Bruno_SanchezParra.Commands;
 using SpreadsheetEngine;
 
 namespace Spreadsheet_Bruno_SanchezParra.ViewModels;
@@ -18,33 +23,132 @@ public class MainWindowViewModel : ViewModelBase
     private const int RowCount = 50;
     private const int ColumnCount = 'Z' - 'A' + 1;
 
-    // So since we don't yet have the Spreadsheet or Cell classes done,// we'll just make the spreadsheets
-    // using lists for now.
+    // CellViewModel related stuff.
+    private readonly List<CellViewModel> selectedCells = [];
+
+    // The Spreadsheet itself.
     private Spreadsheet spreadsheet;
+    private bool redoEnabled;
+    private bool undoEnabled;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether it gets or sets the RedoEnabled property.
+    /// </summary>
+    public bool RedoEnabled
+    {
+        get => this.redoEnabled;
+        set => this.RaiseAndSetIfChanged(ref this.redoEnabled, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether it gets or sets the UndoEnabled property.
+    /// </summary>
+    public bool UndoEnabled
+    {
+        get => this.undoEnabled;
+        set => this.RaiseAndSetIfChanged(ref this.undoEnabled, value);
+    }
+
+    /// <summary>
+    /// Gets UndoCommand property.
+    /// </summary>
+    public ICommand UndoCommand { get; }
+
+    /// <summary>
+    /// Gets RedoCommand property.
+    /// </summary>
+    public ICommand RedoCommand { get; }
+
+    /// <summary>
+    /// Gets ChooseColorCommand property.
+    /// </summary>
+    public ICommand ChooseColorCommand { get; }
+
+    /// <summary>
+    /// Gets ShowDialog property.
+    /// </summary>
+    public Interaction<ColorChooserViewModel, ChooserViewModel?> ShowDialog { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class with InitializeSpreadsheet.
     /// </summary>
     public MainWindowViewModel()
     {
+        // Spreadsheet data initialization
         this.SpreadsheetData = [];
         this.InitializeSpreadsheet();
+
+        // Undo and Redo Enabling fields
+        this.RedoEnabled = false;
+        this.UndoEnabled = false;
+
+        // Undo and Redo command Initialization
+        this.UndoCommand = ReactiveCommand.Create(
+            () =>
+            {
+                CommandController.GetInstance().Undo();
+
+                // Gets redo and undo commands set up here.
+                this.UndoEnabled = CommandController.GetInstance().UndoStackEnabled();
+                this.RedoEnabled = CommandController.GetInstance().RedoStackEnabled();
+            });
+        this.RedoCommand = ReactiveCommand.Create(
+            () =>
+            {
+                CommandController.GetInstance().Redo();
+
+                // Gets redo and undo commands set up here.
+                this.UndoEnabled = CommandController.GetInstance().UndoStackEnabled();
+                this.RedoEnabled = CommandController.GetInstance().RedoStackEnabled();
+            });
+
+        // Color Picker Initialization
+        this.ShowDialog = new Interaction<ColorChooserViewModel, ChooserViewModel?>();
+        var defaultColor = Colors.White;
+        this.ChooseColorCommand = ReactiveCommand.Create(
+            async () =>
+            {
+                if (this.selectedCells.Count > 0)
+                {
+                    defaultColor = Color.FromUInt32(this.selectedCells[0].BackgroundColor);
+                }
+
+                var chooser = new ColorChooserViewModel(defaultColor);
+                var result = await this.ShowDialog.Handle(chooser);
+                if (result != null)
+                {
+                    foreach (var cell in this.selectedCells)
+                    {
+                        var colorHolder = result.Colour;
+
+                        // Make sure alpha channel is ignored by masking it with 0xFF000000
+                        CommandController.GetInstance().InvokeChange(
+                            cell,
+                            nameof(CellViewModel.BackgroundColor),
+                            colorHolder.ToUInt32() | 0xFF000000);
+
+                        // Gets redo and undo commands set up here.
+                        this.UndoEnabled = CommandController.GetInstance().UndoStackEnabled();
+                        this.RedoEnabled = CommandController.GetInstance().RedoStackEnabled();
+                    }
+                }
+            });
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
-    /// </summary>
-    /// <param name="spreadsheetData">list of list of Cells.</param>
-    // ReSharper disable once UnusedMember.Global
-    public MainWindowViewModel(List<List<Cell>> spreadsheetData)
-    {
-        this.SpreadsheetData = spreadsheetData;
-    }
+    // /// <summary>
+    // /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
+    // /// </summary>
+    // /// <param name="spreadsheetData">list of list of Cells.</param>
+    // // ReSharper disable once UnusedMember.Global
+    // public MainWindowViewModel(List<RowViewModel> spreadsheetData)
+    // {
+    //     this.SpreadsheetData = spreadsheetData;
+    // }
 
     /// <summary>
     /// Gets or sets spreadsheetData.
     /// </summary>
-    public List<List<Cell>> SpreadsheetData { get; set; }
+    public List<RowViewModel> SpreadsheetData { get; set; }
 
     /// <summary>
     /// Gets the Rows Property.
@@ -91,6 +195,106 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     /// <summary>
+    /// Gets the cell from SpreadsheetData's ViewModels.
+    /// </summary>
+    /// <param name="row">int.</param>
+    /// <param name="col">integer.</param>
+    /// <returns>Cell.</returns>
+    public Cell GetCell(int row, int col)
+    {
+        return this.SpreadsheetData[row][col].Cell;
+    }
+
+    /// <summary>
+    /// Gets the CellViewModel from SpreadsheetData's ViewModels.
+    /// </summary>
+    /// <param name="row">int.</param>
+    /// <param name="col">integer.</param>
+    /// <returns>CellViewModel.</returns>
+    public CellViewModel GetCellModel(int row, int col)
+    {
+        return this.SpreadsheetData[row][col];
+    }
+
+    /// <summary>
+    /// Sets a cell's text.
+    /// </summary>
+    /// <param name="row">int.</param>
+    /// <param name="col">integer.</param>
+    /// <param name="value">string.</param>
+    public void SetCellText(int row, int col, string value)
+    {
+        this.SpreadsheetData[row][col].Text = value;
+    }
+
+    /// <summary>
+    /// Selects a Cell.
+    /// </summary>
+    /// <param name="rowIndex">int.</param>
+    /// <param name="colIndex">integer.</param>
+    public void SelectCell(int rowIndex, int colIndex)
+    {
+        var clickedCell = this.GetCellModel(rowIndex, colIndex);
+        var shouldEditCell = clickedCell.IsSelected;
+        this.ResetSelection();
+
+        // Add the pressed cell back to the list
+        this.selectedCells.Add(clickedCell);
+
+        clickedCell.IsSelected = true;
+        if (shouldEditCell)
+        {
+            clickedCell.CanEdit = true;
+        }
+    }
+
+    /// <summary>
+    /// Resets all selected cells to false.
+    /// </summary>
+    public void ResetSelection()
+    {
+        // Clear currents election
+        foreach (var cell in this.selectedCells)
+        {
+            cell.IsSelected = false;
+            cell.CanEdit = false; // Needs to be set to false for something later.
+        }
+
+        this.selectedCells.Clear();
+    }
+
+    /// <summary>
+    /// Toggles whether a cell is selected or not.
+    /// </summary>
+    /// <param name="rowIndex">int.</param>
+    /// <param name="colIndex">integer.</param>
+    public void ToggleCellSelection(int rowIndex, int colIndex)
+    {
+        var clickedCell = this.GetCellModel(rowIndex, colIndex);
+        if (clickedCell.IsSelected == false)
+        {
+            this.selectedCells.Add(clickedCell);
+            clickedCell.IsSelected = true;
+        }
+        else
+        {
+            this.selectedCells.Remove(clickedCell);
+            clickedCell.IsSelected = false;
+        }
+    }
+
+    /// <summary>
+    /// Gets a cell's text.
+    /// </summary>
+    /// <param name="row">int.</param>
+    /// <param name="col">integer.</param>
+    /// <returns>string.</returns>
+    public string GetCellText(int row, int col)
+    {
+        return this.SpreadsheetData[row][col].Cell.Text;
+    }
+
+    /// <summary>
     /// Initializes the spreadsheet by making rows of Cell class.
     /// (Temporary fix until then is a List of List of char and string).
     /// </summary>
@@ -100,15 +304,17 @@ public class MainWindowViewModel : ViewModelBase
         this.spreadsheet = new Spreadsheet(RowCount, ColumnCount);
         foreach (var rowInd in Enumerable.Range(0, RowCount))
         {
-            var columns = new List<Cell>(ColumnCount);
+            var column = new List<CellViewModel>();
             foreach (var columnInd in Enumerable.Range(0, ColumnCount))
             {
                 // var cellTemp = this.spreadsheet.GetCell(rowInd, columnInd);
                 // cellTemp.Text = "test";
-                columns.Add(this.spreadsheet.GetCell(rowInd, columnInd));
+                var cell = this.spreadsheet.GetCell(rowInd, columnInd);
+                column.Add(new CellViewModel(cell));
             }
 
-            this.SpreadsheetData.Add(columns);
+            var newColumn = new RowViewModel(column);
+            this.SpreadsheetData.Add(newColumn);
         }
     }
 }

@@ -4,6 +4,9 @@
     <option name="projectPerEditor">
       <map>
         <entry key="Spreadsheet_Bruno_SanchezParra/App.axaml" value="Spreadsheet_Bruno_SanchezParra/Spreadsheet_Bruno_SanchezParra.csproj" />
+        <entry key="Spreadsheet_Bruno_SanchezParra/Icons.axaml" value="Spreadsheet_Bruno_SanchezParra/Spreadsheet_Bruno_SanchezParra.csproj" />
+        <entry key="Spreadsheet_Bruno_SanchezParra/Views/ColorChooserControl.axaml" value="Spreadsheet_Bruno_SanchezParra/Spreadsheet_Bruno_SanchezParra.csproj" />
+        <entry key="Spreadsheet_Bruno_SanchezParra/Views/ColorChooserWindow.axaml" value="Spreadsheet_Bruno_SanchezParra/Spreadsheet_Bruno_SanchezParra.csproj" />
         <entry key="Spreadsheet_Bruno_SanchezParra/Views/MainWindow.axaml" value="Spreadsheet_Bruno_SanchezParra/Spreadsheet_Bruno_SanchezParra.csproj" />
       </map>
     </option>

@@ -9,6 +9,12 @@ namespace SpreadsheetEngine.Nodes;
 /// </summary>
 public class ExponentNode : BinaryOperatorNode
 {
+    /// <inheritdoc/>
+    public override int Precedence => 3;
+
+    /// <inheritdoc/>
+    public override char Symbol => '^';
+
     /// <summary>
     /// Returns the value left to the power of the value of right.
     /// </summary>

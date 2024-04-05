@@ -9,6 +9,7 @@
       "Spreadsheet_Bruno_SanchezParra/1.0.0": {
         "dependencies": {
           "Avalonia": "11.0.6",
+          "Avalonia.Controls.ColorPicker": "11.0.6",
           "Avalonia.Controls.DataGrid": "11.0.6",
           "Avalonia.Desktop": "11.0.6",
           "Avalonia.Diagnostics": "11.0.6",
@@ -973,6 +974,9 @@
         }
       },
       "SpreadsheetEngine/1.0.0": {
+        "dependencies": {
+          "Avalonia.Controls.ColorPicker": "11.0.6"
+        },
         "runtime": {
           "SpreadsheetEngine.dll": {}
         }

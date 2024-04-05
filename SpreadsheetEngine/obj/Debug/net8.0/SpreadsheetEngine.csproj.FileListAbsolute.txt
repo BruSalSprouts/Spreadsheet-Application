@@ -9,3 +9,5 @@ C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\obj\Debug\net8.0\Spre
 C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\obj\Debug\net8.0\refint\SpreadsheetEngine.dll
 C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\obj\Debug\net8.0\SpreadsheetEngine.pdb
 C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\obj\Debug\net8.0\ref\SpreadsheetEngine.dll
+C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\obj\Debug\net8.0\SpreadsheetEngine.csproj.AssemblyReference.cache
+C:\Users\bruno\RiderProjects\cpts321-hws\SpreadsheetEngine\obj\Debug\net8.0\Avalonia\Resources.Inputs.cache

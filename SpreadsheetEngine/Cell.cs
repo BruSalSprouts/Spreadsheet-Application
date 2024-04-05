@@ -15,10 +15,14 @@ public abstract class Cell : INotifyPropertyChanged
 {
 #pragma warning disable SA1600
     // ReSharper disable once InconsistentNaming
-    internal string text;
+    protected string value;
 
     // ReSharper disable once InconsistentNaming
-    protected string value;
+    private string text;
+
+    private uint bgColor;
+    private uint textColor;
+
 #pragma warning restore SA1600
 
     /// <inheritdoc/>
@@ -31,6 +35,52 @@ public abstract class Cell : INotifyPropertyChanged
     {
         this.text = string.Empty;
         this.value = string.Empty;
+        this.bgColor = 0xFFFFFFFF;
+        this.textColor = 0xFF000000;
+    }
+
+    /// <summary>
+    /// Gets or sets makes BGColor property.
+    /// </summary>
+    public uint BgColor
+    {
+        get => this.bgColor;
+        set
+        {
+            // Conditional to ignore if new value is same as old value
+            if (this.BgColor == value)
+            {
+                return;
+            }
+
+            this.bgColor = value;
+
+            // Event handler for if text changes
+            // this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
+            this.OnPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets TextColor property.
+    /// </summary>
+    public uint TextColor
+    {
+        get => this.textColor;
+        set
+        {
+            // Conditonal to ignore if new value is same as old value
+            if (this.textColor == value)
+            {
+                return;
+            }
+
+            this.textColor = value;
+
+            // Event handler for if text changes
+            // this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
+            this.OnPropertyChanged();
+        }
     }
 
     /// <summary>
@@ -68,16 +118,4 @@ public abstract class Cell : INotifyPropertyChanged
     {
         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
-    // protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-    // {
-    //     if (EqualityComparer<T>.Default.Equals(field, value))
-    //     {
-    //         return false;
-    //     }
-    //
-    //     field = value;
-    //     this.OnPropertyChanged(propertyName);
-    //     return true;
-    // }
 }
