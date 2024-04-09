@@ -5,7 +5,9 @@
 // WSU ID: 11714424
 
 using System.Globalization;
+using System.Xml.Serialization;
 using SpreadsheetEngine.Exceptions;
+using SpreadsheetEngine.XML;
 #pragma warning disable SA1200
 using System.ComponentModel;
 #pragma warning restore SA1200
@@ -101,6 +103,33 @@ public class Spreadsheet
     }
 
     /// <summary>
+    /// Saves Spreadsheet to stream.
+    /// </summary>
+    /// <param name="stream">Stream.</param>
+    public async void SaveToFile(Stream stream)
+    {
+        var xml = this.TransformCellList();
+        var ser = new XmlSerializer(xml.GetType()); // Doesn't store info itself
+        await using var writer = new StreamWriter(stream);
+        ser.Serialize(writer, xml);
+    }
+
+    /// <summary>
+    /// Loads from stream to empty Spreadsheet.
+    /// </summary>
+    /// <param name="stream">Stream.</param>
+    public void LoadFromFile(Stream stream)
+    {
+        var ser = new XmlSerializer(typeof(SpreadsheetXml));
+        using var reader = new StreamReader(stream);
+        var xml = (SpreadsheetXml?)ser.Deserialize(reader);
+        if (xml != null)
+        {
+            this.TransformFileData(xml);
+        }
+    }
+
+    /// <summary>
     /// Updates the Value of the respective cell[rowInd][colInd]. If the Text of the cell doesn't
     /// start with '=', then the value is just set to the text. Otherwise the value must be
     /// gotten from the value of the cell whose name follows the '='.
@@ -122,8 +151,6 @@ public class Spreadsheet
                 var tree = new ExpressionTree(expression);
                 try
                 {
-
-
                     foreach (var name in tree.GetVariableNames())
                     {
                         if (name.Length < 2)
@@ -222,6 +249,7 @@ public class Spreadsheet
         }
     }
 
+    /// TODO: HW10: Fix parsing of strings for Unbind function
     /// <summary>
     /// Removes notification from other cell.
     /// </summary>
@@ -278,6 +306,47 @@ public class Spreadsheet
         if (sender is SpreadsheetCell cell && e.PropertyName == "Text")
         {
             this.Unbind(cell);
+        }
+    }
+
+    /// <summary>
+    /// Sets properties of a CellXml to spreadsheet cells' properties that have stuff in them.
+    /// If a row has no cells copied, it won't be added.
+    /// </summary>
+    /// <returns>SpreadsheetXml.</returns>
+    private SpreadsheetXml TransformCellList()
+    {
+        var xml = new SpreadsheetXml();
+        foreach (var row in this.cells)
+        {
+            var newRow = new RowXml();
+            newRow.AddRange(
+                row.FindAll(cell => cell.Dirty).Select(
+                    cell => new CellXml()
+            {
+                Row = cell.Row, Column = cell.Col,
+                Text = cell.Text, BgColor = cell.BgColor, TextColor = cell.TextColor,
+            }));
+            if (newRow.Count > 0)
+            {
+                xml.Add(newRow);
+            }
+        }
+
+        return xml;
+    }
+
+    /// <summary>
+    /// Sets each cell in an empty spreadsheet to properties from the SpreadsheetXml file.
+    /// </summary>
+    /// <param name="xml">SpreadsheetXml.</param>
+    private void TransformFileData(SpreadsheetXml xml)
+    {
+        foreach (var cell in xml.SelectMany(row => row))
+        {
+            this.cells[cell.Row][cell.Column].Text = cell.Text;
+            this.cells[cell.Row][cell.Column].BgColor = cell.BgColor;
+            this.cells[cell.Row][cell.Column].TextColor = cell.TextColor;
         }
     }
 }

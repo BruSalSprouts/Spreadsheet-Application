@@ -23,6 +23,16 @@ internal class SpreadsheetCell(int row, int col) : Cell
     public event PropertyChangingEventHandler? PropertyChanging = (sender, e) => { };
 
     /// <summary>
+    /// Gets row property.
+    /// </summary>
+    public int Row { get; } = row;
+
+    /// <summary>
+    /// Gets col property.
+    /// </summary>
+    public int Col { get; } = col;
+
+    /// <summary>
     /// Gets or sets overriden Text property. When text changes, before changing it,
     /// it sends an event for one event to stop caring.
     /// </summary>

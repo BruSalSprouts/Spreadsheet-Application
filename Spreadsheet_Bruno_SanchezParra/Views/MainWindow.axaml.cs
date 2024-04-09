@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Drawing.Printing;
+using System.IO;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia;
@@ -19,11 +20,13 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
+using Avalonia.Platform.Storage;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using Spreadsheet_Bruno_SanchezParra.Commands;
 using Spreadsheet_Bruno_SanchezParra.Converters;
 using Spreadsheet_Bruno_SanchezParra.ViewModels;
+using Spreadsheet_Bruno_SanchezParra.XML;
 using SpreadsheetEngine;
 
 namespace Spreadsheet_Bruno_SanchezParra.Views;
@@ -97,14 +100,19 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
             // col.Binding = new Binding($"[{colName - 'A'}].Value");
             // grid?.Columns.Add(col);
             var name = colName;
-            var bindingBG = new Binding($"[{name - 'A'}].BgColor")
+            var bindingBg = new Binding($"[{name - 'A'}].BgColor")
             {
                 Converter = new ColorConverter(),
             };
-            var bindingFG = new Binding($"[{name - 'A'}].TextColor")
+            var bindingFg = new Binding($"[{name - 'A'}].TextColor")
             {
                 Converter = new ColorConverter(),
             };
+            if (bindingFg == null)
+            {
+                throw new ArgumentNullException(nameof(bindingFg));
+            }
+
             var columnTemplate = new DataGridTemplateColumn
             {
                 Header = colName.ToString(),
@@ -120,8 +128,8 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
                         VerticalAlignment = VerticalAlignment.Center,
                         Text = value[name - 'A'].Value,
                         Padding = Thickness.Parse("5,0,5,0"),
-                        [!TextBlock.BackgroundProperty] = bindingBG,
-                        [!TextBlock.ForegroundProperty] = bindingFG,
+                        [!TextBlock.BackgroundProperty] = bindingBg,
+                        [!TextBlock.ForegroundProperty] = bindingFg,
                         IsVisible = true,
                     }),
                 CellEditingTemplate = new FuncDataTemplate<RowViewModel>(
@@ -267,8 +275,18 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         this.Close();
     }
 
+    /// <summary>
+    /// Clears all the cells' texts in the spreadsheet.
+    /// </summary>
+    /// <param name="sender">object.</param>
+    /// <param name="e">RoutedEventArgs.</param>
+    private void MenuItem_SpreadsheetClear(object? sender, RoutedEventArgs e)
+    {
+        this.ViewModel?.ClearSpreadsheet();
+    }
+
     private async Task DoShowDialogAsync(InteractionContext<ColorChooserViewModel, ChooserViewModel?> interaction)
-{
+    {
      var dialog = new ColorChooserWindow
      {
          DataContext = interaction.Input,
@@ -276,5 +294,75 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 
      var result = await dialog.ShowDialog<ChooserViewModel?>(this);
      interaction.SetOutput(result);
-}
+    }
+
+    private async void MenuItem_OnSave(object? sender, RoutedEventArgs e)
+    {
+        var topLevel = TopLevel.GetTopLevel(this);
+
+        // Start async operation to open the dialog.
+        if (topLevel == null)
+        {
+            return;
+        }
+
+        var file = await topLevel.StorageProvider.SaveFilePickerAsync(
+            new FilePickerSaveOptions
+        {
+            Title = "Save Spreadsheet File",
+            FileTypeChoices = new[]
+            {
+                FileTypeXML.Xml,
+            },
+        });
+
+        if (file is null)
+        {
+            return;
+        }
+
+        // Open writing stream from the file.
+        await using var stream = await file.OpenWriteAsync();
+
+        // await using var streamWriter = new StreamWriter(stream);
+
+        // Write some content to the file.
+        // await streamWriter.WriteLineAsync("Hello World!");
+        this.ViewModel?.SaveData(stream);
+    }
+
+    private async void MenuItem_OnLoad(object? sender, RoutedEventArgs e)
+    {
+        var topLevel = TopLevel.GetTopLevel(this);
+
+        // Start async operation to open the dialog.
+        if (topLevel == null)
+        {
+            return;
+        }
+
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(
+            new FilePickerOpenOptions
+        {
+            Title = "Open Spreadsheet File",
+            AllowMultiple = false,
+            FileTypeFilter = new[]
+            {
+                FileTypeXML.Xml,
+            },
+        });
+
+        if (files.Count < 1)
+        {
+            return;
+        }
+
+        // Clear Spreadsheet
+        this.ViewModel?.ClearSpreadsheet();
+
+        // Open reading stream from the first file.
+        await using var stream = await files[0].OpenReadAsync();
+
+        this.ViewModel?.LoadData(stream);
+    }
 }
