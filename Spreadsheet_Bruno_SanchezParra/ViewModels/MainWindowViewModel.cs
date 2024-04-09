@@ -5,6 +5,7 @@
 // WSU ID: 11714424
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Input;
@@ -301,10 +302,34 @@ public class MainWindowViewModel : ViewModelBase
     /// </summary>
     public void ClearSpreadsheet()
     {
-        foreach (var cell in this.SpreadsheetData.SelectMany(column => column.Cells))
+        this.RedoEnabled = false;
+        this.UndoEnabled = false;
+        CommandController.GetInstance().ClearStacks();
+
+        foreach (var cell in this.SpreadsheetData.SelectMany(row => row.Cells))
         {
             cell.Text = string.Empty;
+            cell.BackgroundColor = Colors.White.ToUInt32();
+            cell.TextColor = Colors.Black.ToUInt32();
         }
+    }
+
+    /// <summary>
+    /// Calls SaveToFile and passes stream.
+    /// </summary>
+    /// <param name="stream">Stream.</param>
+    public void SaveData(Stream stream)
+    {
+        this.spreadsheet.SaveToFile(stream);
+    }
+
+    /// <summary>
+    /// Calls LoadToFile and passes stream.
+    /// </summary>
+    /// <param name="stream">Stream.</param>
+    public void LoadData(Stream stream)
+    {
+        this.spreadsheet.LoadFromFile(stream);
     }
 
     /// <summary>

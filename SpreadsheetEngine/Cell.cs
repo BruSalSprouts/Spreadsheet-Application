@@ -22,6 +22,7 @@ public abstract class Cell : INotifyPropertyChanged
 
     private uint bgColor;
     private uint textColor;
+    private bool dirty;
 
 #pragma warning restore SA1600
 
@@ -33,6 +34,7 @@ public abstract class Cell : INotifyPropertyChanged
     /// </summary>
     protected Cell()
     {
+        this.dirty = false;
         this.text = string.Empty;
         this.value = string.Empty;
         this.bgColor = 0xFFFFFFFF;
@@ -54,6 +56,7 @@ public abstract class Cell : INotifyPropertyChanged
             }
 
             this.bgColor = value;
+            this.dirty = true;
 
             // Event handler for if text changes
             // this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
@@ -76,6 +79,7 @@ public abstract class Cell : INotifyPropertyChanged
             }
 
             this.textColor = value;
+            this.dirty = true;
 
             // Event handler for if text changes
             // this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
@@ -98,6 +102,7 @@ public abstract class Cell : INotifyPropertyChanged
             }
 
             this.text = value;
+            this.dirty = true;
 
             // Event handler for if text changes
             // this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
@@ -109,6 +114,15 @@ public abstract class Cell : INotifyPropertyChanged
     /// Gets publicly gets or Protected sets to make the Value property.
     /// </summary>
     public virtual string Value => this.value;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether it gets or sets dirty property.
+    /// </summary>
+    public bool Dirty
+    {
+        get => this.dirty;
+        set => this.dirty = value;
+    }
 
     /// <summary>
     /// Event handler method for PropertyChanged event. Sends message to subscribers of PropertyChanged handler.

@@ -31,12 +31,12 @@
                             <PathIcon Data="{StaticResource PaneCloseRegular}"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Save">
+                    <MenuItem Header="Save" Click="MenuItem_OnSave">
                         <MenuItem.Icon>
                             <PathIcon Data="{StaticResource DocumentEditRegular}"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Load">
+                    <MenuItem Header="Load" Click="MenuItem_OnLoad">
                         <MenuItem.Icon>
                             <PathIcon Data="{StaticResource DocumentOnePageRegular}"/>
                         </MenuItem.Icon>
@@ -74,10 +74,10 @@
                 </MenuItem>
             </Menu>
             <DockPanel LastChildFill="True" DockPanel.Dock="Top">
-            <!-- <Button Name="DemoClick" -->
-            <!--         Content="Demo HWS"  -->
-            <!--         Margin="12"  -->
-            <!--         Command="{Binding DoDemoHw}"/> -->
+            <Button Name="DemoClick"
+                    Content="Demo HWS"
+                    Margin="12"
+                    Command="{Binding DoDemoHw}"/>
             <TextBox Name="MyText" Margin="12">...</TextBox>
             
         </DockPanel>
