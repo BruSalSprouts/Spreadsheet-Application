@@ -28,6 +28,8 @@ public class MainWindowViewModel : ViewModelBase
 
     // The Spreadsheet itself.
     private Spreadsheet spreadsheet;
+
+    // Booleans that tell View if it can redo and undo stuff.
     private bool redoEnabled;
     private bool undoEnabled;
 

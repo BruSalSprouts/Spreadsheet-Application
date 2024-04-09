@@ -95,6 +95,15 @@ public class CommandController
     }
 
     /// <summary>
+    /// Clears the redo and undo stacks.
+    /// </summary>
+    public void ClearStacks()
+    {
+        this.undoStack.Clear();
+        this.redoStack.Clear();
+    }
+
+    /// <summary>
     /// Pushes a command to the undoStack Stack.
     /// </summary>
     /// <param name="command">Instance of IUndoRedoCommand.</param>

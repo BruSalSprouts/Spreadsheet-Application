@@ -122,8 +122,6 @@ public class Spreadsheet
                 var tree = new ExpressionTree(expression);
                 try
                 {
-
-
                     foreach (var name in tree.GetVariableNames())
                     {
                         if (name.Length < 2)
@@ -222,6 +220,7 @@ public class Spreadsheet
         }
     }
 
+    /// TODO: Fix parsing of strings for Unbind function
     /// <summary>
     /// Removes notification from other cell.
     /// </summary>

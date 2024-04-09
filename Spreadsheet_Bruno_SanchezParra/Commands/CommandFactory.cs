@@ -37,14 +37,11 @@ public class CommandFactory
             throw new InvalidFieldType(newValue.GetType().ToString());
         }
 
-        switch (fieldName)
+        return fieldName switch
         {
-            case nameof(CellViewModel.Text):
-                return new TextChangeCommand(cell, (string)newValue);
-            case nameof(CellViewModel.BackgroundColor):
-                return new ColorChangeCommand(cell, (uint)newValue);
-        }
-
-        throw new InvalidFieldNameException(fieldName);
+            nameof(CellViewModel.Text) => new TextChangeCommand(cell, (string)newValue),
+            nameof(CellViewModel.BackgroundColor) => new ColorChangeCommand(cell, (uint)newValue),
+            _ => throw new InvalidFieldNameException(fieldName)
+        };
     }
 }

@@ -26,9 +26,19 @@
             <Menu DockPanel.Dock="Top" >
                 <MenuItem Header="_File">
                     <Separator/>
-                    <MenuItem Header="Cl_ose" Click="MenuItem_OnClose">
+                    <MenuItem Header="Close" Click="MenuItem_OnClose">
                         <MenuItem.Icon>
-                            <PathIcon Data="{StaticResource PaneCloseRegular}"></PathIcon>
+                            <PathIcon Data="{StaticResource PaneCloseRegular}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Save">
+                        <MenuItem.Icon>
+                            <PathIcon Data="{StaticResource DocumentEditRegular}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Load">
+                        <MenuItem.Icon>
+                            <PathIcon Data="{StaticResource DocumentOnePageRegular}"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
@@ -44,7 +54,7 @@
                               IsEnabled="{Binding UndoEnabled}"
                               Command="{Binding UndoCommand}" >
                         <MenuItem.Icon>
-                            <PathIcon Data="{StaticResource ArrowUndoRegular}"></PathIcon>
+                            <PathIcon Data="{StaticResource ArrowUndoRegular}"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Clear"
