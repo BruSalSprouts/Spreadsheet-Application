@@ -499,4 +499,39 @@ public class SpreadsheetCellsTests
         o[0, 0].Text = "=B1+A1";
         Assert.That(o[0, 0].Value, Is.EqualTo(SelfReferenceException.Error));
     }
+
+    /// <summary>
+    /// Tests if a cell throws a self reference exception.
+    /// </summary>
+    [Test]
+    public void CircularReferenceTest()
+    {
+        var o = this.spreadsheet;
+        if (o == null)
+        {
+            return;
+        }
+
+        o[0, 0].Text = "=B1";
+        o[1, 0].Text = "=A1";
+        Assert.That(o[1, 0].Value, Is.EqualTo(CircularException.Error));
+    }
+
+    /// <summary>
+    /// Tests if a cell throws a self reference exception.
+    /// </summary>
+    [Test]
+    public void CircularReferenceDeeperTest()
+    {
+        var o = this.spreadsheet;
+        if (o == null)
+        {
+            return;
+        }
+
+        o[0, 0].Text = "=B1";
+        o[1, 0].Text = "=C1";
+        o[2, 0].Text = "=A1";
+        Assert.That(o[2, 0].Value, Is.EqualTo(CircularException.Error));
+    }
 }

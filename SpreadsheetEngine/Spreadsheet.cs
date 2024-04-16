@@ -130,6 +130,16 @@ public class Spreadsheet
     }
 
     /// <summary>
+    /// Checks if a cell has a circular reference. Returns true if so, otherwise returns false.
+    /// </summary>
+    /// <param name="set">HashSet.</param>
+    /// <returns>bool.</returns>
+    private bool IsCircularReference(HashSet<string> set)
+    {
+        return false;
+    }
+
+    /// <summary>
     /// Validates a cell.
     /// </summary>
     /// <param name="name">string.</param>
@@ -178,6 +188,8 @@ public class Spreadsheet
             var tree = new ExpressionTree(expression);
             try
             {
+                var set = new HashSet<string> { sender.Name };
+
                 // Validate variables
                 foreach (var name in tree.GetVariableNames())
                 {
@@ -192,6 +204,13 @@ public class Spreadsheet
                     {
                         throw new SelfReferenceException(name);
                     }
+
+                    set.Add(name);
+                }
+
+                if (this.IsCircularReference(set))
+                {
+                    throw new CircularException();
                 }
 
                 foreach (var name in tree.GetVariableNames())

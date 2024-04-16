@@ -7,8 +7,7 @@ namespace SpreadsheetEngine.Exceptions;
 /// <summary>
 /// Exception for circular references.
 /// </summary>
-/// <param name="message">string.</param>
-public class CircularException(string message) : Exception(message)
+public class CircularException() : Exception("Circular Exception!")
 {
     /// <summary>
     /// Error message.
