@@ -167,6 +167,7 @@ public class Spreadsheet
             }
         }
 
+        set.Remove(currentName);
         return false;
     }
 
