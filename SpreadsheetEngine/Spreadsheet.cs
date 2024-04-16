@@ -168,13 +168,13 @@ public class Spreadsheet
                 foreach (var name in tree.GetVariableNames())
                 {
                     // Not an invalid name
-                    if (!this.isValid(name))
-                    {
-                        throw new InvalidFieldNameException(name);
-                    }
+                    // if (!this.isValid(name))
+                    // {
+                    //     throw new InvalidFieldNameException(name);
+                    // }
 
                     // Not a self reference
-                    if (string.Compare(name, sender.Name, StringComparison.OrdinalIgnoreCase) != 0)
+                    if (string.Compare(name, sender.Name, StringComparison.OrdinalIgnoreCase) == 0)
                     {
                         throw new SelfReferenceException(name);
                     }
@@ -211,6 +211,12 @@ public class Spreadsheet
 
                     sender.Bind(otherCell);
                 }
+            }
+            catch (SelfReferenceException e)
+            {
+                Console.WriteLine(e);
+                sender.SetValue("#(Self Reference)!");
+                return;
             }
             catch (Exception e)
             {

@@ -4,6 +4,8 @@
 // Name: Bruno Sanchez
 // WSU ID: 11714424
 
+using SpreadsheetEngine.Exceptions;
+
 #pragma warning disable CS0168 // Variable is declared but never used
 namespace Spreadsheet_Testing;
 
@@ -480,5 +482,21 @@ public class SpreadsheetCellsTests
         var cellActual = o[4, 3];
         cellActual.BgColor = 0x010101;
         Assert.That(called, Is.True);
+    }
+
+    /// <summary>
+    /// Tests if a cell throws a self reference exception.
+    /// </summary>
+    [Test]
+    public void SelfReferenceTest()
+    {
+        var o = this.spreadsheet;
+        if (o == null)
+        {
+            return;
+        }
+
+        o[0, 0].Text = "=B1+A1";
+        Assert.That(o[0, 0].Value, Is.EqualTo("#(Self Reference)!"));
     }
 }
