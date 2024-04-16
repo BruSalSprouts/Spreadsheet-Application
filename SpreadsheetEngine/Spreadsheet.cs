@@ -130,6 +130,16 @@ public class Spreadsheet
     }
 
     /// <summary>
+    /// Validates a cell.
+    /// </summary>
+    /// <param name="cellName">string.</param>
+    /// <returns>bool.</returns>
+    private bool isValid(string cellName)
+    {
+        return true;
+    }
+
+    /// <summary>
     /// Updates the Value of the respective cell[rowInd][colInd]. If the Text of the cell doesn't
     /// start with '=', then the value is just set to the text. Otherwise the value must be
     /// gotten from the value of the cell whose name follows the '='.
@@ -139,87 +149,105 @@ public class Spreadsheet
     {
         var tempText = sender.Text;
         var nextValue = tempText;
-        if (nextValue != sender.Value)
+        if (nextValue == sender.Value)
         {
-            if (!string.IsNullOrEmpty(tempText) && tempText[0] == '=')
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(tempText) && tempText[0] == '=')
+        {
+            // The following part is just getting the right Cell name
+            var expression = tempText[1..].ToUpper();
+            nextValue = double.NaN.ToString(CultureInfo.InvariantCulture);
+
+            // The above commend out code is the previous implementation of an Expression before HW 7
+            var tree = new ExpressionTree(expression);
+            try
             {
-                // The following part is just getting the right Cell name
-                var expression = tempText[1..].ToUpper();
-                nextValue = double.NaN.ToString(CultureInfo.InvariantCulture);
-
-                // The above commend out code is the previous implementation of an Expression before HW 7
-                var tree = new ExpressionTree(expression);
-                try
+                // Validate variables
+                foreach (var name in tree.GetVariableNames())
                 {
-                    foreach (var name in tree.GetVariableNames())
+                    // Not an invalid name
+                    if (!this.isValid(name))
                     {
-                        if (name.Length < 2)
-                        {
-                            nextValue = "#ERROR!";
-                            continue;
-                        }
+                        throw new InvalidFieldNameException(name);
+                    }
 
-                        var colInd = name[0] - 'A';
-                        var rowInd = int.Parse(name[1..]) - 1;
-
-                        if (rowInd < 0 || rowInd >= this.Rows || colInd < 0 || colInd >= this.Columns)
-                        {
-                            nextValue = "#ERROR!";
-                            continue;
-                        }
-
-                        var otherCell = this.GetCell(rowInd, colInd);
-                        var dValue = double.TryParse(otherCell.Value, out var value);
-                        if (dValue)
-                        {
-                            tree.SetVariable(name, value);
-                        }
-                        else
-                        {
-                            tree.SetVariable(name, double.NaN);
-                            nextValue = otherCell.Value;
-                        }
-
-                        sender.Bind(otherCell);
+                    // Not a self reference
+                    if (string.Compare(name, sender.Name, StringComparison.OrdinalIgnoreCase) != 0)
+                    {
+                        throw new SelfReferenceException(name);
                     }
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    sender.SetValue("#ERROR!");
-                    return;
-                }
 
-                var possibleValue = double.NaN;
-
-                // Evaluate the tree
-                try
+                foreach (var name in tree.GetVariableNames())
                 {
-                    possibleValue = tree.Evaluate();
-                    nextValue = possibleValue.ToString(CultureInfo.InvariantCulture);
-                }
-                catch (InvalidValueException e)
-                {
-                    if (tree.IsExpression())
+                    if (name.Length < 2)
                     {
-                        // It's a number.
-                        // nextValue will be the number.
-                        nextValue = !double.IsNaN(possibleValue) ?
-                            possibleValue.ToString(CultureInfo.InvariantCulture) : "#ERROR!";
+                        nextValue = "#ERROR!";
+                        continue;
+                    }
+
+                    var colInd = name[0] - 'A';
+                    var rowInd = int.Parse(name[1..]) - 1;
+
+                    if (rowInd < 0 || rowInd >= this.Rows || colInd < 0 || colInd >= this.Columns)
+                    {
+                        nextValue = "#ERROR!";
+                        continue;
+                    }
+
+                    var otherCell = this.GetCell(rowInd, colInd);
+                    var dValue = double.TryParse(otherCell.Value, out var value);
+                    if (dValue)
+                    {
+                        tree.SetVariable(name, value);
                     }
                     else
                     {
-                        if (!double.IsNaN(possibleValue))
-                        { // It's a number.
-                            // nextValue will be the number.
-                            nextValue = possibleValue.ToString(CultureInfo.InvariantCulture);
-                        }
+                        tree.SetVariable(name, double.NaN);
+                        nextValue = otherCell.Value;
+                    }
+
+                    sender.Bind(otherCell);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                sender.SetValue("#(Invalid Reference)!");
+                return;
+            }
+
+            var possibleValue = double.NaN;
+
+            // Evaluate the tree
+            try
+            {
+                possibleValue = tree.Evaluate();
+                nextValue = possibleValue.ToString(CultureInfo.InvariantCulture);
+            }
+            catch (InvalidValueException e)
+            {
+                if (tree.IsExpression())
+                {
+                    // It's a number.
+                    // nextValue will be the number.
+                    nextValue = !double.IsNaN(possibleValue) ?
+                        possibleValue.ToString(CultureInfo.InvariantCulture) : "#ERROR!";
+                }
+                else
+                {
+                    if (!double.IsNaN(possibleValue))
+                    { // It's a number.
+                        // nextValue will be the number.
+                        nextValue = possibleValue.ToString(CultureInfo.InvariantCulture);
                     }
                 }
             }
-
-            sender.SetValue(nextValue);
         }
+
+        sender.SetValue(nextValue);
     }
 
     /// <summary>

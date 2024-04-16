@@ -33,6 +33,12 @@ internal class SpreadsheetCell(int row, int col) : Cell
     public int Col { get; } = col;
 
     /// <summary>
+    /// Gets row property.
+    /// Converts row from int to char by adding 'A' to it
+    /// </summary>
+    public string Name { get; } = $"{(char)(row + 'A')}{col + 1}";
+
+    /// <summary>
     /// Gets or sets overriden Text property. When text changes, before changing it,
     /// it sends an event for one event to stop caring.
     /// </summary>
