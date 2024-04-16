@@ -132,11 +132,25 @@ public class Spreadsheet
     /// <summary>
     /// Validates a cell.
     /// </summary>
-    /// <param name="cellName">string.</param>
+    /// <param name="name">string.</param>
     /// <returns>bool.</returns>
-    private bool isValid(string cellName)
+    private bool IsValid(string name)
     {
-        return true;
+        if (name.Length < 2)
+        {
+            return false;
+        }
+
+        var colInd = name[0] - 'A';
+
+        // See if it can parse the number.
+        if (!int.TryParse(name[1..], out var rowInd))
+        {
+            return false;
+        }
+
+        rowInd--;
+        return rowInd >= 0 && rowInd < this.Rows && colInd >= 0 && colInd < this.Columns;
     }
 
     /// <summary>
@@ -168,10 +182,10 @@ public class Spreadsheet
                 foreach (var name in tree.GetVariableNames())
                 {
                     // Not an invalid name
-                    // if (!this.isValid(name))
-                    // {
-                    //     throw new InvalidFieldNameException(name);
-                    // }
+                    if (!this.IsValid(name))
+                    {
+                        throw new InvalidFieldNameException(name);
+                    }
 
                     // Not a self reference
                     if (string.Compare(name, sender.Name, StringComparison.OrdinalIgnoreCase) == 0)
@@ -182,20 +196,8 @@ public class Spreadsheet
 
                 foreach (var name in tree.GetVariableNames())
                 {
-                    if (name.Length < 2)
-                    {
-                        nextValue = "#ERROR!";
-                        continue;
-                    }
-
                     var colInd = name[0] - 'A';
                     var rowInd = int.Parse(name[1..]) - 1;
-
-                    if (rowInd < 0 || rowInd >= this.Rows || colInd < 0 || colInd >= this.Columns)
-                    {
-                        nextValue = "#ERROR!";
-                        continue;
-                    }
 
                     var otherCell = this.GetCell(rowInd, colInd);
                     var dValue = double.TryParse(otherCell.Value, out var value);
@@ -215,13 +217,13 @@ public class Spreadsheet
             catch (SelfReferenceException e)
             {
                 Console.WriteLine(e);
-                sender.SetValue("#(Self Reference)!");
+                sender.SetValue(SelfReferenceException.Error);
                 return;
             }
-            catch (Exception e)
+            catch (InvalidFieldNameException e)
             {
                 Console.WriteLine(e);
-                sender.SetValue("#(Invalid Reference)!");
+                sender.SetValue(InvalidFieldNameException.Error);
                 return;
             }
 

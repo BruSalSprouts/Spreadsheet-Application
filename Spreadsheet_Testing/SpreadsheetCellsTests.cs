@@ -252,7 +252,7 @@ public class SpreadsheetCellsTests
                 o[1, 2].Text = "=A0";
             }
 
-            Assert.That(o?[1, 2].Value, Is.EqualTo("#ERROR!"));
+            Assert.That(o?[1, 2].Value, Is.EqualTo(InvalidFieldNameException.Error));
         }
         catch (IndexOutOfRangeException f)
         {
@@ -288,7 +288,7 @@ public class SpreadsheetCellsTests
             o[1, 2].Text = "=A";
         }
 
-        Assert.That(o?[1, 2].Value, Is.EqualTo("#ERROR!"));
+        Assert.That(o?[1, 2].Value, Is.EqualTo(InvalidFieldNameException.Error));
     }
 
     /// <summary>
@@ -497,6 +497,6 @@ public class SpreadsheetCellsTests
         }
 
         o[0, 0].Text = "=B1+A1";
-        Assert.That(o[0, 0].Value, Is.EqualTo("#(Self Reference)!"));
+        Assert.That(o[0, 0].Value, Is.EqualTo(SelfReferenceException.Error));
     }
 }

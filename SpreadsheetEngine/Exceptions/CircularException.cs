@@ -8,4 +8,10 @@ namespace SpreadsheetEngine.Exceptions;
 /// Exception for circular references.
 /// </summary>
 /// <param name="message">string.</param>
-public class CircularException(string message) : Exception(message);
+public class CircularException(string message) : Exception(message)
+{
+    /// <summary>
+    /// Error message.
+    /// </summary>
+    public const string Error = "#(Circular reference)!";
+}
