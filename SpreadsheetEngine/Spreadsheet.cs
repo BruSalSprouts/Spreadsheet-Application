@@ -132,10 +132,41 @@ public class Spreadsheet
     /// <summary>
     /// Checks if a cell has a circular reference. Returns true if so, otherwise returns false.
     /// </summary>
-    /// <param name="set">HashSet.</param>
+    /// <param name="currentName">string.</param>
+    /// <param name="variables">IEnumerable.</param>
+    /// <param name="set">ISet.</param>
     /// <returns>bool.</returns>
-    private bool IsCircularReference(HashSet<string> set)
+    private bool IsCircularReference(string currentName, IEnumerable<string> variables, ISet<string> set)
     {
+        // If name is already in the set.
+        if (!set.Add(currentName))
+        {
+            return true;
+        }
+
+        // For each variable
+        foreach (var variable in variables)
+        {
+            // Get the cell associated with the variable name
+            var otherCell = this.NameToCell(variable);
+
+            // If there is no formula, skip this.
+            if (string.IsNullOrEmpty(otherCell.Text) || otherCell.Text[0] != '=')
+            {
+                continue;
+            }
+
+            // There is a formula, so we'll make a tree out of it.
+            var tree = new ExpressionTree(otherCell.Text[1..].ToUpper());
+
+            // Recursive call to test circular reference for variable.
+            var some = this.IsCircularReference(variable, tree.GetVariableNames(), set);
+            if (some)
+            {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -164,6 +195,18 @@ public class Spreadsheet
     }
 
     /// <summary>
+    /// Takes in a cell name and returns that cell.
+    /// </summary>
+    /// <param name="name">string.</param>
+    /// <returns>Cell.</returns>
+    private Cell NameToCell(string name)
+    {
+        var colInd = name[0] - 'A';
+        var rowInd = int.Parse(name[1..]) - 1;
+        return this.GetCell(rowInd, colInd);
+    }
+
+    /// <summary>
     /// Updates the Value of the respective cell[rowInd][colInd]. If the Text of the cell doesn't
     /// start with '=', then the value is just set to the text. Otherwise the value must be
     /// gotten from the value of the cell whose name follows the '='.
@@ -188,8 +231,6 @@ public class Spreadsheet
             var tree = new ExpressionTree(expression);
             try
             {
-                var set = new HashSet<string> { sender.Name };
-
                 // Validate variables
                 foreach (var name in tree.GetVariableNames())
                 {
@@ -204,21 +245,17 @@ public class Spreadsheet
                     {
                         throw new SelfReferenceException(name);
                     }
-
-                    set.Add(name);
                 }
 
-                if (this.IsCircularReference(set))
+                // No circular references
+                if (this.IsCircularReference(sender.Name, tree.GetVariableNames(), new HashSet<string>()))
                 {
                     throw new CircularException();
                 }
 
                 foreach (var name in tree.GetVariableNames())
                 {
-                    var colInd = name[0] - 'A';
-                    var rowInd = int.Parse(name[1..]) - 1;
-
-                    var otherCell = this.GetCell(rowInd, colInd);
+                    var otherCell = this.NameToCell(name);
                     var dValue = double.TryParse(otherCell.Value, out var value);
                     if (dValue)
                     {
@@ -243,6 +280,18 @@ public class Spreadsheet
             {
                 Console.WriteLine(e);
                 sender.SetValue(InvalidFieldNameException.Error);
+                return;
+            }
+            catch (CircularException e)
+            {
+                Console.WriteLine(e);
+                sender.SetValue(CircularException.Error);
+                return;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                sender.SetValue("#Error!?!");
                 return;
             }
 

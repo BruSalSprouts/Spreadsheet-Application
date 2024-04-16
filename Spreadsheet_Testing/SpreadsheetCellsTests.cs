@@ -513,8 +513,8 @@ public class SpreadsheetCellsTests
         }
 
         o[0, 0].Text = "=B1";
-        o[1, 0].Text = "=A1";
-        Assert.That(o[1, 0].Value, Is.EqualTo(CircularException.Error));
+        o[0, 1].Text = "=A1";
+        Assert.That(o[0, 1].Value, Is.EqualTo(CircularException.Error));
     }
 
     /// <summary>
@@ -530,8 +530,8 @@ public class SpreadsheetCellsTests
         }
 
         o[0, 0].Text = "=B1";
-        o[1, 0].Text = "=C1";
-        o[2, 0].Text = "=A1";
-        Assert.That(o[2, 0].Value, Is.EqualTo(CircularException.Error));
+        o[0, 1].Text = "=C1";
+        o[0, 2].Text = "=A1";
+        Assert.That(o[0, 2].Value, Is.EqualTo(CircularException.Error));
     }
 }
