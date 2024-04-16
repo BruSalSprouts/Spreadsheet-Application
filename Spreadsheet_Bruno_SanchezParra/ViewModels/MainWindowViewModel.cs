@@ -13,6 +13,7 @@ using Avalonia.Media;
 using ReactiveUI;
 using Spreadsheet_Bruno_SanchezParra.Commands;
 using SpreadsheetEngine;
+using SpreadsheetEngine.XML;
 
 namespace Spreadsheet_Bruno_SanchezParra.ViewModels;
 

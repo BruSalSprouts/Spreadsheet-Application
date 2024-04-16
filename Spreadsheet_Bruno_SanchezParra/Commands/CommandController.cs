@@ -33,6 +33,8 @@ public class CommandController
     public static CommandController GetInstance()
     {
         return instance ??= new CommandController();
+
+        // This is a singleton pattern!
     }
 
     /// <summary>
