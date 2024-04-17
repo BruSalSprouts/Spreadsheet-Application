@@ -13,7 +13,6 @@ using Avalonia.Media;
 using ReactiveUI;
 using Spreadsheet_Bruno_SanchezParra.Commands;
 using SpreadsheetEngine;
-using SpreadsheetEngine.XML;
 
 namespace Spreadsheet_Bruno_SanchezParra.ViewModels;
 
@@ -159,6 +158,11 @@ public class MainWindowViewModel : ViewModelBase
     /// </summary>
     // ReSharper disable once UnassignedGetOnlyAutoProperty - Asked for from Assignment.
     public Cell[][] Rows { get; }
+
+    /// <summary>
+    /// Gets the RowAmount Property.
+    /// </summary>
+    public int RowAmount { get; } = RowCount;
 
     /// <summary>
     /// The Event handler for the HW Demo Button. For each cell it clears text, if it's column A it sets the Value to

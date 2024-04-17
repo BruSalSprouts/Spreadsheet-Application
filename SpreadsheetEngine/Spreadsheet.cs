@@ -27,11 +27,6 @@ public class Spreadsheet
 
     private List<List<SpreadsheetCell>> cells = null!;
 
-    // The Event Handler for Spreadsheet, CellPropertyChanged
-
-    /// <inheritdoc cref="CellPropertyChanged" />
-    public event PropertyChangedEventHandler? CellPropertyChanged = (sender, e) => { };
-
     /// <summary>
     /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
     /// Also checks for invalid row and column numbers.
@@ -47,8 +42,14 @@ public class Spreadsheet
 
         this.Rows = rowNum;
         this.Columns = colNum;
+        this.cells = [];
         this.InitializeCells(rowNum, colNum);
     }
+
+    // The Event Handler for Spreadsheet, CellPropertyChanged
+
+    /// <inheritdoc cref="CellPropertyChanged" />
+    public event PropertyChangedEventHandler? CellPropertyChanged = (sender, e) => { };
 
     /// <summary>
     /// Gets or sets property for Rows.
@@ -130,96 +131,204 @@ public class Spreadsheet
     }
 
     /// <summary>
+    /// Checks if a cell has a circular reference. Returns true if so, otherwise returns false.
+    /// </summary>
+    /// <param name="currentName">string.</param>
+    /// <param name="variables">IEnumerable.</param>
+    /// <param name="set">ISet.</param>
+    /// <returns>bool.</returns>
+    private bool IsCircularReference(string currentName, IEnumerable<string> variables, ISet<string> set)
+    {
+        // If name is already in the set.
+        if (!set.Add(currentName))
+        {
+            return true;
+        }
+
+        // For each variable
+        foreach (var variable in variables)
+        {
+            // Get the cell associated with the variable name
+            var otherCell = this.NameToCell(variable);
+
+            // If there is no formula, skip this.
+            if (string.IsNullOrEmpty(otherCell.Text) || otherCell.Text[0] != '=')
+            {
+                continue;
+            }
+
+            // There is a formula, so we'll make a tree out of it.
+            var tree = new ExpressionTree(otherCell.Text[1..].ToUpper());
+
+            // Recursive call to test circular reference for variable.
+            var some = this.IsCircularReference(variable, tree.GetVariableNames(), set);
+            if (some)
+            {
+                return true;
+            }
+        }
+
+        set.Remove(currentName);
+        return false;
+    }
+
+    /// <summary>
+    /// Validates a cell.
+    /// </summary>
+    /// <param name="name">string.</param>
+    /// <returns>bool.</returns>
+    private bool IsValid(string name)
+    {
+        if (name.Length < 2)
+        {
+            return false;
+        }
+
+        var colInd = name[0] - 'A';
+
+        // See if it can parse the number.
+        if (!int.TryParse(name[1..], out var rowInd))
+        {
+            return false;
+        }
+
+        rowInd--;
+        return rowInd >= 0 && rowInd < this.Rows && colInd >= 0 && colInd < this.Columns;
+    }
+
+    /// <summary>
+    /// Takes in a cell name and returns that cell.
+    /// </summary>
+    /// <param name="name">string.</param>
+    /// <returns>Cell.</returns>
+    private Cell NameToCell(string name)
+    {
+        var colInd = name[0] - 'A';
+        var rowInd = int.Parse(name[1..]) - 1;
+        return this.GetCell(rowInd, colInd);
+    }
+
+    /// <summary>
     /// Updates the Value of the respective cell[rowInd][colInd]. If the Text of the cell doesn't
     /// start with '=', then the value is just set to the text. Otherwise the value must be
     /// gotten from the value of the cell whose name follows the '='.
     /// </summary>
     /// <param name="sender">SpreadsheetCell.</param>
-    private void ValueUpdate(SpreadsheetCell sender)
+    /// <returns>bool.</returns>
+    private bool ValueUpdate(SpreadsheetCell sender)
     {
+        Console.WriteLine($"Updating {sender.Name}");
         var tempText = sender.Text;
         var nextValue = tempText;
-        if (nextValue != sender.Value)
+        if (nextValue == sender.Value)
         {
-            if (!string.IsNullOrEmpty(tempText) && tempText[0] == '=')
+            return false;
+        }
+
+        if (!string.IsNullOrEmpty(tempText) && tempText[0] == '=')
+        {
+            // The following part is just getting the right Cell name
+            var expression = tempText[1..].ToUpper();
+            nextValue = double.NaN.ToString(CultureInfo.InvariantCulture);
+
+            // The above commend out code is the previous implementation of an Expression before HW 7
+            var tree = new ExpressionTree(expression);
+            try
             {
-                // The following part is just getting the right Cell name
-                var expression = tempText[1..].ToUpper();
-                nextValue = double.NaN.ToString(CultureInfo.InvariantCulture);
-
-                // The above commend out code is the previous implementation of an Expression before HW 7
-                var tree = new ExpressionTree(expression);
-                try
+                // Validate variables
+                foreach (var name in tree.GetVariableNames())
                 {
-                    foreach (var name in tree.GetVariableNames())
+                    // Not an invalid name
+                    if (!this.IsValid(name))
                     {
-                        if (name.Length < 2)
-                        {
-                            nextValue = "#ERROR!";
-                            continue;
-                        }
+                        throw new InvalidFieldNameException(name);
+                    }
 
-                        var colInd = name[0] - 'A';
-                        var rowInd = int.Parse(name[1..]) - 1;
-
-                        if (rowInd < 0 || rowInd >= this.Rows || colInd < 0 || colInd >= this.Columns)
-                        {
-                            nextValue = "#ERROR!";
-                            continue;
-                        }
-
-                        var otherCell = this.GetCell(rowInd, colInd);
-                        var dValue = double.TryParse(otherCell.Value, out var value);
-                        if (dValue)
-                        {
-                            tree.SetVariable(name, value);
-                        }
-                        else
-                        {
-                            tree.SetVariable(name, double.NaN);
-                            nextValue = otherCell.Value;
-                        }
-
-                        sender.Bind(otherCell);
+                    // Not a self reference
+                    if (string.Compare(name, sender.Name, StringComparison.OrdinalIgnoreCase) == 0)
+                    {
+                        throw new SelfReferenceException(name);
                     }
                 }
-                catch (Exception e)
+
+                // No circular references
+                if (this.IsCircularReference(sender.Name, tree.GetVariableNames(), new HashSet<string>()))
                 {
-                    Console.WriteLine(e);
-                    sender.SetValue("#ERROR!");
-                    return;
+                    throw new CircularException();
                 }
 
-                var possibleValue = double.NaN;
-
-                // Evaluate the tree
-                try
+                foreach (var name in tree.GetVariableNames())
                 {
-                    possibleValue = tree.Evaluate();
-                    nextValue = possibleValue.ToString(CultureInfo.InvariantCulture);
-                }
-                catch (InvalidValueException e)
-                {
-                    if (tree.IsExpression())
+                    var otherCell = this.NameToCell(name);
+                    var dValue = double.TryParse(otherCell.Value, out var value);
+                    if (dValue)
                     {
-                        // It's a number.
-                        // nextValue will be the number.
-                        nextValue = !double.IsNaN(possibleValue) ?
-                            possibleValue.ToString(CultureInfo.InvariantCulture) : "#ERROR!";
+                        tree.SetVariable(name, value);
                     }
                     else
                     {
-                        if (!double.IsNaN(possibleValue))
-                        { // It's a number.
-                            // nextValue will be the number.
-                            nextValue = possibleValue.ToString(CultureInfo.InvariantCulture);
-                        }
+                        tree.SetVariable(name, double.NaN);
+                        nextValue = otherCell.Value;
+                    }
+
+                    sender.Bind(otherCell);
+                }
+            }
+            catch (SelfReferenceException e)
+            {
+                Console.WriteLine(e);
+                sender.SetValue(SelfReferenceException.Error);
+                return false;
+            }
+            catch (InvalidFieldNameException e)
+            {
+                Console.WriteLine(e);
+                sender.SetValue(InvalidFieldNameException.Error);
+                return false;
+            }
+            catch (CircularException e)
+            {
+                Console.WriteLine(e);
+                sender.SetValue(CircularException.Error);
+                return false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                sender.SetValue("#(Error)!");
+                return false;
+            }
+
+            var possibleValue = double.NaN;
+
+            // Evaluate the tree
+            try
+            {
+                possibleValue = tree.Evaluate();
+                nextValue = possibleValue.ToString(CultureInfo.InvariantCulture);
+            }
+            catch (InvalidValueException)
+            {
+                if (tree.IsExpression())
+                {
+                    // It's a number.
+                    // nextValue will be the number.
+                    nextValue = !double.IsNaN(possibleValue) ?
+                        possibleValue.ToString(CultureInfo.InvariantCulture) : InvalidValueException.Error;
+                }
+                else
+                {
+                    if (!double.IsNaN(possibleValue))
+                    { // It's a number.
+                        // nextValue will be the number.
+                        nextValue = possibleValue.ToString(CultureInfo.InvariantCulture);
                     }
                 }
             }
-
-            sender.SetValue(nextValue);
         }
+
+        sender.SetValue(nextValue);
+        return true;
     }
 
     /// <summary>
@@ -229,7 +338,6 @@ public class Spreadsheet
     /// <param name="colNum">int col index.</param>
     private void InitializeCells(int rowNum, int colNum)
     {
-        this.cells = [];
         for (var r = 0; r < rowNum; r++)
         {
             // Each column from here will have it's cells affected
@@ -249,7 +357,6 @@ public class Spreadsheet
         }
     }
 
-    /// TODO: HW10: Fix parsing of strings for Unbind function
     /// <summary>
     /// Removes notification from other cell.
     /// </summary>
@@ -262,20 +369,12 @@ public class Spreadsheet
             var tree = new ExpressionTree(tempText[1..].ToUpper());
             foreach (var name in tree.GetVariableNames())
             {
-                if (name.Length < 2)
+                if (!this.IsValid(name))
                 {
                     continue;
                 }
 
-                var colInd = name[0] - 'A';
-                var rowInd = int.Parse(name[1..]) - 1;
-
-                if (rowInd < 0 || rowInd >= this.Rows || colInd < 0 || colInd >= this.Columns)
-                {
-                    continue;
-                }
-
-                var otherCell = this.GetCell(rowInd, colInd);
+                var otherCell = this.NameToCell(name);
                 cell.Unbind(otherCell);
             }
         }
@@ -288,12 +387,16 @@ public class Spreadsheet
     /// <param name="e">PropertyChangedEventArgs.</param>
     private void NotifyPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (sender is SpreadsheetCell cell && e.PropertyName == "Text")
+        if (sender is not SpreadsheetCell cell || (e.PropertyName != "Text" && e.PropertyName != "BgColor"))
         {
-            this.ValueUpdate(cell);
+            return;
         }
 
-        this.CellPropertyChanged?.Invoke(sender, e);
+        if (e.PropertyName == "BgColor" || (e.PropertyName == "Text" && this.ValueUpdate(cell)))
+        {
+            Console.WriteLine($"{sender} NotifyPropertyChanged for {e.PropertyName}");
+            this.CellPropertyChanged?.Invoke(sender, e);
+        }
     }
 
     /// <summary>

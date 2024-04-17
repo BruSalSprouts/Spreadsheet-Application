@@ -6,8 +6,14 @@ using Avalonia.Platform.Storage;
 
 namespace Spreadsheet_Bruno_SanchezParra.XML;
 
-public class FileTypeXML
+/// <summary>
+/// FileTypeXML class. Mainly so file prompts support .xml file formats.
+/// </summary>
+public class FileTypeXml
 {
+    /// <summary>
+    /// Gets the File type .xml.
+    /// </summary>
     public static FilePickerFileType Xml { get; } = new("XML document")
     {
         Patterns = new[] { "*.xml" },

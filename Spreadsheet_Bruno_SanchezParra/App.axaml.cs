@@ -14,7 +14,7 @@ namespace Spreadsheet_Bruno_SanchezParra;
 /// <summary>
 /// Partial class App.
 /// </summary>
-public partial class App : Application
+public class App : Application
 {
     /// <summary>
     /// The initializer for the Avalonia Application.

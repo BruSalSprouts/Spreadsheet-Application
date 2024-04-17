@@ -4,6 +4,8 @@
 // Name: Bruno Sanchez
 // WSU ID: 11714424
 
+using SpreadsheetEngine.Exceptions;
+
 #pragma warning disable CS0168 // Variable is declared but never used
 namespace Spreadsheet_Testing;
 
@@ -250,7 +252,7 @@ public class SpreadsheetCellsTests
                 o[1, 2].Text = "=A0";
             }
 
-            Assert.That(o?[1, 2].Value, Is.EqualTo("#ERROR!"));
+            Assert.That(o?[1, 2].Value, Is.EqualTo(InvalidFieldNameException.Error));
         }
         catch (IndexOutOfRangeException f)
         {
@@ -286,7 +288,7 @@ public class SpreadsheetCellsTests
             o[1, 2].Text = "=A";
         }
 
-        Assert.That(o?[1, 2].Value, Is.EqualTo("#ERROR!"));
+        Assert.That(o?[1, 2].Value, Is.EqualTo(InvalidFieldNameException.Error));
     }
 
     /// <summary>
@@ -303,7 +305,7 @@ public class SpreadsheetCellsTests
             o[1, 1].Text = "=A1+B1";
         }
 
-        Assert.That(o?[1, 1].Value, Is.EqualTo("#ERROR!"));
+        Assert.That(o?[1, 1].Value, Is.EqualTo(InvalidValueException.Error));
     }
 
     /// <summary>
@@ -458,8 +460,11 @@ public class SpreadsheetCellsTests
         Assert.That(o[0, 1].Value, Is.EqualTo("hello"));
     }
 
+    /// <summary>
+    /// Checks if BGColor Event Handling takes place.
+    /// </summary>
     [Test]
-    public void EventBGColorChangeTest()
+    public void EventBgColorChangeTest()
     {
         var o = this.spreadsheet;
         if (o == null)
@@ -471,6 +476,7 @@ public class SpreadsheetCellsTests
         o.CellPropertyChanged += (sender, args) =>
         {
             called = true;
+
             // Checks to see if sender is of type Cell
             Assert.That(sender is Cell, Is.True);
             Assert.That(args.PropertyName, Is.EqualTo("BgColor"));
@@ -480,5 +486,96 @@ public class SpreadsheetCellsTests
         var cellActual = o[4, 3];
         cellActual.BgColor = 0x010101;
         Assert.That(called, Is.True);
+    }
+
+    /// <summary>
+    /// Tests if a cell throws a self reference exception.
+    /// </summary>
+    [Test]
+    public void SelfReferenceTest()
+    {
+        var o = this.spreadsheet;
+        if (o == null)
+        {
+            return;
+        }
+
+        o[0, 0].Text = "=B1+A1";
+        Assert.That(o[0, 0].Value, Is.EqualTo(SelfReferenceException.Error));
+    }
+
+    /// <summary>
+    /// Tests if a cell throws a self reference exception.
+    /// </summary>
+    [Test]
+    public void CircularReferenceTest()
+    {
+        var o = this.spreadsheet;
+        if (o == null)
+        {
+            return;
+        }
+
+        o[0, 0].Text = "=B1";
+        o[0, 1].Text = "=A1";
+        Assert.That(o[0, 1].Value, Is.EqualTo(CircularException.Error));
+    }
+
+    /// <summary>
+    /// Tests if a cell throws a circular reference exception.
+    /// </summary>
+    [Test]
+    public void CircularReferenceDeeperTest()
+    {
+        var o = this.spreadsheet;
+        if (o == null)
+        {
+            return;
+        }
+
+        o[0, 0].Text = "=B1";
+        o[0, 1].Text = "=C1";
+        o[0, 2].Text = "=A1";
+        Assert.That(o[0, 2].Value, Is.EqualTo(CircularException.Error));
+    }
+
+    /// <summary>
+    /// Tests if a cell throws a circular reference exception.
+    /// </summary>
+    [Test]
+    public void CircularReferenceEvenDeeperTest()
+    {
+        var o = this.spreadsheet;
+        if (o == null)
+        {
+            return;
+        }
+
+        o[0, 2].Text = "=9"; // C1
+        o[0, 3].Text = "=C1+A1"; // D1
+        o[0, 1].Text = "=C1+D1"; // B1
+        o[0, 0].Text = "=B1+C1+D1"; // A1
+
+        Assert.That(o[0, 0].Value, Is.EqualTo(CircularException.Error));
+    }
+
+    /// <summary>
+    /// Tests if a cell doesn't throws a circular reference exception.
+    /// </summary>
+    [Test]
+    public void NoCircularReferenceTest()
+    {
+        var o = this.spreadsheet;
+        if (o == null)
+        {
+            return;
+        }
+
+        o[0, 2].Text = "9";
+        o[0, 3].Text = "=3";
+        o[0, 0].Text = "=B1+C1+D1";
+        o[0, 1].Text = "=C1+D1";
+
+        Assert.That(o[0, 0].Value, Is.EqualTo("24"));
     }
 }

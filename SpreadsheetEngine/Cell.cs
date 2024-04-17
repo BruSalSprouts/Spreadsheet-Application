@@ -26,9 +26,6 @@ public abstract class Cell : INotifyPropertyChanged
 
 #pragma warning restore SA1600
 
-    /// <inheritdoc/>
-    public event PropertyChangedEventHandler? PropertyChanged = (sender, e) => { };
-
     /// <summary>
     /// Initializes a new instance of the <see cref="Cell"/> class.
     /// </summary>
@@ -40,6 +37,9 @@ public abstract class Cell : INotifyPropertyChanged
         this.bgColor = 0xFFFFFFFF;
         this.textColor = 0xFF000000;
     }
+
+    /// <inheritdoc/>
+    public event PropertyChangedEventHandler? PropertyChanged = (sender, e) => { };
 
     /// <summary>
     /// Gets or sets makes BGColor property.
@@ -59,7 +59,6 @@ public abstract class Cell : INotifyPropertyChanged
             this.dirty = true;
 
             // Event handler for if text changes
-            // this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
             this.OnPropertyChanged();
         }
     }
@@ -82,7 +81,6 @@ public abstract class Cell : INotifyPropertyChanged
             this.dirty = true;
 
             // Event handler for if text changes
-            // this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
             this.OnPropertyChanged();
         }
     }
@@ -105,7 +103,6 @@ public abstract class Cell : INotifyPropertyChanged
             this.dirty = true;
 
             // Event handler for if text changes
-            // this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Text)));
             this.OnPropertyChanged();
         }
     }

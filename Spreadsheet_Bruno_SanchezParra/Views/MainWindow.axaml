@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:utils="using:Spreadsheet_Bruno_SanchezParra.Converters"
-        xmlns:views="clr-namespace:Spreadsheet_Bruno_SanchezParra.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Spreadsheet_Bruno_SanchezParra.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"

@@ -6,6 +6,7 @@
 #pragma warning disable SA1200
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+
 #pragma warning disable CS9113 // Parameter is unread.
 #pragma warning restore SA1200
 
@@ -33,6 +34,12 @@ internal class SpreadsheetCell(int row, int col) : Cell
     public int Col { get; } = col;
 
     /// <summary>
+    /// Gets row property.
+    /// Converts row from int to char by adding 'A' to it.
+    /// </summary>
+    public string Name { get; } = $"{(char)(col + 'A')}{row + 1}";
+
+    /// <summary>
     /// Gets or sets overriden Text property. When text changes, before changing it,
     /// it sends an event for one event to stop caring.
     /// </summary>
@@ -41,9 +48,13 @@ internal class SpreadsheetCell(int row, int col) : Cell
         get => base.Text;
         set
         {
-            this.OnPropertyChanging();
+            if (string.Equals(this.Text, value, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            this.OnPropertyChanging(); // Triggers the Unbind
             base.Text = value;
-            this.OnPropertyChanged();
         }
     }
 
@@ -53,8 +64,22 @@ internal class SpreadsheetCell(int row, int col) : Cell
     /// <param name="val">string.</param>
     public void SetValue(string val)
     {
+        if (string.Equals(this.value, val, StringComparison.Ordinal))
+        {
+            return;
+        }
+
         this.value = val;
         this.OnPropertyChanged(nameof(this.Value));
+    }
+
+    /// <summary>
+    /// Override ToString.
+    /// </summary>
+    /// <returns>string.</returns>
+    public override string ToString()
+    {
+        return this.Name;
     }
 
     /// <summary>
@@ -91,9 +116,12 @@ internal class SpreadsheetCell(int row, int col) : Cell
     /// <param name="e">PropertyChangedEventArgs.</param>
     private void OtherOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "Value")
+        if (e.PropertyName != "Value")
         {
-            this.OnPropertyChanged(nameof(this.Text));
+            return;
         }
+
+        Console.WriteLine($"OtherOnPropertyChanged || {sender}");
+        this.OnPropertyChanged(nameof(this.Text));
     }
 }
