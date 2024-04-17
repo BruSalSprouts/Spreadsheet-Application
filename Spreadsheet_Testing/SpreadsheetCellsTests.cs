@@ -460,8 +460,11 @@ public class SpreadsheetCellsTests
         Assert.That(o[0, 1].Value, Is.EqualTo("hello"));
     }
 
+    /// <summary>
+    /// Checks if BGColor Event Handling takes place.
+    /// </summary>
     [Test]
-    public void EventBGColorChangeTest()
+    public void EventBgColorChangeTest()
     {
         var o = this.spreadsheet;
         if (o == null)
@@ -473,6 +476,7 @@ public class SpreadsheetCellsTests
         o.CellPropertyChanged += (sender, args) =>
         {
             called = true;
+
             // Checks to see if sender is of type Cell
             Assert.That(sender is Cell, Is.True);
             Assert.That(args.PropertyName, Is.EqualTo("BgColor"));
