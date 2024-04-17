@@ -37,7 +37,7 @@ public sealed class CellViewModel : ViewModelBase
         // do the property names matching
         this.Cell.PropertyChanged += (sender, args) =>
         {
-            Console.WriteLine(args.PropertyName + "," + sender?.GetType());
+            Console.WriteLine(args.PropertyName + "," + sender);
             this.RaisePropertyChanged(args.PropertyName);
         };
     }

@@ -305,7 +305,7 @@ public class SpreadsheetCellsTests
             o[1, 1].Text = "=A1+B1";
         }
 
-        Assert.That(o?[1, 1].Value, Is.EqualTo("#ERROR!"));
+        Assert.That(o?[1, 1].Value, Is.EqualTo(InvalidValueException.Error));
     }
 
     /// <summary>

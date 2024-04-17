@@ -6,6 +6,8 @@
 #pragma warning disable SA1200
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
+
 #pragma warning disable CS9113 // Parameter is unread.
 #pragma warning restore SA1200
 
@@ -47,9 +49,13 @@ internal class SpreadsheetCell(int row, int col) : Cell
         get => base.Text;
         set
         {
-            this.OnPropertyChanging();
+            if (string.Equals(this.Text, value, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            this.OnPropertyChanging(); // Triggers the Unbind
             base.Text = value;
-            this.OnPropertyChanged();
         }
     }
 
@@ -59,8 +65,22 @@ internal class SpreadsheetCell(int row, int col) : Cell
     /// <param name="val">string.</param>
     public void SetValue(string val)
     {
+        if (string.Equals(this.value, val, StringComparison.Ordinal))
+        {
+            return;
+        }
+
         this.value = val;
         this.OnPropertyChanged(nameof(this.Value));
+    }
+
+    /// <summary>
+    /// Override ToString.
+    /// </summary>
+    /// <returns>string.</returns>
+    public override string ToString()
+    {
+        return this.Name;
     }
 
     /// <summary>
@@ -99,6 +119,7 @@ internal class SpreadsheetCell(int row, int col) : Cell
     {
         if (e.PropertyName == "Value")
         {
+            Console.WriteLine($"OtherOnPropertyChanged || {sender}");
             this.OnPropertyChanged(nameof(this.Text));
         }
     }

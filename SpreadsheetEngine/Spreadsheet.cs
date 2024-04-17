@@ -213,13 +213,15 @@ public class Spreadsheet
     /// gotten from the value of the cell whose name follows the '='.
     /// </summary>
     /// <param name="sender">SpreadsheetCell.</param>
-    private void ValueUpdate(SpreadsheetCell sender)
+    /// <returns>bool.</returns>
+    private bool ValueUpdate(SpreadsheetCell sender)
     {
+        Console.WriteLine($"Updating {sender.Name}");
         var tempText = sender.Text;
         var nextValue = tempText;
         if (nextValue == sender.Value)
         {
-            return;
+            return false;
         }
 
         if (!string.IsNullOrEmpty(tempText) && tempText[0] == '=')
@@ -275,25 +277,25 @@ public class Spreadsheet
             {
                 Console.WriteLine(e);
                 sender.SetValue(SelfReferenceException.Error);
-                return;
+                return false;
             }
             catch (InvalidFieldNameException e)
             {
                 Console.WriteLine(e);
                 sender.SetValue(InvalidFieldNameException.Error);
-                return;
+                return false;
             }
             catch (CircularException e)
             {
                 Console.WriteLine(e);
                 sender.SetValue(CircularException.Error);
-                return;
+                return false;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                sender.SetValue("#Error!?!");
-                return;
+                sender.SetValue("#(Error)!");
+                return false;
             }
 
             var possibleValue = double.NaN;
@@ -311,7 +313,7 @@ public class Spreadsheet
                     // It's a number.
                     // nextValue will be the number.
                     nextValue = !double.IsNaN(possibleValue) ?
-                        possibleValue.ToString(CultureInfo.InvariantCulture) : "#ERROR!";
+                        possibleValue.ToString(CultureInfo.InvariantCulture) : InvalidValueException.Error;
                 }
                 else
                 {
@@ -325,6 +327,7 @@ public class Spreadsheet
         }
 
         sender.SetValue(nextValue);
+        return true;
     }
 
     /// <summary>
@@ -367,20 +370,12 @@ public class Spreadsheet
             var tree = new ExpressionTree(tempText[1..].ToUpper());
             foreach (var name in tree.GetVariableNames())
             {
-                if (name.Length < 2)
+                if (!this.IsValid(name))
                 {
                     continue;
                 }
 
-                var colInd = name[0] - 'A';
-                var rowInd = int.Parse(name[1..]) - 1;
-
-                if (rowInd < 0 || rowInd >= this.Rows || colInd < 0 || colInd >= this.Columns)
-                {
-                    continue;
-                }
-
-                var otherCell = this.GetCell(rowInd, colInd);
+                var otherCell = this.NameToCell(name);
                 cell.Unbind(otherCell);
             }
         }
@@ -393,12 +388,16 @@ public class Spreadsheet
     /// <param name="e">PropertyChangedEventArgs.</param>
     private void NotifyPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (sender is SpreadsheetCell cell && e.PropertyName == "Text")
+        if (sender is not SpreadsheetCell cell || (e.PropertyName != "Text" && e.PropertyName != "BgColor"))
         {
-            this.ValueUpdate(cell);
+            return;
         }
 
-        this.CellPropertyChanged?.Invoke(sender, e);
+        if (e.PropertyName == "BgColor" || (e.PropertyName == "Text" && this.ValueUpdate(cell)))
+        {
+            Console.WriteLine($"{sender} NotifyPropertyChanged for {e.PropertyName}");
+            this.CellPropertyChanged?.Invoke(sender, e);
+        }
     }
 
     /// <summary>

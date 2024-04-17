@@ -8,4 +8,10 @@ namespace SpreadsheetEngine.Exceptions;
 /// new Exception class for invalid variable values.
 /// </summary>
 /// <param name="message">string.</param>
-public class InvalidValueException(string message) : Exception(message);
+public class InvalidValueException(string message) : Exception(message)
+{
+    /// <summary>
+    /// Error message.
+    /// </summary>
+    public const string Error = "#(Invalid Value!)!";
+}
