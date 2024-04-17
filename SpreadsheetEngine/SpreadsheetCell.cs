@@ -6,7 +6,6 @@
 #pragma warning disable SA1200
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 
 #pragma warning disable CS9113 // Parameter is unread.
 #pragma warning restore SA1200
@@ -36,7 +35,7 @@ internal class SpreadsheetCell(int row, int col) : Cell
 
     /// <summary>
     /// Gets row property.
-    /// Converts row from int to char by adding 'A' to it
+    /// Converts row from int to char by adding 'A' to it.
     /// </summary>
     public string Name { get; } = $"{(char)(col + 'A')}{row + 1}";
 
@@ -117,10 +116,12 @@ internal class SpreadsheetCell(int row, int col) : Cell
     /// <param name="e">PropertyChangedEventArgs.</param>
     private void OtherOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "Value")
+        if (e.PropertyName != "Value")
         {
-            Console.WriteLine($"OtherOnPropertyChanged || {sender}");
-            this.OnPropertyChanged(nameof(this.Text));
+            return;
         }
+
+        Console.WriteLine($"OtherOnPropertyChanged || {sender}");
+        this.OnPropertyChanged(nameof(this.Text));
     }
 }

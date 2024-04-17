@@ -283,8 +283,13 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     private void MenuItem_SpreadsheetClear(object? sender, RoutedEventArgs e)
     {
         this.ViewModel?.ClearSpreadsheet();
+        this.MakeEverythingVisible();
     }
 
+    /// <summary>
+    /// Prompts a window for color choosing to open.
+    /// </summary>
+    /// <param name="interaction">InteractionContext.</param>
     private async Task DoShowDialogAsync(InteractionContext<ColorChooserViewModel, ChooserViewModel?> interaction)
     {
      var dialog = new ColorChooserWindow
@@ -296,6 +301,11 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
      interaction.SetOutput(result);
     }
 
+    /// <summary>
+    /// Opens a stream to save a file, then calls SaveData using that file stream.
+    /// </summary>
+    /// <param name="sender">object.</param>
+    /// <param name="e">RoutedEventArgs.</param>
     private async void MenuItem_OnSave(object? sender, RoutedEventArgs e)
     {
         var topLevel = TopLevel.GetTopLevel(this);
@@ -312,7 +322,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
             Title = "Save Spreadsheet File",
             FileTypeChoices = new[]
             {
-                FileTypeXML.Xml,
+                FileTypeXml.Xml,
             },
         });
 
@@ -331,6 +341,11 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         this.ViewModel?.SaveData(stream);
     }
 
+    /// <summary>
+    /// Opens a stream to load a file, then calls LoadData using that file stream.
+    /// </summary>
+    /// <param name="sender">object.</param>
+    /// <param name="e">RoutedEventArgs.</param>
     private async void MenuItem_OnLoad(object? sender, RoutedEventArgs e)
     {
         var topLevel = TopLevel.GetTopLevel(this);
@@ -343,14 +358,14 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 
         var files = await topLevel.StorageProvider.OpenFilePickerAsync(
             new FilePickerOpenOptions
-        {
-            Title = "Open Spreadsheet File",
-            AllowMultiple = false,
-            FileTypeFilter = new[]
             {
-                FileTypeXML.Xml,
-            },
-        });
+                Title = "Open Spreadsheet File",
+                AllowMultiple = false,
+                FileTypeFilter = new[]
+                {
+                    FileTypeXml.Xml,
+                },
+            });
 
         if (files.Count < 1)
         {
@@ -364,5 +379,29 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         await using var stream = await files[0].OpenReadAsync();
 
         this.ViewModel?.LoadData(stream);
+        stream.Close();
+        this.MakeEverythingVisible();
+    }
+
+    /// <summary>
+    /// Sets every IsVisible property of every DataGridColumn to true.
+    /// </summary>
+    private void MakeEverythingVisible()
+    {
+        for (var row = 0; row < this.ViewModel?.RowAmount; row++)
+        {
+            this.ViewModel?.ToggleCellSelection(row, 10);
+        }
+
+        for (var row = 0; row < this.ViewModel?.RowAmount; row++)
+        {
+            this.ViewModel?.ToggleCellSelection(row, 10);
+        }
+
+        this.ViewModel?.ResetSelection();
+        foreach (var col in this.SpreadsheetDataGrid.Columns)
+        {
+            col.IsVisible = true;
+        }
     }
 }

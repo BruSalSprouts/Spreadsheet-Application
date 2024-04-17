@@ -27,11 +27,6 @@ public class Spreadsheet
 
     private List<List<SpreadsheetCell>> cells = null!;
 
-    // The Event Handler for Spreadsheet, CellPropertyChanged
-
-    /// <inheritdoc cref="CellPropertyChanged" />
-    public event PropertyChangedEventHandler? CellPropertyChanged = (sender, e) => { };
-
     /// <summary>
     /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
     /// Also checks for invalid row and column numbers.
@@ -47,8 +42,14 @@ public class Spreadsheet
 
         this.Rows = rowNum;
         this.Columns = colNum;
+        this.cells = [];
         this.InitializeCells(rowNum, colNum);
     }
+
+    // The Event Handler for Spreadsheet, CellPropertyChanged
+
+    /// <inheritdoc cref="CellPropertyChanged" />
+    public event PropertyChangedEventHandler? CellPropertyChanged = (sender, e) => { };
 
     /// <summary>
     /// Gets or sets property for Rows.
@@ -306,7 +307,7 @@ public class Spreadsheet
                 possibleValue = tree.Evaluate();
                 nextValue = possibleValue.ToString(CultureInfo.InvariantCulture);
             }
-            catch (InvalidValueException e)
+            catch (InvalidValueException)
             {
                 if (tree.IsExpression())
                 {
@@ -337,7 +338,6 @@ public class Spreadsheet
     /// <param name="colNum">int col index.</param>
     private void InitializeCells(int rowNum, int colNum)
     {
-        this.cells = [];
         for (var r = 0; r < rowNum; r++)
         {
             // Each column from here will have it's cells affected
@@ -357,7 +357,6 @@ public class Spreadsheet
         }
     }
 
-    /// TODO: HW10: Fix parsing of strings for Unbind function
     /// <summary>
     /// Removes notification from other cell.
     /// </summary>
